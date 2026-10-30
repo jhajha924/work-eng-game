@@ -10,12 +10,21 @@
 	"assets": {
 		"not_found_handling": "single-page-application",
 		// 網址列直接開 /api/* 時也交給 Worker，不要回傳前端的 index.html
-		"run_worker_first": ["/api/*"]
+		"run_worker_first": [
+			"/api/*"
+		]
 	},
 	"observability": {
 		"enabled": true
 	},
-	"upload_source_maps": true
+	"upload_source_maps": true,
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "work-eng-game",
+			"database_id": "e3601730-bd2d-40ec-9347-48388d53431b"
+		}
+	]
 	/**
 	 * Smart Placement
 	 * https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement
