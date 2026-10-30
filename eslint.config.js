@@ -6,7 +6,8 @@ import tseslint from 'typescript-eslint'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
-  globalIgnores(['dist']),
+  // worker-configuration.d.ts 由 `npm run cf-typegen` 自動產生，不檢查
+  globalIgnores(['dist', 'worker-configuration.d.ts']),
   {
     files: ['**/*.{ts,tsx}'],
     extends: [
