@@ -29,7 +29,7 @@ App 的核心是「每天告訴使用者該練什麼」，而這取決於計畫�
 
 - Affected specs: `content-pack`（新）、`plan-scheduling`（新）
 - Affected code:
-  - New: src/plan/types.ts, src/plan/dates.ts, src/plan/validatePack.ts, src/plan/allocateWeeks.ts, src/plan/buildSchedule.ts, src/plan/validatePack.test.ts, src/plan/allocateWeeks.test.ts, src/plan/buildSchedule.test.ts, src/plan/privatePack.test.ts, content/packs/meeting-a2-b1-sample/pack.json, scripts/export_private_pack.py, vitest.config.ts, docs/learning-notes/01-計畫引擎.md
-  - Modified: package.json, package-lock.json, tsconfig.app.json, .gitignore, .github/workflows/deploy.yml, docs/專案規範.md
+  - New: src/plan/types.ts, src/plan/dates.ts, src/plan/validatePack.ts, src/plan/allocateWeeks.ts, src/plan/buildSchedule.ts, src/plan/testFixtures.ts, src/plan/dates.test.ts, src/plan/validatePack.test.ts, src/plan/samplePack.test.ts, src/plan/allocateWeeks.test.ts, src/plan/buildSchedule.test.ts, src/plan/privatePack.test.ts, tsconfig.test.json, content/packs/meeting-a2-b1-sample/pack.json, scripts/export_private_pack.py, vitest.config.ts, docs/learning-notes/01-計畫引擎.md
+  - Modified: package.json, package-lock.json, tsconfig.app.json, tsconfig.json, tsconfig.node.json, .gitignore, .github/workflows/deploy.yml, docs/專案規範.md
 - 相依套件：新增開發用套件 vitest
 - 來源：討論 english-quest-app 的結論（第 1 刀）與專案規劃書第 6 節「計畫引擎設計」

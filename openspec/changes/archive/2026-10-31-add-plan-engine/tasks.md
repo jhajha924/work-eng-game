@@ -21,4 +21,4 @@
 ## 4. 學習筆記與驗收
 
 - [x] 4.1 撰寫學習筆記 docs/learning-notes/01-計畫引擎.md：依學習筆記格式說明純函式、最大餘數法、UTC 日期計算、Vitest 與測試金字塔、公開與私人內容包的取捨，並列出面試可能被問的問題。驗證：內容審查，五個段落齊全且不含個人資訊。 <!-- speclink-task:tsk_01M691DE2849G558V35ZV5E1M3 -->
-- [ ] [M] 4.2 使用者驗收：在本機執行 `npm test`、`npm run lint`、`npm run build` 全部通過，讀完學習筆記，依專案規範 commit 並 push，確認 GitHub Actions 的檢查（含 `npm test`）與部署都成功。驗證：Actions 頁面該次執行為綠色。 <!-- speclink-task:tsk_01M691DE28GEM12YQKNAXTENT3 -->
+- [x] [M] 4.2 使用者驗收：在本機執行 `npm test`、`npm run lint`、`npm run build` 全部通過，讀完學習筆記，依專案規範 commit 並 push，確認 GitHub Actions 的檢查（含 `npm test`）與部署都成功。驗證：Actions 頁面該次執行為綠色。 <!-- speclink-task:tsk_01M691DE28GEM12YQKNAXTENT3 -->

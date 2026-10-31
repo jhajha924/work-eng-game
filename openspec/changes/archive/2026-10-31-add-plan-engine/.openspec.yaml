@@ -1,0 +1,115 @@
+schema: spec-driven
+created: 2026-10-31
+created_by: jhajha924 <47804331+jhajha924@users.noreply.github.com>
+created_with: claude
+from_discussion: english-quest-app
+started_at: 2026-10-31
+started_by: jhajha924 <47804331+jhajha924@users.noreply.github.com>
+reviewed_at: 2026-10-31
+reviewed_by: jhajha924 <47804331+jhajha924@users.noreply.github.com>
+reviewed_with: claude
+reviewed_tasks_total: 13
+reviewed_scope:
+  - path: .github/workflows/deploy.yml
+    hash: c46f9eedf10a3079811679c9c2ae4348a8ac38660125334ab21fc5a6c4526c81
+  - path: content/packs/meeting-a2-b1-sample/pack.json
+    hash: f28c95a32c411d3821d83468daa12c0cc405a793dcc204670dfa2327ff767486
+  - path: docs/learning-notes/01-計畫引擎.md
+    hash: 6c875d94644baa1901018a73b20bdfb04ad69f2d9da2f047759bd26682590662
+  - path: docs/專案規範.md
+    hash: d193a33977013932a71e5cbbf218afab997d0dcf3bc9eb0121014cf74a1c779d
+  - path: package-lock.json
+    hash: 4848c5899776e0893d3c484433e86c769ca97748570a493fff7ef8260b627ed0
+  - path: package.json
+    hash: 0ea5c12becfaf2c81d38b4ba0397ba3506196352cc4785c68ed7eefebb135d82
+  - path: scripts/export_private_pack.py
+    hash: c96bdf5a1b8876efc422040215603ee73d88b5ec8763811a9617223685c6f1d5
+  - path: src/plan/allocateWeeks.test.ts
+    hash: 8d9ddb4b09ab90572ea61537cd81d282049a7be6b372c7e2c74f5140910ce819
+  - path: src/plan/allocateWeeks.ts
+    hash: 0ab2c3f4f10ddb414d0accc2447ca360e1870b9ef46924146b3ae7f5700c746e
+  - path: src/plan/buildSchedule.test.ts
+    hash: 034bc61293c1b146c12852d056fad0565595598fa1826290c6429164efd613fb
+  - path: src/plan/buildSchedule.ts
+    hash: d17e1cd9d5424c5ec186d5cb0f6b3f12efb352fc9394a3ba8e532ec9bbfa8560
+  - path: src/plan/dates.test.ts
+    hash: b51c08fcd71bb83aab5ef1dd670a3b7c837f0028b7b6c004ed1ffe044ea9e52b
+  - path: src/plan/dates.ts
+    hash: 9164727cd1a9d846f4143189dae610043cb3dcce1644db063252818f0684d930
+  - path: src/plan/privatePack.test.ts
+    hash: ac9183a48d840d2d4d75066d880589fcf2758c7ec4dbab4e30ee6e5af8cf3887
+  - path: src/plan/samplePack.test.ts
+    hash: 29680e27cfc6596dbf8b64fb7fc5e6f5d12fd8b50505652a7e14d0d28fa74189
+  - path: src/plan/testFixtures.ts
+    hash: 606ffbc690a189b111e02f02a82eba3f4edbdd2b57f8cdfb2ff3f6e43f0f547f
+  - path: src/plan/types.ts
+    hash: 5d435a4036bb0a116f3843121ae4964dc9763a6b3149fd10dbdabddd72f6d913
+  - path: src/plan/validatePack.test.ts
+    hash: 5d7f826c0fb00e192959fda0b66be3c6addbae863597986c1bb20ff2fbd7bf77
+  - path: src/plan/validatePack.ts
+    hash: c50173690a875d15e25bf5e325f8bcf61b8fe0e743febe67349b1fcfeec16d0d
+  - path: tsconfig.app.json
+    hash: 0f6d9d6ff1fbd26aaf31fd4ad4e559dd8b4f1c8111f6bee962ead4b44a7b1b25
+  - path: tsconfig.json
+    hash: 3d47ca7c6d10e9e7609047e137de0ab1652906312bc6ab3b8364b0f3a0a73ba0
+  - path: tsconfig.node.json
+    hash: 14e7a0e8ba0e453d8b117866063be1c301e43380ff18ae4883ea711514308ed0
+  - path: tsconfig.test.json
+    hash: 42d25235fbcd849bee049e1132b67da12175c7017aa6557cc52f2b77c264460d
+  - path: vitest.config.ts
+    hash: 4d142b7d1d17aa5296c68bab7061e63e59419c0d67428f065aa1300eca005ebe
+verified_at: 2026-10-31
+verified_by: jhajha924 <47804331+jhajha924@users.noreply.github.com>
+verified_with: claude
+verified_tasks_total: 13
+verified_scope:
+  - path: .github/workflows/deploy.yml
+    hash: c46f9eedf10a3079811679c9c2ae4348a8ac38660125334ab21fc5a6c4526c81
+  - path: content/packs/meeting-a2-b1-sample/pack.json
+    hash: f28c95a32c411d3821d83468daa12c0cc405a793dcc204670dfa2327ff767486
+  - path: docs/learning-notes/01-計畫引擎.md
+    hash: 6c875d94644baa1901018a73b20bdfb04ad69f2d9da2f047759bd26682590662
+  - path: docs/專案規範.md
+    hash: d193a33977013932a71e5cbbf218afab997d0dcf3bc9eb0121014cf74a1c779d
+  - path: package-lock.json
+    hash: 4848c5899776e0893d3c484433e86c769ca97748570a493fff7ef8260b627ed0
+  - path: package.json
+    hash: 0ea5c12becfaf2c81d38b4ba0397ba3506196352cc4785c68ed7eefebb135d82
+  - path: scripts/export_private_pack.py
+    hash: c96bdf5a1b8876efc422040215603ee73d88b5ec8763811a9617223685c6f1d5
+  - path: src/plan/allocateWeeks.test.ts
+    hash: 8d9ddb4b09ab90572ea61537cd81d282049a7be6b372c7e2c74f5140910ce819
+  - path: src/plan/allocateWeeks.ts
+    hash: 0ab2c3f4f10ddb414d0accc2447ca360e1870b9ef46924146b3ae7f5700c746e
+  - path: src/plan/buildSchedule.test.ts
+    hash: 034bc61293c1b146c12852d056fad0565595598fa1826290c6429164efd613fb
+  - path: src/plan/buildSchedule.ts
+    hash: d17e1cd9d5424c5ec186d5cb0f6b3f12efb352fc9394a3ba8e532ec9bbfa8560
+  - path: src/plan/dates.test.ts
+    hash: b51c08fcd71bb83aab5ef1dd670a3b7c837f0028b7b6c004ed1ffe044ea9e52b
+  - path: src/plan/dates.ts
+    hash: 9164727cd1a9d846f4143189dae610043cb3dcce1644db063252818f0684d930
+  - path: src/plan/privatePack.test.ts
+    hash: ac9183a48d840d2d4d75066d880589fcf2758c7ec4dbab4e30ee6e5af8cf3887
+  - path: src/plan/samplePack.test.ts
+    hash: 29680e27cfc6596dbf8b64fb7fc5e6f5d12fd8b50505652a7e14d0d28fa74189
+  - path: src/plan/testFixtures.ts
+    hash: 606ffbc690a189b111e02f02a82eba3f4edbdd2b57f8cdfb2ff3f6e43f0f547f
+  - path: src/plan/types.ts
+    hash: 5d435a4036bb0a116f3843121ae4964dc9763a6b3149fd10dbdabddd72f6d913
+  - path: src/plan/validatePack.test.ts
+    hash: 5d7f826c0fb00e192959fda0b66be3c6addbae863597986c1bb20ff2fbd7bf77
+  - path: src/plan/validatePack.ts
+    hash: c50173690a875d15e25bf5e325f8bcf61b8fe0e743febe67349b1fcfeec16d0d
+  - path: tsconfig.app.json
+    hash: 0f6d9d6ff1fbd26aaf31fd4ad4e559dd8b4f1c8111f6bee962ead4b44a7b1b25
+  - path: tsconfig.json
+    hash: 3d47ca7c6d10e9e7609047e137de0ab1652906312bc6ab3b8364b0f3a0a73ba0
+  - path: tsconfig.node.json
+    hash: 14e7a0e8ba0e453d8b117866063be1c301e43380ff18ae4883ea711514308ed0
+  - path: tsconfig.test.json
+    hash: 42d25235fbcd849bee049e1132b67da12175c7017aa6557cc52f2b77c264460d
+  - path: vitest.config.ts
+    hash: 4d142b7d1d17aa5296c68bab7061e63e59419c0d67428f065aa1300eca005ebe
+archived_by: jhajha924 <47804331+jhajha924@users.noreply.github.com>
+archived_at: 2026-10-31
