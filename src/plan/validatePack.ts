@@ -26,11 +26,26 @@ export function validatePack(pack: unknown): PackValidation {
   if (!isNonEmptyString(pack.id)) errors.push('id 不可為空')
   if (!isNonEmptyString(pack.name)) errors.push('name 不可為空')
   if (typeof pack.version !== 'number') errors.push('version 必須是數字')
-  if (!Array.isArray(pack.novice)) errors.push('novice 必須是陣列（可為空）')
+  if (!Array.isArray(pack.novice)) {
+    errors.push('novice 必須是陣列（可為空）')
+  } else {
+    pack.novice.forEach((day: unknown, i) => {
+      const where = `novice[${i}]`
+      if (!isObj(day)) {
+        errors.push(`${where}：必須是物件`)
+        return
+      }
+      if (!isNonEmptyString(day.title)) errors.push(`${where}：title 不可為空`)
+      if (!isNonEmptyString(day.description)) errors.push(`${where}：description 不可為空`)
+      if (!isNonEmptyString(day.icon)) errors.push(`${where}：icon 不可為空`)
+      if (typeof day.xp !== 'number' || !Number.isFinite(day.xp)) errors.push(`${where}：xp 必須是數字`)
+    })
+  }
 
   if (!Array.isArray(pack.levels) || pack.levels.length === 0) {
     errors.push('levels 至少要有 1 關')
   } else {
+    const seenIds = new Set<unknown>()
     pack.levels.forEach((level: unknown, i) => {
       const where = `levels[${i}]`
       if (!isObj(level)) {
@@ -38,8 +53,21 @@ export function validatePack(pack: unknown): PackValidation {
         return
       }
       if (!isNonEmptyString(level.id)) errors.push(`${where}：id 不可為空`)
+      else if (seenIds.has(level.id)) errors.push(`${where}：id「${level.id}」和前面的關卡重複`)
+      seenIds.add(level.id)
+      if (!isNonEmptyString(level.name)) errors.push(`${where}：name 不可為空`)
       const weeks = Array.isArray(level.weeks) ? level.weeks : []
       if (weeks.length < 2) errors.push(`${where}：weeks 至少要 2 個（一般週＋頭目戰週）`)
+      weeks.forEach((week: unknown, j) => {
+        const at = `${where}.weeks[${j}]`
+        if (!isObj(week)) {
+          errors.push(`${at}：必須是物件`)
+          return
+        }
+        if (!isNonEmptyString(week.title)) errors.push(`${at}：title 不可為空`)
+        if (typeof week.focus !== 'string') errors.push(`${at}：focus 必須是字串`)
+        if (typeof week.vocabCategory !== 'string') errors.push(`${at}：vocabCategory 必須是字串`)
+      })
       const min = level.minWeeks
       if (typeof min !== 'number' || !Number.isInteger(min) || min < 2 || min > weeks.length) {
         errors.push(`${where}：minWeeks 必須介於 2 與 weeks 數量（${weeks.length}）之間`)

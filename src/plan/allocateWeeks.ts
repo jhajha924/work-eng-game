@@ -63,6 +63,9 @@ export function allocateWeeks(packs: ContentPack[], totalWeeks: number): WeekAll
     const result = validatePack(pack)
     if (!result.ok) throw new PlanError('INVALID_PACK', `內容包 ${i} 結構錯誤：${result.errors.join('；')}`)
   })
+  // 排程用 id 反查內容包，id 重複就會查到錯的那一包
+  const ids = packs.map((p) => p.id)
+  if (new Set(ids).size !== ids.length) throw new PlanError('INVALID_PACK', `內容包 id 重複：${ids.join('、')}`)
 
   const result: WeekAllocation[] = []
   let remaining = totalWeeks

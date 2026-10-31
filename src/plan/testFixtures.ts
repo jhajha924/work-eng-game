@@ -1,5 +1,16 @@
 // 測試共用的內容包產生器（只給 *.test.ts 使用）
-import type { ContentPack, DayTemplate, Level } from './types'
+import { PlanError, type ContentPack, type DayTemplate, type Level } from './types'
+
+/** 執行 fn，回傳丟出的 PlanError 代碼；沒丟錯回傳 undefined，其他錯誤照樣丟出 */
+export function codeOf(fn: () => unknown): string | undefined {
+  try {
+    fn()
+  } catch (e) {
+    if (e instanceof PlanError) return e.code
+    throw e
+  }
+  return undefined
+}
 
 const day = (key: string, minutes = 30): DayTemplate => ({ key, title: `任務 ${key}`, minutes })
 

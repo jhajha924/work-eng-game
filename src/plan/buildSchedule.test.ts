@@ -2,8 +2,8 @@ import { describe, expect, it } from 'vitest'
 import sample from '../../content/packs/meeting-a2-b1-sample/pack.json'
 import { buildSchedule } from './buildSchedule'
 import { addDays } from './dates'
-import { makeLevel, makePack } from './testFixtures'
-import { PlanError, type ContentPack, type PlanSettings } from './types'
+import { codeOf, makeLevel, makePack } from './testFixtures'
+import type { ContentPack, PlanSettings } from './types'
 
 const pack = sample as ContentPack
 
@@ -15,26 +15,16 @@ const settings = (over: Partial<PlanSettings> = {}): PlanSettings => ({
   ...over,
 })
 
-function codeOf(fn: () => unknown): string | undefined {
-  try {
-    fn()
-  } catch (e) {
-    if (e instanceof PlanError) return e.code
-    throw e
-  }
-  return undefined
-}
-
 const dayOf = (s: ReturnType<typeof buildSchedule>, date: string) => s.days.find((d) => d.date === date)
 
 describe('計畫長度換算', () => {
   // 規格 Example「長度換算」
-  it.each<[string, PlanSettings['length'], number, string]>([
-    ['6 個月', { months: 6 }, 26, '2027-05-02'],
-    ['9 個月', { months: 9 }, 39, '2027-08-01'],
-    ['12 個月', { months: 12 }, 52, '2027-10-31'],
-    ['結束日 2027-04-28', { endDate: '2027-04-28' }, 25, '2027-04-25'],
-  ])('%s → %i 週，結束日 %s', (_name, length, weeks, endDate) => {
+  it.each<{ name: string; length: PlanSettings['length']; weeks: number; endDate: string }>([
+    { name: '6 個月', length: { months: 6 }, weeks: 26, endDate: '2027-05-02' },
+    { name: '9 個月', length: { months: 9 }, weeks: 39, endDate: '2027-08-01' },
+    { name: '12 個月', length: { months: 12 }, weeks: 52, endDate: '2027-10-31' },
+    { name: '結束日 2027-04-28', length: { endDate: '2027-04-28' }, weeks: 25, endDate: '2027-04-25' },
+  ])('$name → $weeks 週，結束日 $endDate', ({ length, weeks, endDate }) => {
     const s = buildSchedule([pack], settings({ length }))
     expect(s.totalWeeks).toBe(weeks)
     expect(s.weeks).toHaveLength(weeks)
@@ -115,6 +105,7 @@ describe('新手村前置', () => {
       '2026-10-28', '2026-10-29', '2026-10-30', '2026-10-31',
     ])
     expect(novice.every((d) => d.weekIndex === null && d.tasks.length === 1)).toBe(true)
+    expect(novice.every((d) => d.tasks[0].minutes === 30 && d.isLight === false)).toBe(true)
     expect(novice[0].tasks[0].key).toBe('novice-1')
     expect(dayOf(s, '2026-11-01')).toBeUndefined()
   })

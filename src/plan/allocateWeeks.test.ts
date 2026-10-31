@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import sample from '../../content/packs/meeting-a2-b1-sample/pack.json'
 import { allocateWeeks } from './allocateWeeks'
-import { makePackB } from './testFixtures'
-import { PlanError, type ContentPack, type WeekAllocation } from './types'
+import { codeOf, makePackB } from './testFixtures'
+import type { ContentPack, WeekAllocation } from './types'
 
 const packA = sample as ContentPack
 const packB = makePackB()
@@ -10,25 +10,15 @@ const packB = makePackB()
 const weeksOf = (alloc: WeekAllocation[], packId: string) =>
   alloc.filter((a) => a.packId === packId).reduce((s, a) => s + a.weeks, 0)
 
-function codeOf(fn: () => unknown): string | undefined {
-  try {
-    fn()
-  } catch (e) {
-    if (e instanceof PlanError) return e.code
-    throw e
-  }
-  return undefined
-}
-
 describe('內容包週數分配', () => {
   // 規格 Example「跨包分配」
-  it.each<[string, ContentPack[], number, number, number]>([
-    ['只有 A，26 週', [packA], 26, 26, 0],
-    ['只有 A，39 週', [packA], 39, 39, 0],
-    ['A、B，39 週', [packA, packB], 39, 39, 0],
-    ['A、B，52 週', [packA, packB], 52, 26, 26],
-    ['A、B，78 週', [packA, packB], 78, 26, 52],
-  ])('%s → A %i 週、B %i 週', (_name, packs, total, a, b) => {
+  it.each<{ name: string; packs: ContentPack[]; total: number; a: number; b: number }>([
+    { name: '只有 A，26 週', packs: [packA], total: 26, a: 26, b: 0 },
+    { name: '只有 A，39 週', packs: [packA], total: 39, a: 39, b: 0 },
+    { name: 'A、B，39 週', packs: [packA, packB], total: 39, a: 39, b: 0 },
+    { name: 'A、B，52 週', packs: [packA, packB], total: 52, a: 26, b: 26 },
+    { name: 'A、B，78 週', packs: [packA, packB], total: 78, a: 26, b: 52 },
+  ])('$name → A $a 週、B $b 週', ({ packs, total, a, b }) => {
     const alloc = allocateWeeks(packs, total)
     expect(weeksOf(alloc, packA.id)).toBe(a)
     expect(weeksOf(alloc, packB.id)).toBe(b)
@@ -40,6 +30,10 @@ describe('內容包週數分配', () => {
 
   it('內容包結構錯誤 → INVALID_PACK', () => {
     expect(codeOf(() => allocateWeeks([{ ...packA, levels: [] }], 26))).toBe('INVALID_PACK')
+  })
+
+  it('多個內容包 id 重複 → INVALID_PACK', () => {
+    expect(codeOf(() => allocateWeeks([packA, { ...packB, id: packA.id }], 52))).toBe('INVALID_PACK')
   })
 })
 

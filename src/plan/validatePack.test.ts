@@ -21,6 +21,9 @@ describe('結構檢查回報錯誤', () => {
     ['stretchWeight 為 0', (p) => ({ ...p, levels: [{ ...p.levels[0], stretchWeight: 0 }] })],
     ['bossDayOverrides 有鍵 "7"', (p) => ({ ...p, bossDayOverrides: { '7': p.dailyTemplates[0] } })],
     ['輸入不是物件（null）', () => null],
+    ['novice 含 null 元素', (p) => ({ ...p, novice: [null] })],
+    ['某關 weeks 含 null 元素', (p) => ({ ...p, levels: [{ ...p.levels[0], weeks: [null, ...p.levels[0].weeks] }] })],
+    ['兩關 id 相同', (p) => ({ ...p, levels: [p.levels[0], { ...p.levels[1], id: p.levels[0].id }] })],
   ])('%s → ok: false', (_name, mutate) => {
     const result = validatePack(mutate(valid()))
     expect(result.ok).toBe(false)
