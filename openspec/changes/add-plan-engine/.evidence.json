@@ -1,0 +1,200 @@
+{
+  "version": 2,
+  "change": "add-plan-engine",
+  "touched": [
+    {
+      "task_id": "1",
+      "task_desc": "1.1 導入 Vitest（D9 Vitest 用獨立設定檔）：新增開發套件 vitest、獨立設定檔 vitest.config.ts（Node 環境、只收 src 底下的 *.test.ts、不載入 Cloudflare 外掛）、`npm test` 指令；tsconfig.app.json 明確加上 `strict: true` 與 `resolveJsonModule: true`。驗證：`npm test` 能執行並列出測試檔、`npm run lint` 與 `npm run build` 通過。",
+      "files": [
+        "package-lock.json",
+        "package.json",
+        "tsconfig.app.json",
+        "tsconfig.json",
+        "tsconfig.node.json",
+        "src/plan/dates.test.ts",
+        "src/plan/dates.ts",
+        "src/plan/types.ts",
+        "tsconfig.test.json",
+        "vitest.config.ts"
+      ]
+    },
+    {
+      "task_id": "2",
+      "task_desc": "1.2 CI 加入測試關卡：GitHub Actions「檢查」job 在 lint 之後、build 之前執行 `npm test`，任何測試失敗則「部署」不會執行；docs/專案規範.md 第 5 節同步更新並記一筆變更紀錄。驗證：檢視 .github/workflows/deploy.yml 的步驟順序，推送後 Actions 的「檢查」出現 `npm test` 步驟。",
+      "files": [
+        ".github/workflows/deploy.yml",
+        "docs/專案規範.md"
+      ]
+    },
+    {
+      "task_id": "4",
+      "task_desc": "2.2 實作「內容包結構」與「結構檢查回報錯誤」：src/plan/validatePack.ts 的 `validatePack` 依規格逐項檢查並一次回報所有錯誤。驗證：src/plan/validatePack.test.ts 涵蓋完整內容包通過、規格 Example 表中 7 種違規各自失敗、兩個錯誤同時出現時 `errors` 長度至少為 2。",
+      "files": [
+        "src/plan/testFixtures.ts",
+        "src/plan/validatePack.test.ts",
+        "src/plan/validatePack.ts"
+      ]
+    },
+    {
+      "task_id": "5",
+      "task_desc": "2.3 建立「公開範例內容包」（D8 公開範例包與私人包分離）：content/packs/meeting-a2-b1-sample/pack.json，新手村 8 天、6 關週數 4、5、4、4、5、4，最少週數 3、4、3、3、4、3，權重 1、1、1、2、2、1，7 個每日模板、星期五與星期六頭目戰覆寫、輕量日模板，文字為通用工程師情境。驗證：測試確認範例包通過 `validatePack`、天數與週數符合規格、所有文字不含公開的通用禁用字詞，且在 content/packs/private/forbidden-terms.json 存在時也不含其中的個人字詞。",
+      "files": [
+        "content/packs/meeting-a2-b1-sample/pack.json",
+        "src/plan/samplePack.test.ts"
+      ]
+    },
+    {
+      "task_id": "6",
+      "task_desc": "2.4 實作「私人內容包不進版本庫」：.gitignore 加入 content/packs/private/；新增 scripts/export_private_pack.py，以參數接收原計畫資料檔路徑，輸出 content/packs/private/meeting-a2-b1/pack.json（含原計畫新手村、6 關、26 週主題、每日模板與頭目戰覆寫）。驗證：在本機執行腳本產生檔案、該檔通過 `validatePack`（由 2.3 同一支測試讀取）、`git check-ignore` 確認被排除。",
+      "files": [
+        "scripts/export_private_pack.py"
+      ]
+    },
+    {
+      "task_id": "7",
+      "task_desc": "3.1 實作「內容包週數分配」（D4 跨內容包的週數分配）與「關卡週數拉長與壓縮」（D5 關卡週數分配用最大餘數法加權重）：src/plan/allocateWeeks.ts 的 `allocateWeeks`。驗證：src/plan/allocateWeeks.test.ts 涵蓋規格中兩張 Example 表的每一列（含 `NO_PACKS`、`INVALID_PACK`、`PLAN_TOO_SHORT`），測試用內容包 B 寫在測試檔內。",
+      "files": [
+        "src/plan/allocateWeeks.test.ts",
+        "src/plan/allocateWeeks.ts"
+      ]
+    },
+    {
+      "task_id": "8",
+      "task_desc": "3.2 實作「計畫長度換算」（D3 計畫長度換算）、「開始日必須是星期一」與「週主題對應與頭目戰週」（D6 週主題對應與頭目戰週）：src/plan/buildSchedule.ts 產生 `weeks`、`startDate`、`endDate`、`totalWeeks`。驗證：src/plan/buildSchedule.test.ts 涵蓋長度換算表每一列、`START_NOT_MONDAY`、`INVALID_DATE`、6 個月頭目戰週為 4、9、13、17、22、26 與第 15 週開始日 2027-02-08、3 個一般主題分到 5 週與 3 週的對應結果。",
+      "files": [
+        "src/plan/buildSchedule.test.ts",
+        "src/plan/buildSchedule.ts"
+      ]
+    },
+    {
+      "task_id": "11",
+      "task_desc": "3.5 私人內容包對照原計畫：src/plan/privatePack.test.ts 在 content/packs/private/meeting-a2-b1/pack.json 存在時，以 2026-11-02、6 個月、含新手村排程，確認 26 週的週主題標題依序與私人包一致、頭目戰週與日期和原計畫相同；檔案不存在時整組測試標示為略過。驗證：本機 `npm test` 顯示此檔通過；CI 上顯示略過且整體通過。",
+      "files": [
+        "src/plan/privatePack.test.ts"
+      ]
+    },
+    {
+      "task_id": "12",
+      "task_desc": "4.1 撰寫學習筆記 docs/learning-notes/01-計畫引擎.md：依學習筆記格式說明純函式、最大餘數法、UTC 日期計算、Vitest 與測試金字塔、公開與私人內容包的取捨，並列出面試可能被問的問題。驗證：內容審查，五個段落齊全且不含個人資訊。",
+      "files": [
+        "docs/learning-notes/01-計畫引擎.md"
+      ]
+    }
+  ],
+  "entries": [
+    {
+      "taskId": "tsk_01M691DE28TW3NVRSDS3KZHQRH",
+      "taskDesc": "1.1 導入 Vitest（D9 Vitest 用獨立設定檔）：新增開發套件 vitest、獨立設定檔 vitest.config.ts（Node 環境、只收 src 底下的 *.test.ts、不載入 Cloudflare 外掛）、`npm test` 指令；tsconfig.app.json 明確加上 `strict: true` 與 `resolveJsonModule: true`。驗證：`npm test` 能執行並列出測試檔、`npm run lint` 與 `npm run build` 通過。",
+      "actor": "jhajha924 <47804331+jhajha924@users.noreply.github.com>",
+      "repo": "main",
+      "headCommit": "c8a16a67bad50aebb451cb54afd13356e9977c2a",
+      "touchedFiles": [
+        "package-lock.json",
+        "package.json",
+        "tsconfig.app.json",
+        "tsconfig.json",
+        "tsconfig.node.json",
+        "src/plan/dates.test.ts",
+        "src/plan/dates.ts",
+        "src/plan/types.ts",
+        "tsconfig.test.json",
+        "vitest.config.ts"
+      ],
+      "recordedAt": "2026-10-31T13:23:39Z"
+    },
+    {
+      "taskId": "tsk_01M691DE28YSRH6FYG2MB45DV0",
+      "taskDesc": "1.2 CI 加入測試關卡：GitHub Actions「檢查」job 在 lint 之後、build 之前執行 `npm test`，任何測試失敗則「部署」不會執行；docs/專案規範.md 第 5 節同步更新並記一筆變更紀錄。驗證：檢視 .github/workflows/deploy.yml 的步驟順序，推送後 Actions 的「檢查」出現 `npm test` 步驟。",
+      "actor": "jhajha924 <47804331+jhajha924@users.noreply.github.com>",
+      "repo": "main",
+      "headCommit": "c8a16a67bad50aebb451cb54afd13356e9977c2a",
+      "touchedFiles": [
+        ".github/workflows/deploy.yml",
+        "docs/專案規範.md"
+      ],
+      "recordedAt": "2026-10-31T13:24:09Z"
+    },
+    {
+      "taskId": "tsk_01M691DE28XHVZ4FP1GEGAXB56",
+      "taskDesc": "2.2 實作「內容包結構」與「結構檢查回報錯誤」：src/plan/validatePack.ts 的 `validatePack` 依規格逐項檢查並一次回報所有錯誤。驗證：src/plan/validatePack.test.ts 涵蓋完整內容包通過、規格 Example 表中 7 種違規各自失敗、兩個錯誤同時出現時 `errors` 長度至少為 2。",
+      "actor": "jhajha924 <47804331+jhajha924@users.noreply.github.com>",
+      "repo": "main",
+      "headCommit": "c8a16a67bad50aebb451cb54afd13356e9977c2a",
+      "touchedFiles": [
+        "src/plan/testFixtures.ts",
+        "src/plan/validatePack.test.ts",
+        "src/plan/validatePack.ts"
+      ],
+      "recordedAt": "2026-10-31T13:25:45Z"
+    },
+    {
+      "taskId": "tsk_01M691DE283FWDHTAR87WMQ4ZS",
+      "taskDesc": "2.3 建立「公開範例內容包」（D8 公開範例包與私人包分離）：content/packs/meeting-a2-b1-sample/pack.json，新手村 8 天、6 關週數 4、5、4、4、5、4，最少週數 3、4、3、3、4、3，權重 1、1、1、2、2、1，7 個每日模板、星期五與星期六頭目戰覆寫、輕量日模板，文字為通用工程師情境。驗證：測試確認範例包通過 `validatePack`、天數與週數符合規格、所有文字不含公開的通用禁用字詞，且在 content/packs/private/forbidden-terms.json 存在時也不含其中的個人字詞。",
+      "actor": "jhajha924 <47804331+jhajha924@users.noreply.github.com>",
+      "repo": "main",
+      "headCommit": "c8a16a67bad50aebb451cb54afd13356e9977c2a",
+      "touchedFiles": [
+        "content/packs/meeting-a2-b1-sample/pack.json",
+        "src/plan/samplePack.test.ts"
+      ],
+      "recordedAt": "2026-10-31T13:26:28Z"
+    },
+    {
+      "taskId": "tsk_01M691DE28JMB3FRZEFHHMM3V1",
+      "taskDesc": "2.4 實作「私人內容包不進版本庫」：.gitignore 加入 content/packs/private/；新增 scripts/export_private_pack.py，以參數接收原計畫資料檔路徑，輸出 content/packs/private/meeting-a2-b1/pack.json（含原計畫新手村、6 關、26 週主題、每日模板與頭目戰覆寫）。驗證：在本機執行腳本產生檔案、該檔通過 `validatePack`（由 2.3 同一支測試讀取）、`git check-ignore` 確認被排除。",
+      "actor": "jhajha924 <47804331+jhajha924@users.noreply.github.com>",
+      "repo": "main",
+      "headCommit": "c8a16a67bad50aebb451cb54afd13356e9977c2a",
+      "touchedFiles": [
+        "scripts/export_private_pack.py"
+      ],
+      "recordedAt": "2026-10-31T13:29:14Z"
+    },
+    {
+      "taskId": "tsk_01M691DE28K080X31D5T10RQ1P",
+      "taskDesc": "3.1 實作「內容包週數分配」（D4 跨內容包的週數分配）與「關卡週數拉長與壓縮」（D5 關卡週數分配用最大餘數法加權重）：src/plan/allocateWeeks.ts 的 `allocateWeeks`。驗證：src/plan/allocateWeeks.test.ts 涵蓋規格中兩張 Example 表的每一列（含 `NO_PACKS`、`INVALID_PACK`、`PLAN_TOO_SHORT`），測試用內容包 B 寫在測試檔內。",
+      "actor": "jhajha924 <47804331+jhajha924@users.noreply.github.com>",
+      "repo": "main",
+      "headCommit": "c8a16a67bad50aebb451cb54afd13356e9977c2a",
+      "touchedFiles": [
+        "src/plan/allocateWeeks.test.ts",
+        "src/plan/allocateWeeks.ts"
+      ],
+      "recordedAt": "2026-10-31T13:30:26Z"
+    },
+    {
+      "taskId": "tsk_01M691DE283YG4K0AFHQDET3FS",
+      "taskDesc": "3.2 實作「計畫長度換算」（D3 計畫長度換算）、「開始日必須是星期一」與「週主題對應與頭目戰週」（D6 週主題對應與頭目戰週）：src/plan/buildSchedule.ts 產生 `weeks`、`startDate`、`endDate`、`totalWeeks`。驗證：src/plan/buildSchedule.test.ts 涵蓋長度換算表每一列、`START_NOT_MONDAY`、`INVALID_DATE`、6 個月頭目戰週為 4、9、13、17、22、26 與第 15 週開始日 2027-02-08、3 個一般主題分到 5 週與 3 週的對應結果。",
+      "actor": "jhajha924 <47804331+jhajha924@users.noreply.github.com>",
+      "repo": "main",
+      "headCommit": "c8a16a67bad50aebb451cb54afd13356e9977c2a",
+      "touchedFiles": [
+        "src/plan/buildSchedule.test.ts",
+        "src/plan/buildSchedule.ts"
+      ],
+      "recordedAt": "2026-10-31T13:31:56Z"
+    },
+    {
+      "taskId": "tsk_01M691DE28ZH228P9X3GB7E7RH",
+      "taskDesc": "3.5 私人內容包對照原計畫：src/plan/privatePack.test.ts 在 content/packs/private/meeting-a2-b1/pack.json 存在時，以 2026-11-02、6 個月、含新手村排程，確認 26 週的週主題標題依序與私人包一致、頭目戰週與日期和原計畫相同；檔案不存在時整組測試標示為略過。驗證：本機 `npm test` 顯示此檔通過；CI 上顯示略過且整體通過。",
+      "actor": "jhajha924 <47804331+jhajha924@users.noreply.github.com>",
+      "repo": "main",
+      "headCommit": "c8a16a67bad50aebb451cb54afd13356e9977c2a",
+      "touchedFiles": [
+        "src/plan/privatePack.test.ts"
+      ],
+      "recordedAt": "2026-10-31T13:33:13Z"
+    },
+    {
+      "taskId": "tsk_01M691DE2849G558V35ZV5E1M3",
+      "taskDesc": "4.1 撰寫學習筆記 docs/learning-notes/01-計畫引擎.md：依學習筆記格式說明純函式、最大餘數法、UTC 日期計算、Vitest 與測試金字塔、公開與私人內容包的取捨，並列出面試可能被問的問題。驗證：內容審查，五個段落齊全且不含個人資訊。",
+      "actor": "jhajha924 <47804331+jhajha924@users.noreply.github.com>",
+      "repo": "main",
+      "headCommit": "c8a16a67bad50aebb451cb54afd13356e9977c2a",
+      "touchedFiles": [
+        "docs/learning-notes/01-計畫引擎.md"
+      ],
+      "recordedAt": "2026-10-31T13:33:23Z"
+    }
+  ]
+}

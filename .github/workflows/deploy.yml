@@ -1,4 +1,4 @@
-# 每次 push：檢查（lint、型別、建置）→ 只有 main 分支才部署到 Cloudflare
+# 每次 push：檢查（lint、單元測試、型別、建置）→ 只有 main 分支才部署到 Cloudflare
 name: 檢查與部署
 
 on:
@@ -23,6 +23,7 @@ jobs:
           cache: npm # 快取下載過的套件，加快安裝
       - run: npm ci
       - run: npm run lint
+      - run: npm test
       - run: npm run build
 
   deploy:

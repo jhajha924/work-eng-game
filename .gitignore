@@ -32,3 +32,6 @@ dist-ssr
 
 # Speclink app data
 .speclink/
+
+# 私人內容包（含個人資訊，只留本機）
+content/packs/private/

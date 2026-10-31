@@ -1,0 +1,93 @@
+{
+  "id": "meeting-a2-b1-sample",
+  "name": "英文冒險：從新手村到國際會議室（範例）",
+  "version": 1,
+  "novice": [
+    { "title": "建立角色卡＋測出起點", "description": "到 efset.org 做免費英文程度測驗（約 50 分鐘），把分數記進角色卡。", "xp": 30, "icon": "🎒" },
+    { "title": "準備學習工具", "description": "建立牌組「新手村 30 字」，並在 AI 語音模式貼上「會話夥伴」提示詞。", "xp": 30, "icon": "🗡️" },
+    { "title": "發音暖身：三組最容易錯的音", "description": "think／sink、very／berry、light／right。到 youglish.com 聽真人怎麼唸，跟著唸 3 次並錄音。", "xp": 20, "icon": "👄" },
+    { "title": "寫出 30 秒自我介紹", "description": "先用中文寫 4 句，請 AI 翻成簡單、說得出口的英文，再改成自己會說的版本。", "xp": 20, "icon": "📝" },
+    { "title": "錄下第一版自我介紹", "description": "背熟後錄音，存成「Day0_自我介紹」，半年後拿出來對照。", "xp": 30, "icon": "🎙️" },
+    { "title": "數字日期挑戰", "description": "用英文唸 10 個訂單編號、5 個日期、5 個金額，唸錯的數字做成單字卡。", "xp": 20, "icon": "🔢" },
+    { "title": "和 AI 第一次對話", "description": "語音模式 5 分鐘：自我介紹，讓 AI 問 3 個簡單問題。聽不懂就說 Could you say that again more slowly?", "xp": 30, "icon": "🤖" },
+    { "title": "新手村頭目：開口恐懼魔", "description": "對 AI 連續說 1 分鐘不停頓（自我介紹＋今天做了什麼），完成即得徽章「破冰者」。", "xp": 100, "icon": "👹" }
+  ],
+  "levels": [
+    {
+      "id": "lv1", "name": "發音與開口腳本", "icon": "🏰", "goal": "能流暢說出 1 分鐘自我介紹與站會報告",
+      "minWeeks": 3, "stretchWeight": 1,
+      "weeks": [
+        { "title": "發音基礎＋自我介紹", "focus": "易錯音 th／v／l-r／字尾子音；自我介紹擴充到 1 分鐘", "vocabCategory": "A 會議流程" },
+        { "title": "數字、日期、時間", "focus": "會議最常出錯的就是數字：單號、金額、日期、時區", "vocabCategory": "F 數字日期" },
+        { "title": "站會三句話", "focus": "Yesterday I…／Today I'm going to…／I'm blocked by…", "vocabCategory": "B 進度與排程" },
+        { "title": "頭目戰 1 週", "focus": "錄 1 分鐘自我介紹＋1 分鐘站會報告，用評分表自評", "vocabCategory": "複習 A、B、F" }
+      ]
+    },
+    {
+      "id": "lv2", "name": "聽力起飛", "icon": "🌲", "goal": "聽 5 分鐘會議錄音，寫得出 3 個重點和 1 個待辦",
+      "minWeeks": 4, "stretchWeight": 1,
+      "weeks": [
+        { "title": "跟讀入門", "focus": "BBC Learning English「6 Minute English」每天跟讀 5 分鐘", "vocabCategory": "H 動作動詞" },
+        { "title": "會議開場與結尾", "focus": "Let's get started／Let's wrap up／Next steps are…", "vocabCategory": "A 會議流程（進階）" },
+        { "title": "聽數字與排程", "focus": "聽 deadline、delay、ETA；聽到數字立刻寫下來", "vocabCategory": "B 進度與排程（進階）" },
+        { "title": "技術影片", "focus": "技術頻道影片開英文字幕，0.75 倍速跟讀", "vocabCategory": "D 軟體開發" },
+        { "title": "頭目戰 2 週", "focus": "聽 5 分鐘會議錄音，寫 3 個重點＋1 個待辦", "vocabCategory": "複習 D、H" }
+      ]
+    },
+    {
+      "id": "lv3", "name": "會議句型", "icon": "⛰️", "goal": "和 AI 扮演的客戶開 10 分鐘需求會議，能澄清、確認、委婉反對",
+      "minWeeks": 3, "stretchWeight": 1,
+      "weeks": [
+        { "title": "澄清與確認", "focus": "Just to clarify…／So what you're saying is…", "vocabCategory": "E 形容與語氣" },
+        { "title": "委婉反對與替代方案", "focus": "I see your point, but…／How about…?", "vocabCategory": "E 形容與語氣（進階）" },
+        { "title": "估時與承諾", "focus": "It'll take about…／I can't promise, but…", "vocabCategory": "B＋C" },
+        { "title": "頭目戰 3 週", "focus": "AI 扮演海外客戶，10 分鐘需求會議", "vocabCategory": "複習 E" }
+      ]
+    },
+    {
+      "id": "lv4", "name": "技術表達", "icon": "🌋", "goal": "用 5 分鐘英文講清楚一個效能問題的來龍去脈",
+      "minWeeks": 3, "stretchWeight": 2,
+      "weeks": [
+        { "title": "解釋系統流程", "focus": "用英文講一張單據從訂單到出貨的流程", "vocabCategory": "C 業務系統與製造" },
+        { "title": "複習週", "focus": "只做單字卡＋跟讀，保持不斷鏈", "vocabCategory": "只複習" },
+        { "title": "說明 bug 與根因", "focus": "The root cause was…／We fixed it by…", "vocabCategory": "D 軟體開發（進階）" },
+        { "title": "頭目戰 4 週", "focus": "5 分鐘英文講解一個效能改善案例", "vocabCategory": "複習 C、D" }
+      ]
+    },
+    {
+      "id": "lv5", "name": "寫作與面試", "icon": "🏯", "goal": "完成 20 分鐘 AI 模擬英文面試，3 個 STAR 故事講得完整",
+      "minWeeks": 4, "stretchWeight": 2,
+      "weeks": [
+        { "title": "英文 email", "focus": "會後確認信、進度回報信、延遲通知信", "vocabCategory": "H 動作動詞（進階）" },
+        { "title": "需求單改寫成英文規格", "focus": "User story＋Acceptance criteria", "vocabCategory": "C＋D" },
+        { "title": "職涯自我介紹", "focus": "2 分鐘自我介紹：經歷、專長、目前的工作", "vocabCategory": "G 職涯對話" },
+        { "title": "STAR 故事三篇", "focus": "用 Situation／Task／Action／Result 講三個專案故事", "vocabCategory": "G 職涯對話（進階）" },
+        { "title": "頭目戰 5 週", "focus": "AI 模擬英文面試 20 分鐘", "vocabCategory": "複習 G" }
+      ]
+    },
+    {
+      "id": "lv6", "name": "實戰月", "icon": "🏛️", "goal": "15 分鐘模擬國際會議＋模擬面試",
+      "minWeeks": 3, "stretchWeight": 1,
+      "weeks": [
+        { "title": "真人實戰", "focus": "線上家教或語言交換 2 次，各 25 分鐘", "vocabCategory": "全部複習" },
+        { "title": "弱點操練週", "focus": "依前 5 場頭目戰的評分表，挑最低分的一項專練", "vocabCategory": "錯字卡" },
+        { "title": "（選配）多益模擬", "focus": "做一回完整聽讀模擬題，抓時間", "vocabCategory": "多益高頻字" },
+        { "title": "最終頭目戰", "focus": "15 分鐘模擬國際會議＋模擬面試，寫學習回顧", "vocabCategory": "全部" }
+      ]
+    }
+  ],
+  "dailyTemplates": [
+    { "key": "new-words", "title": "新字 15 個進單字卡＋看本週主題說明", "minutes": 50 },
+    { "key": "shadowing", "title": "跟讀 10 分鐘＋本週句型各造 1 句", "minutes": 50 },
+    { "key": "reading", "title": "精讀本關文章或指定素材，圈出不懂的字", "minutes": 50 },
+    { "key": "ai-talk", "title": "AI 語音會話 15 分鐘：本週情境", "minutes": 50 },
+    { "key": "recording", "title": "錄音 1 分鐘：用本週句型說一段，自己聽一次", "minutes": 45 },
+    { "key": "review", "title": "複習日：單字卡清空＋長聽力 20 分鐘＋本週任務", "minutes": 90 },
+    { "key": "role-play", "title": "AI 角色扮演 20 分鐘＋週回顧＋下週預習", "minutes": 90 }
+  ],
+  "bossDayOverrides": {
+    "4": { "key": "boss-battle", "title": "⚔️ 頭目戰：依本週任務錄音或對 AI 實戰", "minutes": 60 },
+    "5": { "key": "boss-retry", "title": "⚔️ 頭目戰補考＋用評分表自評", "minutes": 90 }
+  },
+  "lightDayTemplate": { "key": "light", "title": "輕量日：單字卡＋跟讀 5 分鐘", "minutes": 10 }
+}
