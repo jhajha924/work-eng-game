@@ -1,0 +1,41 @@
+schema: spec-driven
+
+# Workflow policy (optional)
+# Personal/CI overrides: SPECLINK_LOCALE, SPECLINK_SPEC_LOCALE, SPECLINK_TDD, SPECLINK_AUDIT, SPECLINK_WORKTREE
+#
+# Language for AI-generated artifacts (default: English)
+locale: tw
+#
+# Language for spec files (default: English; "auto" follows locale)
+spec_locale: auto
+#
+# Workflow toggles (default: off)
+# tdd: true
+# audit: true
+# worktree: true
+
+# Project context (optional)
+# This is shown to AI when creating artifacts.
+# Add your tech stack, conventions, style guides, domain knowledge, etc.
+# Example:
+#   context: |
+#     Tech stack: TypeScript, React, Node.js
+#     We use conventional commits
+#     Domain: e-commerce platform
+context: |
+  產品：遊戲化英文學習 PWA（單一使用者、手機優先、離線可用、零成本）。
+  技術：Vite＋React＋TypeScript 嚴格模式、Motion 動畫、IndexedDB（Dexie）、ts-fsrs、Web Speech API；
+  後端 Hono＋Cloudflare Worker（含靜態資源，/api/* 由 Worker 處理）＋D1（綁定名稱 DB）；Gemini Flash-Lite。
+  測試：Vitest（單元）、Playwright（端到端）；CI/CD：GitHub Actions，push main 自動部署。
+  規範：一律遵守 docs/專案規範.md；介面與文件用繁體中文；核心邏輯寫純函式並附單元測試。
+  內容會公開：提案與規格不可出現真實 email、工作帳號或公司名稱。
+
+# Per-artifact rules (optional)
+# Add custom rules for specific artifacts.
+# Example:
+#   rules:
+#     proposal:
+#       - Keep proposals under 500 words
+#       - Always include a "Non-goals" section
+#     tasks:
+#       - Break tasks into chunks of max 2 hours
