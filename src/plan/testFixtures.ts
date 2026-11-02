@@ -12,7 +12,7 @@ export function codeOf(fn: () => unknown): string | undefined {
   return undefined
 }
 
-const day = (key: string, minutes = 30): DayTemplate => ({ key, title: `任務 ${key}`, minutes })
+const day = (key: string, minutes = 30, xp = 10): DayTemplate => ({ key, title: `任務 ${key}`, minutes, xp })
 
 /** 產生一關：themeCount 個一般週主題＋1 個頭目戰週主題 */
 export function makeLevel(id: string, themeCount: number, minWeeks: number, stretchWeight = 1): Level {

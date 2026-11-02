@@ -21,7 +21,10 @@ STRETCH_WEIGHT = [1, 1, 1, 2, 2, 1]
 # 每日模板的 key 和公開範例包相同，方便兩個內容包的打勾紀錄互相對應
 DAILY_KEYS = ["new-words", "shadowing", "reading", "ai-talk", "recording", "review", "role-play"]
 BOSS_KEYS = {4: "boss-battle", 5: "boss-retry"}
-LIGHT = {"key": "light", "title": "輕量日：單字卡＋跟讀 5 分鐘", "minutes": 10}
+# 每個任務的經驗值（和公開範例包相同）
+XP = {"new-words": 10, "shadowing": 10, "reading": 15, "ai-talk": 20, "recording": 15, "review": 10,
+      "role-play": 20, "boss-battle": 100, "boss-retry": 15, "light": 10}
+LIGHT = {"key": "light", "title": "輕量日：單字卡＋跟讀 5 分鐘", "minutes": 10, "xp": XP["light"]}
 
 
 def load_plan(path: pathlib.Path):
@@ -50,9 +53,10 @@ def build_pack(plan) -> dict:
         "version": 1,
         "novice": [{"title": t, "description": d, "xp": xp_of(xp), "icon": icon} for t, d, xp, icon in plan.NOVICE],
         "levels": levels,
-        "dailyTemplates": [{"key": DAILY_KEYS[k], "title": plan.DAILY[k][0], "minutes": plan.DAILY[k][1]}
+        "dailyTemplates": [{"key": DAILY_KEYS[k], "title": plan.DAILY[k][0], "minutes": plan.DAILY[k][1],
+                            "xp": XP[DAILY_KEYS[k]]}
                            for k in range(7)],
-        "bossDayOverrides": {str(k): {"key": BOSS_KEYS[k], "title": t, "minutes": m}
+        "bossDayOverrides": {str(k): {"key": BOSS_KEYS[k], "title": t, "minutes": m, "xp": XP[BOSS_KEYS[k]]}
                              for k, (t, m) in plan.BOSS_DAILY.items()},
         "lightDayTemplate": LIGHT,
     }

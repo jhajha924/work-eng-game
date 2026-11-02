@@ -1,0 +1,154 @@
+/* 今日任務頁：手機優先，最小寬度 360px 不出現橫向捲動 */
+.today {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.today-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.today-app {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+}
+
+.today-date {
+  margin: 0;
+  font-size: 1.35rem;
+  color: var(--text-h);
+}
+
+.today-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-h);
+}
+
+.stat-label {
+  font-size: 0.85rem;
+}
+
+.today-error {
+  margin: 0;
+  padding: 12px;
+  border-radius: 12px;
+  background: var(--danger-bg);
+  color: var(--danger);
+}
+
+.today-message,
+.today-progress {
+  margin: 0;
+  color: var(--text-h);
+}
+
+.today-progress {
+  font-weight: 600;
+}
+
+.today-card {
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+.today-card h2 {
+  margin: 0 0 8px;
+  font-size: 1rem;
+  color: var(--text-h);
+}
+
+.today-card p {
+  margin: 0;
+}
+
+.themes,
+.tasks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.themes li {
+  display: flex;
+  flex-direction: column;
+}
+
+/* 整列都是可點區域，高度至少 44px */
+.task {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  align-items: center;
+  min-height: 44px;
+  column-gap: 4px;
+  cursor: pointer;
+}
+
+.task input {
+  grid-row: span 2;
+  width: 24px;
+  height: 24px;
+  margin: 0 auto;
+  accent-color: var(--accent);
+}
+
+.task-title {
+  color: var(--text-h);
+  overflow-wrap: anywhere;
+}
+
+.task-meta {
+  font-size: 0.85rem;
+}
+
+.minimum {
+  width: 100%;
+  min-height: 44px;
+  margin-top: 12px;
+  padding: 8px 12px;
+  border: 1px dashed var(--accent);
+  border-radius: 12px;
+  background: transparent;
+  color: var(--accent);
+  font: inherit;
+  cursor: pointer;
+}
+
+.minimum[aria-pressed='true'] {
+  border-style: solid;
+  background: var(--accent-bg);
+}
+
+.minimum:disabled,
+.task input:disabled {
+  cursor: wait;
+}

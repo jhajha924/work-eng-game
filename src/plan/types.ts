@@ -1,6 +1,7 @@
 // 內容包與排程的資料型別（D1：內容包不含任何日期，日期全部由計畫設定計算）
 
-export type DayTemplate = { key: string; title: string; minutes: number }
+/** xp：完成這個任務得到的經驗值（大於等於 0 的整數） */
+export type DayTemplate = { key: string; title: string; minutes: number; xp: number }
 
 export type WeekTheme = { title: string; focus: string; vocabCategory: string }
 

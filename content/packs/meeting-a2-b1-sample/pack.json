@@ -77,17 +77,17 @@
     }
   ],
   "dailyTemplates": [
-    { "key": "new-words", "title": "新字 15 個進單字卡＋看本週主題說明", "minutes": 50 },
-    { "key": "shadowing", "title": "跟讀 10 分鐘＋本週句型各造 1 句", "minutes": 50 },
-    { "key": "reading", "title": "精讀本關文章或指定素材，圈出不懂的字", "minutes": 50 },
-    { "key": "ai-talk", "title": "AI 語音會話 15 分鐘：本週情境", "minutes": 50 },
-    { "key": "recording", "title": "錄音 1 分鐘：用本週句型說一段，自己聽一次", "minutes": 45 },
-    { "key": "review", "title": "複習日：單字卡清空＋長聽力 20 分鐘＋本週任務", "minutes": 90 },
-    { "key": "role-play", "title": "AI 角色扮演 20 分鐘＋週回顧＋下週預習", "minutes": 90 }
+    { "key": "new-words", "title": "新字 15 個進單字卡＋看本週主題說明", "minutes": 50, "xp": 10 },
+    { "key": "shadowing", "title": "跟讀 10 分鐘＋本週句型各造 1 句", "minutes": 50, "xp": 10 },
+    { "key": "reading", "title": "精讀本關文章或指定素材，圈出不懂的字", "minutes": 50, "xp": 15 },
+    { "key": "ai-talk", "title": "AI 語音會話 15 分鐘：本週情境", "minutes": 50, "xp": 20 },
+    { "key": "recording", "title": "錄音 1 分鐘：用本週句型說一段，自己聽一次", "minutes": 45, "xp": 15 },
+    { "key": "review", "title": "複習日：單字卡清空＋長聽力 20 分鐘＋本週任務", "minutes": 90, "xp": 10 },
+    { "key": "role-play", "title": "AI 角色扮演 20 分鐘＋週回顧＋下週預習", "minutes": 90, "xp": 20 }
   ],
   "bossDayOverrides": {
-    "4": { "key": "boss-battle", "title": "⚔️ 頭目戰：依本週任務錄音或對 AI 實戰", "minutes": 60 },
-    "5": { "key": "boss-retry", "title": "⚔️ 頭目戰補考＋用評分表自評", "minutes": 90 }
+    "4": { "key": "boss-battle", "title": "⚔️ 頭目戰：依本週任務錄音或對 AI 實戰", "minutes": 60, "xp": 100 },
+    "5": { "key": "boss-retry", "title": "⚔️ 頭目戰補考＋用評分表自評", "minutes": 90, "xp": 15 }
   },
-  "lightDayTemplate": { "key": "light", "title": "輕量日：單字卡＋跟讀 5 分鐘", "minutes": 10 }
+  "lightDayTemplate": { "key": "light", "title": "輕量日：單字卡＋跟讀 5 分鐘", "minutes": 10, "xp": 10 }
 }

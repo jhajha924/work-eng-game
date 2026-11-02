@@ -80,9 +80,9 @@ describe('每日任務產生', () => {
     const s = buildSchedule([pack], settings())
     const day = dayOf(s, '2026-11-27')!
     expect(day.weekIndex).toBe(4)
-    expect(day.tasks).toEqual([
-      { ...pack.bossDayOverrides['4'], id: `2026-11-27:${pack.bossDayOverrides['4'].key}` },
-    ])
+    const boss = pack.bossDayOverrides['4']
+    // 排程任務不帶經驗值（由 progress 模組的 taskXp 依 key 查詢）
+    expect(day.tasks).toEqual([{ id: `2026-11-27:${boss.key}`, key: boss.key, title: boss.title, minutes: boss.minutes }])
   })
 
   it('一般週依星期幾取每日模板；正式期共 182 天；任務 id 不重複', () => {

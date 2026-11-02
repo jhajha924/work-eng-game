@@ -17,6 +17,9 @@ function checkTemplate(t: unknown, where: string, errors: string[]): void {
   if (!isNonEmptyString(t.key)) errors.push(`${where}：key 不可為空`)
   if (!isNonEmptyString(t.title)) errors.push(`${where}：title 不可為空`)
   if (!isPositive(t.minutes)) errors.push(`${where}：minutes 必須大於 0`)
+  if (typeof t.xp !== 'number' || !Number.isInteger(t.xp) || t.xp < 0) {
+    errors.push(`${where}：xp 必須是大於等於 0 的整數`)
+  }
 }
 
 export function validatePack(pack: unknown): PackValidation {

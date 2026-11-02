@@ -1,0 +1,168 @@
+{
+  "version": 2,
+  "change": "add-today-tasks",
+  "touched": [
+    {
+      "task_id": "1",
+      "task_desc": "1.1 修改「內容包結構」與「結構檢查回報錯誤」（D1 經驗值寫在內容包的任務模板）：`DayTemplate` 加上 `xp`，`validatePack` 檢查每個任務模板的 `xp` 是大於等於 0 的整數，src/plan/testFixtures.ts 的假內容包補上 `xp`。驗證：src/plan/validatePack.test.ts 新增規格 Example 的三列（`xp` 為 -1、1.5、缺少）各自 ok: false，原有測試全部通過。",
+      "files": [
+        "content/packs/meeting-a2-b1-sample/pack.json",
+        "scripts/export_private_pack.py",
+        "src/plan/buildSchedule.test.ts",
+        "src/plan/testFixtures.ts",
+        "src/plan/types.ts",
+        "src/plan/validatePack.test.ts",
+        "src/plan/validatePack.ts"
+      ]
+    },
+    {
+      "task_id": "3",
+      "task_desc": "2.1 實作「任務經驗值」：src/progress/xp.ts 的 `taskXp` 與常數 `MINIMUM_KEY`、`MINIMUM_XP`。驗證：src/progress/xp.test.ts 以參數化測試涵蓋規格 Example「任務經驗值」全部 8 列。",
+      "files": [
+        "src/progress/today.test.ts",
+        "src/progress/today.ts",
+        "src/progress/types.ts",
+        "src/progress/xp.test.ts",
+        "src/progress/xp.ts"
+      ]
+    },
+    {
+      "task_id": "5",
+      "task_desc": "2.3 實作「打卡日與連勝天數」（D3 打卡日與連勝規則）、「連勝獎勵」（D4 連勝獎勵）與「總經驗值」（D2 經驗值與連勝由紀錄重新計算，不另外儲存）：src/progress/stats.ts 的 `computeStats`。驗證：src/progress/stats.test.ts 涵蓋規格 Example「連勝天數」6 列、「連勝獎勵」4 列、總經驗值 230 的情境，以及今天之後的紀錄不計入。",
+      "files": [
+        "src/progress/stats.test.ts",
+        "src/progress/stats.ts"
+      ]
+    },
+    {
+      "task_id": "6",
+      "task_desc": "3.1 導入 Dexie（D6 Dexie 單一資料表 taskLogs）：新增套件 dexie 與開發套件 fake-indexeddb；src/progress/db.ts 定義資料庫 `work-eng-game` 版本 1、資料表 `taskLogs`（主鍵 `id`、索引 `date`）與 `TaskLog` 型別。驗證：`npm run build` 通過，3.2 的測試能在 fake-indexeddb 上開啟資料庫。",
+      "files": [
+        "package-lock.json",
+        "package.json",
+        "src/progress/db.ts",
+        "src/progress/progressRepo.test.ts",
+        "src/progress/progressRepo.ts"
+      ]
+    },
+    {
+      "task_id": "8",
+      "task_desc": "4.1 預設計畫與狀態 hook（D8 畫面狀態集中在一個 hook、D9 預設計畫集中在一個模組）：src/app/defaultPlan.ts 匯出範例包與預設設定；src/app/useTodayProgress.ts 讀取紀錄、計算 `view` 與 `stats`、提供 `toggleTask`、`toggleMinimum`，資料庫錯誤時設定 `error` 但仍回傳 `view`。驗證：`npm run lint`（含 react-hooks 規則）與 `npm run build` 通過；4.2 的畫面使用它。",
+      "files": [
+        "index.html",
+        "src/App.css",
+        "src/App.tsx",
+        "src/assets/cloudflare.svg",
+        "src/assets/hero.png",
+        "src/assets/react.svg",
+        "src/assets/vite.svg",
+        "src/index.css",
+        "src/app/TodayPage.css",
+        "src/app/TodayPage.tsx",
+        "src/app/defaultPlan.ts",
+        "src/app/useTodayProgress.ts"
+      ]
+    },
+    {
+      "task_id": "11",
+      "task_desc": "5.1 撰寫學習筆記 docs/learning-notes/02-今日任務與本機資料庫.md：依學習筆記格式說明 IndexedDB 與 Dexie、由紀錄重新計算的設計、連勝規則、本機時區、React hook 分工，並列出面試可能被問的問題。驗證：內容審查，五個段落齊全且不含個人資訊。",
+      "files": [
+        "docs/learning-notes/02-今日任務與本機資料庫.md"
+      ]
+    }
+  ],
+  "entries": [
+    {
+      "taskId": "tsk_01M699580HQDYVRCFC53YK9FH1",
+      "taskDesc": "1.1 修改「內容包結構」與「結構檢查回報錯誤」（D1 經驗值寫在內容包的任務模板）：`DayTemplate` 加上 `xp`，`validatePack` 檢查每個任務模板的 `xp` 是大於等於 0 的整數，src/plan/testFixtures.ts 的假內容包補上 `xp`。驗證：src/plan/validatePack.test.ts 新增規格 Example 的三列（`xp` 為 -1、1.5、缺少）各自 ok: false，原有測試全部通過。",
+      "actor": "jhajha924 <47804331+jhajha924@users.noreply.github.com>",
+      "repo": "main",
+      "headCommit": "07f450b1eae89e7ed07f97d171d18c5ee7c5e71d",
+      "touchedFiles": [
+        "content/packs/meeting-a2-b1-sample/pack.json",
+        "scripts/export_private_pack.py",
+        "src/plan/buildSchedule.test.ts",
+        "src/plan/testFixtures.ts",
+        "src/plan/types.ts",
+        "src/plan/validatePack.test.ts",
+        "src/plan/validatePack.ts"
+      ],
+      "recordedAt": "2026-11-01T08:09:23Z"
+    },
+    {
+      "taskId": "tsk_01M699580HT23HRF1MCDWW461X",
+      "taskDesc": "2.1 實作「任務經驗值」：src/progress/xp.ts 的 `taskXp` 與常數 `MINIMUM_KEY`、`MINIMUM_XP`。驗證：src/progress/xp.test.ts 以參數化測試涵蓋規格 Example「任務經驗值」全部 8 列。",
+      "actor": "jhajha924 <47804331+jhajha924@users.noreply.github.com>",
+      "repo": "main",
+      "headCommit": "07f450b1eae89e7ed07f97d171d18c5ee7c5e71d",
+      "touchedFiles": [
+        "src/progress/today.test.ts",
+        "src/progress/today.ts",
+        "src/progress/types.ts",
+        "src/progress/xp.test.ts",
+        "src/progress/xp.ts"
+      ],
+      "recordedAt": "2026-11-01T08:10:25Z"
+    },
+    {
+      "taskId": "tsk_01M699580HQCEKV00800FW85EN",
+      "taskDesc": "2.3 實作「打卡日與連勝天數」（D3 打卡日與連勝規則）、「連勝獎勵」（D4 連勝獎勵）與「總經驗值」（D2 經驗值與連勝由紀錄重新計算，不另外儲存）：src/progress/stats.ts 的 `computeStats`。驗證：src/progress/stats.test.ts 涵蓋規格 Example「連勝天數」6 列、「連勝獎勵」4 列、總經驗值 230 的情境，以及今天之後的紀錄不計入。",
+      "actor": "jhajha924 <47804331+jhajha924@users.noreply.github.com>",
+      "repo": "main",
+      "headCommit": "07f450b1eae89e7ed07f97d171d18c5ee7c5e71d",
+      "touchedFiles": [
+        "src/progress/stats.test.ts",
+        "src/progress/stats.ts"
+      ],
+      "recordedAt": "2026-11-01T08:11:37Z"
+    },
+    {
+      "taskId": "tsk_01M699580HG7QEHSFJ8Q1Q20FV",
+      "taskDesc": "3.1 導入 Dexie（D6 Dexie 單一資料表 taskLogs）：新增套件 dexie 與開發套件 fake-indexeddb；src/progress/db.ts 定義資料庫 `work-eng-game` 版本 1、資料表 `taskLogs`（主鍵 `id`、索引 `date`）與 `TaskLog` 型別。驗證：`npm run build` 通過，3.2 的測試能在 fake-indexeddb 上開啟資料庫。",
+      "actor": "jhajha924 <47804331+jhajha924@users.noreply.github.com>",
+      "repo": "main",
+      "headCommit": "07f450b1eae89e7ed07f97d171d18c5ee7c5e71d",
+      "touchedFiles": [
+        "package-lock.json",
+        "package.json",
+        "src/progress/db.ts",
+        "src/progress/progressRepo.test.ts",
+        "src/progress/progressRepo.ts"
+      ],
+      "recordedAt": "2026-11-01T08:13:37Z"
+    },
+    {
+      "taskId": "tsk_01M699580H02ZXZP8P5MJ3J3BK",
+      "taskDesc": "4.1 預設計畫與狀態 hook（D8 畫面狀態集中在一個 hook、D9 預設計畫集中在一個模組）：src/app/defaultPlan.ts 匯出範例包與預設設定；src/app/useTodayProgress.ts 讀取紀錄、計算 `view` 與 `stats`、提供 `toggleTask`、`toggleMinimum`，資料庫錯誤時設定 `error` 但仍回傳 `view`。驗證：`npm run lint`（含 react-hooks 規則）與 `npm run build` 通過；4.2 的畫面使用它。",
+      "actor": "jhajha924 <47804331+jhajha924@users.noreply.github.com>",
+      "repo": "main",
+      "headCommit": "07f450b1eae89e7ed07f97d171d18c5ee7c5e71d",
+      "touchedFiles": [
+        "index.html",
+        "src/App.css",
+        "src/App.tsx",
+        "src/assets/cloudflare.svg",
+        "src/assets/hero.png",
+        "src/assets/react.svg",
+        "src/assets/vite.svg",
+        "src/index.css",
+        "src/app/TodayPage.css",
+        "src/app/TodayPage.tsx",
+        "src/app/defaultPlan.ts",
+        "src/app/useTodayProgress.ts"
+      ],
+      "recordedAt": "2026-11-01T08:20:41Z"
+    },
+    {
+      "taskId": "tsk_01M699580HEK6BMYMW1YR86X2Y",
+      "taskDesc": "5.1 撰寫學習筆記 docs/learning-notes/02-今日任務與本機資料庫.md：依學習筆記格式說明 IndexedDB 與 Dexie、由紀錄重新計算的設計、連勝規則、本機時區、React hook 分工，並列出面試可能被問的問題。驗證：內容審查，五個段落齊全且不含個人資訊。",
+      "actor": "jhajha924 <47804331+jhajha924@users.noreply.github.com>",
+      "repo": "main",
+      "headCommit": "07f450b1eae89e7ed07f97d171d18c5ee7c5e71d",
+      "touchedFiles": [
+        "docs/learning-notes/02-今日任務與本機資料庫.md"
+      ],
+      "recordedAt": "2026-11-01T08:21:23Z"
+    }
+  ]
+}

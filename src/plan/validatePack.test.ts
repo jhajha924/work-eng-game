@@ -24,6 +24,9 @@ describe('結構檢查回報錯誤', () => {
     ['novice 含 null 元素', (p) => ({ ...p, novice: [null] })],
     ['某關 weeks 含 null 元素', (p) => ({ ...p, levels: [{ ...p.levels[0], weeks: [null, ...p.levels[0].weeks] }] })],
     ['兩關 id 相同', (p) => ({ ...p, levels: [p.levels[0], { ...p.levels[1], id: p.levels[0].id }] })],
+    ['某個任務模板 xp 為 -1', (p) => ({ ...p, lightDayTemplate: { ...p.lightDayTemplate, xp: -1 } })],
+    ['某個任務模板 xp 為 1.5', (p) => ({ ...p, dailyTemplates: p.dailyTemplates.map((t, i) => (i === 0 ? { ...t, xp: 1.5 } : t)) })],
+    ['某個任務模板缺少 xp', (p) => ({ ...p, bossDayOverrides: { '4': { key: 'boss', title: '頭目戰', minutes: 60 } } })],
   ])('%s → ok: false', (_name, mutate) => {
     const result = validatePack(mutate(valid()))
     expect(result.ok).toBe(false)

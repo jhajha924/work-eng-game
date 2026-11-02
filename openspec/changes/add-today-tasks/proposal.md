@@ -29,8 +29,8 @@
 
 - Affected specs: `daily-progress`（新）、`today-page`（新）、`content-pack`（修改）
 - Affected code:
-  - New: src/progress/xp.ts, src/progress/stats.ts, src/progress/today.ts, src/progress/db.ts, src/progress/progressRepo.ts, src/progress/xp.test.ts, src/progress/stats.test.ts, src/progress/today.test.ts, src/progress/progressRepo.test.ts, src/app/defaultPlan.ts, src/app/useTodayProgress.ts, src/app/TodayPage.tsx, src/app/TodayPage.css, docs/learning-notes/02-今日任務與本機資料庫.md
-  - Modified: src/plan/types.ts, src/plan/validatePack.ts, src/plan/validatePack.test.ts, src/plan/testFixtures.ts, content/packs/meeting-a2-b1-sample/pack.json, scripts/export_private_pack.py, src/App.tsx, src/App.css, src/index.css, index.html, package.json, package-lock.json
-  - Removed: src/assets/react.svg, src/assets/vite.svg, src/assets/cloudflare.svg, src/assets/hero.png
+  - New: src/progress/types.ts, src/progress/xp.ts, src/progress/stats.ts, src/progress/today.ts, src/progress/db.ts, src/progress/progressRepo.ts, src/progress/xp.test.ts, src/progress/stats.test.ts, src/progress/today.test.ts, src/progress/progressRepo.test.ts, src/app/defaultPlan.ts, src/app/useTodayProgress.ts, src/app/TodayPage.tsx, src/app/TodayPage.css, docs/learning-notes/02-今日任務與本機資料庫.md
+  - Modified: src/plan/types.ts, src/plan/validatePack.ts, src/plan/validatePack.test.ts, src/plan/testFixtures.ts, src/plan/buildSchedule.test.ts, content/packs/meeting-a2-b1-sample/pack.json, scripts/export_private_pack.py, src/App.tsx, src/index.css, index.html, package.json, package-lock.json
+  - Removed: src/App.css, src/assets/react.svg, src/assets/vite.svg, src/assets/cloudflare.svg, src/assets/hero.png
 - 相依套件：新增 dexie；開發用 fake-indexeddb（在 Node 測試環境模擬 IndexedDB）
 - 來源：討論 english-quest-app 結論（第 1 刀）、專案規劃書第 4 節 FR-02～FR-04、第 8 節資料模型、第 9 節經驗值規則、第 14 節第 1 刀順序 3～4
