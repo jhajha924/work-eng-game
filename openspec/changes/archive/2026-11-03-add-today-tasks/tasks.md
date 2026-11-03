@@ -23,4 +23,4 @@
 ## 5. 學習筆記與驗收
 
 - [x] 5.1 撰寫學習筆記 docs/learning-notes/02-今日任務與本機資料庫.md：依學習筆記格式說明 IndexedDB 與 Dexie、由紀錄重新計算的設計、連勝規則、本機時區、React hook 分工，並列出面試可能被問的問題。驗證：內容審查，五個段落齊全且不含個人資訊。 <!-- speclink-task:tsk_01M699580HEK6BMYMW1YR86X2Y -->
-- [ ] [M] 5.2 使用者驗收：本機 `npm test`、`npm run lint`、`npm run build` 通過；`npm run dev` 打開首頁看到今天的任務，打勾後重新整理仍在、經驗值與連勝即時更新、最低限度按鈕可切換；用瀏覽器開發者工具 360px 寬度檢視沒有橫向捲動；commit、push 後正式網站顯示今日任務頁、GitHub Actions 成功。驗證：截圖回報。 <!-- speclink-task:tsk_01M699580HTQAAH85EYBRF7DZQ -->
+- [x] [M] 5.2 使用者驗收：本機 `npm test`、`npm run lint`、`npm run build` 通過；`npm run dev` 打開首頁看到今天的任務，打勾後重新整理仍在、經驗值與連勝即時更新、最低限度按鈕可切換；用瀏覽器開發者工具 360px 寬度檢視沒有橫向捲動；commit、push 後正式網站顯示今日任務頁、GitHub Actions 成功。驗證：截圖回報。 <!-- speclink-task:tsk_01M699580HTQAAH85EYBRF7DZQ -->

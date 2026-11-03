@@ -1,0 +1,135 @@
+schema: spec-driven
+created: 2026-10-31
+created_by: jhajha924 <47804331+jhajha924@users.noreply.github.com>
+created_with: claude
+from_discussion: english-quest-app
+started_at: 2026-11-01
+started_by: jhajha924 <47804331+jhajha924@users.noreply.github.com>
+reviewed_at: 2026-11-03
+reviewed_by: jhajha924 <47804331+jhajha924@users.noreply.github.com>
+reviewed_with: claude
+reviewed_tasks_total: 12
+reviewed_scope:
+  - path: content/packs/meeting-a2-b1-sample/pack.json
+    hash: b774033a8dbd3404f5076e9d9bb7a44ff5ba6097ce04732b0c9c1d1197400a02
+  - path: docs/learning-notes/02-今日任務與本機資料庫.md
+    hash: 5b603c63702dab829aa74075367f39294e25caeb170d425e3ff80c66919a601f
+  - path: index.html
+    hash: 4c0fcdb6165c547ce4e6b2c4461cc48bfbe5c78696e61eccb29e1f0c736a8808
+  - path: package-lock.json
+    hash: d5d3fa0df9917e76729f0fd38fa5201bef519aef4553f179f27c45e3bf51e33f
+  - path: package.json
+    hash: 851681c8679d595c53e84fa4535073a4993dc31a7d2f6d35ed502511821587e9
+  - path: scripts/export_private_pack.py
+    hash: dc9365f7a3dde4b8469174948a5b5d93ac328c057bd98c9037159c97be99b0e7
+  - path: src/App.tsx
+    hash: 48bae02c94129c4571e604762216bf6678e0b453ee41fbdbf72d6767649fa761
+  - path: src/app/TodayPage.css
+    hash: 5e9b43e43958d59be46494939387ddf57b0f3c2bc798e5e02f86795886da0608
+  - path: src/app/TodayPage.tsx
+    hash: 36ad4704c3ac5ee076a9ba7be171e8e9da08c6fb4b6bb400bfa95d906dea2042
+  - path: src/app/defaultPlan.ts
+    hash: 31cd9aa2715ff8bfb3fe6fa6da795e339380a3bde471fb9544452d7a0ef25508
+  - path: src/app/useTodayProgress.ts
+    hash: 5ed777406a70e068461eae4789fc72d1754c72031e629da7b73447c585dde414
+  - path: src/index.css
+    hash: 3f42b19f2066f4c24cd9c3a4f6cc1b1307380019864faa03b58676dd0fc3f35a
+  - path: src/plan/buildSchedule.test.ts
+    hash: 580166ac3680c0ea28c59958d9ac2d41a9033b3218ebca03b1bf3395a4563755
+  - path: src/plan/testFixtures.ts
+    hash: d31c94f56c74fd129b63b2577c75201cbad8c8874f4cf4fcb35f89dd882bf22e
+  - path: src/plan/types.ts
+    hash: fac8920f209fac0ede346395a70bfe01a32cb4725d7673fdceabe0da3b5d7e3d
+  - path: src/plan/validatePack.test.ts
+    hash: 4f2e5071aadc0734907bd3c76c00941ef394a7a06043063e2ac0159e917eb83e
+  - path: src/plan/validatePack.ts
+    hash: 055d3b7520b41ef1723c20c14abd7243a122fa666c50506befc27a2ebc05cf6e
+  - path: src/progress/db.ts
+    hash: fef0a56aa91df77ee98086272a48e077e218827bdefa3aedb15c94d387ba2356
+  - path: src/progress/logs.test.ts
+    hash: eced4bada1730f087cf9d4f24f47b6bece749eef0ce7c0004896ccf8e73b9ab2
+  - path: src/progress/logs.ts
+    hash: 29174950ca670596e5d354f1ba8f8149b5f6dc9252767b28b9c58e457e80b33f
+  - path: src/progress/progressRepo.test.ts
+    hash: a917c24292bcacfa898e617f258f37782c0dc8c97d6a80aca5e2328b7cc5fa87
+  - path: src/progress/progressRepo.ts
+    hash: 691634cc2a71853d02b71e57130d8badfd03d80ae617d83922796d470e25dcb9
+  - path: src/progress/stats.test.ts
+    hash: 14dea3a7a0ac7c02dc00d49bdb4aee0f5fdefded79c897e07f8624fc7a787c8f
+  - path: src/progress/stats.ts
+    hash: d3c22e7f2a96ced6b9316890301caa9ca64130b687f6dec09e248e33d891184f
+  - path: src/progress/today.test.ts
+    hash: 84419093c2426bd04d23a00bd078bd0f8a5a246a168671bd17f277f85b086a5a
+  - path: src/progress/today.ts
+    hash: 6052aad7c22187006bd0ad1b3cf92c458d2fcd78268ea948c512087925892bef
+  - path: src/progress/types.ts
+    hash: 4a580c90b52274f3a1f912e88048ce3c47edb1c0b88f5ddeeb2a72c5758820e6
+  - path: src/progress/xp.test.ts
+    hash: 79a5a39323b1da09e4d09f666b039ca240f4d64cf250bedf891f4acf93424972
+  - path: src/progress/xp.ts
+    hash: 3619c693511bd6c0409890104176c9b1bc9770432db610c38a7de296da7f0370
+verified_at: 2026-11-03
+verified_by: jhajha924 <47804331+jhajha924@users.noreply.github.com>
+verified_with: claude
+verified_tasks_total: 12
+verified_scope:
+  - path: content/packs/meeting-a2-b1-sample/pack.json
+    hash: b774033a8dbd3404f5076e9d9bb7a44ff5ba6097ce04732b0c9c1d1197400a02
+  - path: docs/learning-notes/02-今日任務與本機資料庫.md
+    hash: 5b603c63702dab829aa74075367f39294e25caeb170d425e3ff80c66919a601f
+  - path: index.html
+    hash: 4c0fcdb6165c547ce4e6b2c4461cc48bfbe5c78696e61eccb29e1f0c736a8808
+  - path: package-lock.json
+    hash: d5d3fa0df9917e76729f0fd38fa5201bef519aef4553f179f27c45e3bf51e33f
+  - path: package.json
+    hash: 851681c8679d595c53e84fa4535073a4993dc31a7d2f6d35ed502511821587e9
+  - path: scripts/export_private_pack.py
+    hash: dc9365f7a3dde4b8469174948a5b5d93ac328c057bd98c9037159c97be99b0e7
+  - path: src/App.tsx
+    hash: 48bae02c94129c4571e604762216bf6678e0b453ee41fbdbf72d6767649fa761
+  - path: src/app/TodayPage.css
+    hash: 5e9b43e43958d59be46494939387ddf57b0f3c2bc798e5e02f86795886da0608
+  - path: src/app/TodayPage.tsx
+    hash: 36ad4704c3ac5ee076a9ba7be171e8e9da08c6fb4b6bb400bfa95d906dea2042
+  - path: src/app/defaultPlan.ts
+    hash: 31cd9aa2715ff8bfb3fe6fa6da795e339380a3bde471fb9544452d7a0ef25508
+  - path: src/app/useTodayProgress.ts
+    hash: 5ed777406a70e068461eae4789fc72d1754c72031e629da7b73447c585dde414
+  - path: src/index.css
+    hash: 3f42b19f2066f4c24cd9c3a4f6cc1b1307380019864faa03b58676dd0fc3f35a
+  - path: src/plan/buildSchedule.test.ts
+    hash: 580166ac3680c0ea28c59958d9ac2d41a9033b3218ebca03b1bf3395a4563755
+  - path: src/plan/testFixtures.ts
+    hash: d31c94f56c74fd129b63b2577c75201cbad8c8874f4cf4fcb35f89dd882bf22e
+  - path: src/plan/types.ts
+    hash: fac8920f209fac0ede346395a70bfe01a32cb4725d7673fdceabe0da3b5d7e3d
+  - path: src/plan/validatePack.test.ts
+    hash: 4f2e5071aadc0734907bd3c76c00941ef394a7a06043063e2ac0159e917eb83e
+  - path: src/plan/validatePack.ts
+    hash: 055d3b7520b41ef1723c20c14abd7243a122fa666c50506befc27a2ebc05cf6e
+  - path: src/progress/db.ts
+    hash: fef0a56aa91df77ee98086272a48e077e218827bdefa3aedb15c94d387ba2356
+  - path: src/progress/logs.test.ts
+    hash: eced4bada1730f087cf9d4f24f47b6bece749eef0ce7c0004896ccf8e73b9ab2
+  - path: src/progress/logs.ts
+    hash: 29174950ca670596e5d354f1ba8f8149b5f6dc9252767b28b9c58e457e80b33f
+  - path: src/progress/progressRepo.test.ts
+    hash: a917c24292bcacfa898e617f258f37782c0dc8c97d6a80aca5e2328b7cc5fa87
+  - path: src/progress/progressRepo.ts
+    hash: 691634cc2a71853d02b71e57130d8badfd03d80ae617d83922796d470e25dcb9
+  - path: src/progress/stats.test.ts
+    hash: 14dea3a7a0ac7c02dc00d49bdb4aee0f5fdefded79c897e07f8624fc7a787c8f
+  - path: src/progress/stats.ts
+    hash: d3c22e7f2a96ced6b9316890301caa9ca64130b687f6dec09e248e33d891184f
+  - path: src/progress/today.test.ts
+    hash: 84419093c2426bd04d23a00bd078bd0f8a5a246a168671bd17f277f85b086a5a
+  - path: src/progress/today.ts
+    hash: 6052aad7c22187006bd0ad1b3cf92c458d2fcd78268ea948c512087925892bef
+  - path: src/progress/types.ts
+    hash: 4a580c90b52274f3a1f912e88048ce3c47edb1c0b88f5ddeeb2a72c5758820e6
+  - path: src/progress/xp.test.ts
+    hash: 79a5a39323b1da09e4d09f666b039ca240f4d64cf250bedf891f4acf93424972
+  - path: src/progress/xp.ts
+    hash: 3619c693511bd6c0409890104176c9b1bc9770432db610c38a7de296da7f0370
+archived_by: jhajha924 <47804331+jhajha924@users.noreply.github.com>
+archived_at: 2026-11-03

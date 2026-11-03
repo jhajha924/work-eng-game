@@ -29,7 +29,7 @@
 
 - Affected specs: `daily-progress`（新）、`today-page`（新）、`content-pack`（修改）
 - Affected code:
-  - New: src/progress/types.ts, src/progress/xp.ts, src/progress/stats.ts, src/progress/today.ts, src/progress/db.ts, src/progress/progressRepo.ts, src/progress/xp.test.ts, src/progress/stats.test.ts, src/progress/today.test.ts, src/progress/progressRepo.test.ts, src/app/defaultPlan.ts, src/app/useTodayProgress.ts, src/app/TodayPage.tsx, src/app/TodayPage.css, docs/learning-notes/02-今日任務與本機資料庫.md
+  - New: src/progress/types.ts, src/progress/logs.ts, src/progress/logs.test.ts, src/progress/xp.ts, src/progress/stats.ts, src/progress/today.ts, src/progress/db.ts, src/progress/progressRepo.ts, src/progress/xp.test.ts, src/progress/stats.test.ts, src/progress/today.test.ts, src/progress/progressRepo.test.ts, src/app/defaultPlan.ts, src/app/useTodayProgress.ts, src/app/TodayPage.tsx, src/app/TodayPage.css, docs/learning-notes/02-今日任務與本機資料庫.md
   - Modified: src/plan/types.ts, src/plan/validatePack.ts, src/plan/validatePack.test.ts, src/plan/testFixtures.ts, src/plan/buildSchedule.test.ts, content/packs/meeting-a2-b1-sample/pack.json, scripts/export_private_pack.py, src/App.tsx, src/index.css, index.html, package.json, package-lock.json
   - Removed: src/App.css, src/assets/react.svg, src/assets/vite.svg, src/assets/cloudflare.svg, src/assets/hero.png
 - 相依套件：新增 dexie；開發用 fake-indexeddb（在 Node 測試環境模擬 IndexedDB）

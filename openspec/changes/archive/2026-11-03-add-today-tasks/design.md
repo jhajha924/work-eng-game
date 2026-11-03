@@ -95,7 +95,7 @@ setTaskDone(task: { id: string; date: string; key: string }, xp: number, done: b
 setMinimumDay(date: string, on: boolean, now: Date): Promise<void>
 ```
 
-**畫面：** `useTodayProgress(now?: Date)` 回傳 `{ loading, error, view, stats, doneIds, toggleTask, toggleMinimum }`。`TodayPage` 依 `view.status` 顯示四種狀態；資料庫開啟或讀寫失敗時顯示錯誤訊息「無法存取本機資料庫，打勾紀錄無法儲存」，不顯示空白頁。
+**畫面：** `useTodayProgress(now?: Date)` 回傳 `{ today, loading, busy, error, view, tasks, noviceDescription, stats, minimumOn, toggleTask, toggleMinimum }`：`tasks` 是今天的任務加上 `xp` 與 `done`、`noviceDescription` 是新手村當天說明（正式期為 null），畫面不直接讀內容包；`busy` 為寫入中，寫入中再次點擊會被忽略，畫面同時停用打勾框與按鈕；寫入成功後直接更新畫面上的紀錄（紀錄由 `src/progress/logs.ts` 的純函式產生，和資料庫寫入共用），不依賴重新讀取資料庫；例外是初次載入失敗過（畫面紀錄不完整）時，寫入成功後補讀一次完整紀錄，讀到才清除錯誤訊息。介面上的經驗值一律寫「經驗值」，不用英文縮寫。`TodayPage` 依 `view.status` 顯示四種狀態；資料庫開啟或讀寫失敗時顯示錯誤訊息「無法存取本機資料庫，打勾紀錄無法儲存」，不顯示空白頁。
 
 **驗收：**
 
