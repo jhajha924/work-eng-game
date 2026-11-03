@@ -1,8 +1,7 @@
 // 今日任務頁：只負責顯示，狀態與動作都來自 useTodayProgress
 import { weekdayIndex } from '../plan/dates'
-import { MINIMUM_XP, taskXp } from '../progress/xp'
 import type { TodayView } from '../progress/today'
-import { defaultPack } from './defaultPlan'
+import { MINIMUM_XP } from '../progress/xp'
 import { useTodayProgress } from './useTodayProgress'
 import './TodayPage.css'
 
@@ -20,7 +19,10 @@ function progressLabel(view: Extract<TodayView, { status: 'active' }>): string {
 }
 
 export function TodayPage() {
-  const { today, loading, error, view, stats, doneIds, minimumOn, toggleTask, toggleMinimum } = useTodayProgress()
+  const { today, loading, busy, error, view, tasks, noviceDescription, stats, minimumOn, toggleTask, toggleMinimum } =
+    useTodayProgress()
+  // 載入中或寫入中都停用，避免用舊狀態連點
+  const disabled = loading || busy
 
   return (
     <main className="today">
@@ -54,10 +56,10 @@ export function TodayPage() {
         <>
           <p className="today-progress">{progressLabel(view)}</p>
 
-          {view.noviceIndex !== null && (
+          {noviceDescription && (
             <section className="today-card">
               <h2>今天的新手村任務</h2>
-              <p>{defaultPack.novice[view.noviceIndex - 1]?.description}</p>
+              <p>{noviceDescription}</p>
             </section>
           )}
 
@@ -78,18 +80,18 @@ export function TodayPage() {
           <section className="today-card">
             <h2>今天的任務</h2>
             <ul className="tasks">
-              {view.day.tasks.map((task) => (
+              {tasks.map((task) => (
                 <li key={task.id}>
                   <label className="task">
                     <input
                       type="checkbox"
-                      checked={doneIds.has(task.id)}
-                      disabled={loading}
+                      checked={task.done}
+                      disabled={disabled}
                       onChange={() => void toggleTask(task)}
                     />
                     <span className="task-title">{task.title}</span>
                     <span className="task-meta">
-                      {task.minutes} 分鐘・{taskXp(defaultPack, task.key)} XP
+                      {task.minutes} 分鐘・{task.xp} 經驗值
                     </span>
                   </label>
                 </li>
@@ -99,10 +101,10 @@ export function TodayPage() {
               type="button"
               className="minimum"
               aria-pressed={minimumOn}
-              disabled={loading}
+              disabled={disabled}
               onClick={() => void toggleMinimum()}
             >
-              {minimumOn ? `✓ 今天已用最低限度打卡（+${MINIMUM_XP} XP），再按一次取消` : '今天只做 5 分鐘單字卡'}
+              {minimumOn ? `✓ 今天已用最低限度打卡（+${MINIMUM_XP} 經驗值），再按一次取消` : '今天只做 5 分鐘單字卡'}
             </button>
           </section>
         </>
