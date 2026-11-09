@@ -1,0 +1,310 @@
+{
+  "version": 2,
+  "change": "add-login-sync",
+  "touched": [
+    {
+      "task_id": "1",
+      "task_desc": "1.1 實作「修改時間只會往前走」（D7 修改時間只會往前走）：`TaskLog` 型別加上 `updatedAt`、`deleted`；src/progress/logs.ts 新增 `nextUpdatedAt(prev, now)`，`taskLogFor`、`minimumLogFor` 產生 `updatedAt` 為現在、`deleted` 為 false 的紀錄。驗證：src/progress/logs.test.ts 涵蓋規格情境「裝置時鐘倒退」（10:00:00.000Z 的紀錄在 09:00 修改得到 10:00:00.001Z）與時鐘正常時取現在；既有測試全部通過。",
+      "files": [
+        "src/progress/logs.test.ts",
+        "src/progress/logs.ts",
+        "src/progress/stats.test.ts",
+        "src/progress/types.ts"
+      ]
+    },
+    {
+      "task_id": "11",
+      "task_desc": "5.1 實作「本機合併規則」（D9 本機合併規則）：src/sync/merge.ts 的 `mergeRemote(local, remote)` 與同步紀錄的型別及本機紀錄互轉函式。驗證：src/sync/merge.test.ts 涵蓋規格 Example「本機合併」5 列。",
+      "files": [
+        "src/sync/merge.test.ts",
+        "src/sync/merge.ts"
+      ]
+    },
+    {
+      "task_id": "2",
+      "task_desc": "1.2 實作「本機資料庫升級到版本 2」、「打勾紀錄存在本機」的同步欄位、「取消打勾」的墓碑與「送出後清除未同步標記」（D6 本機資料庫升級到版本 2，取消打勾改成墓碑）：src/progress/db.ts 定義版本 2（`taskLogs: 'id, date, dirty'`、`meta: 'key'`）與升級函式；src/progress/progressRepo.ts 的 `setTaskDone`、`setMinimumDay` 改為寫入 `dirty` 1 的紀錄或標記墓碑，`listLogs` 排除 `deleted`，新增 `pendingChanges()`（`dirty` 為 1 的紀錄，含墓碑）、`getCursor()`、`applySyncResult(sent, remote, cursor)`（在單一交易中清除未變動紀錄的 `dirty`、以 `mergeRemote` 套用伺服器紀錄、儲存游標）。驗證：src/progress/progressRepo.test.ts 在 fake-indexeddb 上涵蓋 daily-progress 規格的打勾、重複打勾、打勾後等待同步、取消後紀錄消失、取消後留下墓碑、取消後再打勾、最低限度日、版本 1 升級保留紀錄等情境，以及 cloud-sync 規格「送出期間又打勾」。",
+      "files": [
+        "src/progress/db.ts",
+        "src/progress/progressRepo.test.ts",
+        "src/progress/progressRepo.ts"
+      ]
+    },
+    {
+      "task_id": "3",
+      "task_desc": "2.1 Worker 改用 Hono（D1 Worker 改用 Hono，API 集中在 createApp）：新增套件 hono；worker/app.ts 匯出 `createApp()` 並提供 `GET /api/health` 回 `{ ok: true }`、未知的 `/api/*` 回 404 `{ error: \"not_found\" }`；worker/index.ts 改為把請求交給它。伺服器端測試環境（D12 伺服器端測試用 Node 內建的 SQLite 模擬 D1）：worker/testing/sqliteD1.ts 以 `node:sqlite` 實作 `prepare`／`bind`／`first`／`all`／`run`／`batch`，並提供讀取遷移檔建立資料庫的函式；vitest.config.ts 加入 `worker/**/*.test.ts`，型別檢查涵蓋 worker 測試。驗證：worker/app.test.ts 測 `/api/health` 與 404；`npm test`、`npm run lint`、`npm run build` 通過。",
+      "files": [
+        "package-lock.json",
+        "package.json",
+        "tsconfig.json",
+        "tsconfig.worker.json",
+        "vitest.config.ts",
+        "worker/index.ts",
+        "migrations/0001_auth_and_task_logs.sql",
+        "tsconfig.worker-test.json",
+        "worker/app.test.ts",
+        "worker/app.ts",
+        "worker/env.ts",
+        "worker/testing/sqliteD1.ts"
+      ]
+    },
+    {
+      "task_id": "5",
+      "task_desc": "3.1 實作「密碼雜湊格式與驗證」（D2 密碼雜湊用 PBKDF2-SHA256，格式用冒號分隔）：worker/auth/password.ts 的 `hashPassword`、`verifyPassword`，只用 Web Crypto（Worker 與 Node 都能執行）。驗證：worker/auth/password.test.ts 涵蓋規格 Example「密碼驗證」5 列與「同一個密碼每次雜湊都不同」。",
+      "files": [
+        "scripts/hash-password.mjs",
+        "worker/auth/password.test.ts",
+        "worker/auth/password.ts"
+      ]
+    },
+    {
+      "task_id": "7",
+      "task_desc": "3.3 實作「工作階段」與「登入失敗鎖定」的資料存取（D3 工作階段存在 D1，用 HttpOnly Cookie 帶、D4 登入失敗鎖定）：worker/auth/authRepo.ts 提供建立工作階段（存權杖 SHA-256、30 天）、查詢有效工作階段、刪除工作階段、刪除過期工作階段、記錄失敗、計算 15 分鐘內失敗次數與解鎖秒數、清除失敗。時間由參數傳入。驗證：worker/auth/authRepo.test.ts 在 sqliteD1 上涵蓋「資料庫只存雜湊」、到期判斷、鎖定的三個情境（第 6 次被鎖、15 分鐘後解鎖、失敗次數未滿）的資料層判斷。",
+      "files": [
+        "worker/auth/authRepo.test.ts",
+        "worker/auth/authRepo.ts"
+      ]
+    },
+    {
+      "task_id": "8",
+      "task_desc": "3.4 實作「登入」「登出」「需要登入的 API」：worker/auth/routes.ts 提供 `POST /api/auth/login`、`POST /api/auth/logout`、`GET /api/auth/session` 與給同步路由用的登入檢查中介層，Cookie 屬性依 D3。驗證：worker/app.test.ts 以 `app.request` 涵蓋 app-auth 規格的登入成功、密碼錯誤、請求格式錯誤、沒有設定機密、鎖定、查詢登入狀態（四種 Cookie）、登出後失效、未登入同步回 401。",
+      "files": [
+        "worker/auth/routes.ts",
+        "worker/sync/routes.ts"
+      ]
+    },
+    {
+      "task_id": "9",
+      "task_desc": "4.1 實作「同步請求格式與檢查」：worker/sync/validate.ts 的 `parseSyncRequest(body)`，回傳解析結果或錯誤。驗證：worker/sync/validate.test.ts 涵蓋規格 Example「請求檢查」全部 8 列（全部或部分不合法時不寫入的部分在 4.2 驗證）。",
+      "files": [
+        "worker/sync/syncRepo.test.ts",
+        "worker/sync/syncRepo.ts",
+        "worker/sync/validate.test.ts",
+        "worker/sync/validate.ts"
+      ]
+    },
+    {
+      "task_id": "12",
+      "task_desc": "5.2 實作「同步用戶端的結果」（D10 前端同步用戶端與觸發時機）：src/sync/syncClient.ts 的 `createSyncClient({ repo, fetch, isOnline })`，提供 `syncOnce()`（分批送出、`hasMore` 續傳最多 20 次、回傳結果與是否取回紀錄）、`login(password)`、`logout()`、`checkSession()`，請求一律帶 `credentials: 'same-origin'`。驗證：src/sync/syncClient.test.ts 以模擬 `fetch` 與 fake-indexeddb 涵蓋「各種結果」「離線時不發請求」、600 筆分兩批送出、`hasMore` 續傳，以及「取消打勾也會同步」（worker/sync/twoDevices.test.ts：兩個本機資料庫透過以 sqliteD1 與 `createApp` 實作的伺服器互相同步；放在 worker 底下才能用 Node 與 Workers 的型別編譯）；登入的四種回應（200、401、429、離線）對應到結果代碼。",
+      "files": [
+        "src/sync/syncClient.test.ts",
+        "src/sync/syncClient.ts",
+        "worker/sync/twoDevices.test.ts"
+      ]
+    },
+    {
+      "task_id": "13",
+      "task_desc": "5.3 實作「同步時機」：src/sync/useSync.ts 管理狀態（checking、logged-out、syncing、synced、offline、error）、開啟頁面、寫入後 30 秒、切到背景、`online` 事件的觸發，同一時間只跑一個同步、執行中被觸發就結束後再跑一次，取回紀錄時把 `remoteVersion` 加 1。觸發排程（30 秒延遲、單一執行、結束後補跑）寫成不依賴 React 的 src/sync/scheduler.ts 的 `createSyncScheduler(run, delayMs)`。驗證：src/sync/scheduler.test.ts 以假計時器涵蓋「連續打勾只同步一次」與「同步期間再觸發」；`npm run lint`（含 react-hooks 規則）通過。",
+      "files": [
+        "src/sync/messages.test.ts",
+        "src/sync/messages.ts",
+        "src/sync/scheduler.test.ts",
+        "src/sync/scheduler.ts",
+        "src/sync/useSync.ts"
+      ]
+    },
+    {
+      "task_id": "14",
+      "task_desc": "6.1 實作「打勾互動」的同步更新：src/app/useTodayProgress.ts 改為接收 `{ now, remoteVersion, onWrite }`，寫入成功後呼叫 `onWrite`，`remoteVersion` 改變時重新讀取紀錄。驗證：`npm run lint`、`npm run build` 通過；手動驗收 7.1 確認「其他裝置的打勾出現在畫面」。",
+      "files": [
+        "src/app/TodayPage.tsx",
+        "src/app/useTodayProgress.ts",
+        "src/app/SyncBar.css",
+        "src/app/SyncBar.tsx"
+      ]
+    },
+    {
+      "task_id": "16",
+      "task_desc": "7.1 撰寫學習筆記 docs/learning-notes/03-登入與跨裝置同步.md（密碼雜湊、Cookie 屬性、工作階段、墓碑、游標、較新者為準、測試替身），並在 docs/專案規範.md 補上：機密只放 Worker 機密與 `.dev.vars`、D1 結構變更只新增遷移檔、部署需要新遷移時先套用遠端遷移再 push。驗證：內容審查，學習筆記五個段落齊全且不含個人資訊。",
+      "files": [
+        "docs/專案規範.md",
+        "docs/learning-notes/03-登入與跨裝置同步.md"
+      ]
+    },
+    {
+      "task_id": "17",
+      "task_desc": "7.2 使用者本機驗收：執行 `node scripts/hash-password.mjs` 產生雜湊並寫進 `.dev.vars`；`npx wrangler d1 migrations apply work-eng-game --local`；`npm test`、`npm run lint`、`npm run build` 通過；`npm run dev` 後在 Chrome 登入（錯誤密碼看到「密碼錯誤」）、打勾、看到「已同步」；在 Edge（另一個瀏覽器）登入後看到相同的打勾，取消打勾後回到 Chrome 切換分頁或重新整理看到同步結果；登出後打勾仍在。驗證：截圖回報。",
+      "files": [
+        "嚴禁上傳/APP密碼.png"
+      ]
+    }
+  ],
+  "entries": [
+    {
+      "taskId": "tsk_01M6G3YS36SR3C6CGTZ5BBN12K",
+      "taskDesc": "1.1 實作「修改時間只會往前走」（D7 修改時間只會往前走）：`TaskLog` 型別加上 `updatedAt`、`deleted`；src/progress/logs.ts 新增 `nextUpdatedAt(prev, now)`，`taskLogFor`、`minimumLogFor` 產生 `updatedAt` 為現在、`deleted` 為 false 的紀錄。驗證：src/progress/logs.test.ts 涵蓋規格情境「裝置時鐘倒退」（10:00:00.000Z 的紀錄在 09:00 修改得到 10:00:00.001Z）與時鐘正常時取現在；既有測試全部通過。",
+      "actor": "jhajha924 <47804331+jhajha924@users.noreply.github.com>",
+      "repo": "main",
+      "headCommit": "48add5229935b25f95f95c4a875f7e3aab43ff65",
+      "touchedFiles": [
+        "src/progress/logs.test.ts",
+        "src/progress/logs.ts",
+        "src/progress/stats.test.ts",
+        "src/progress/types.ts"
+      ],
+      "recordedAt": "2026-11-03T08:14:43Z"
+    },
+    {
+      "taskId": "tsk_01M6G3YS36WPT6KQKAKPNYAXJK",
+      "taskDesc": "5.1 實作「本機合併規則」（D9 本機合併規則）：src/sync/merge.ts 的 `mergeRemote(local, remote)` 與同步紀錄的型別及本機紀錄互轉函式。驗證：src/sync/merge.test.ts 涵蓋規格 Example「本機合併」5 列。",
+      "actor": "jhajha924 <47804331+jhajha924@users.noreply.github.com>",
+      "repo": "main",
+      "headCommit": "48add5229935b25f95f95c4a875f7e3aab43ff65",
+      "touchedFiles": [
+        "src/sync/merge.test.ts",
+        "src/sync/merge.ts"
+      ],
+      "recordedAt": "2026-11-03T08:15:26Z"
+    },
+    {
+      "taskId": "tsk_01M6G3YS36K9EVM0N7R0RVFHVE",
+      "taskDesc": "1.2 實作「本機資料庫升級到版本 2」、「打勾紀錄存在本機」的同步欄位、「取消打勾」的墓碑與「送出後清除未同步標記」（D6 本機資料庫升級到版本 2，取消打勾改成墓碑）：src/progress/db.ts 定義版本 2（`taskLogs: 'id, date, dirty'`、`meta: 'key'`）與升級函式；src/progress/progressRepo.ts 的 `setTaskDone`、`setMinimumDay` 改為寫入 `dirty` 1 的紀錄或標記墓碑，`listLogs` 排除 `deleted`，新增 `pendingChanges()`（`dirty` 為 1 的紀錄，含墓碑）、`getCursor()`、`applySyncResult(sent, remote, cursor)`（在單一交易中清除未變動紀錄的 `dirty`、以 `mergeRemote` 套用伺服器紀錄、儲存游標）。驗證：src/progress/progressRepo.test.ts 在 fake-indexeddb 上涵蓋 daily-progress 規格的打勾、重複打勾、打勾後等待同步、取消後紀錄消失、取消後留下墓碑、取消後再打勾、最低限度日、版本 1 升級保留紀錄等情境，以及 cloud-sync 規格「送出期間又打勾」。",
+      "actor": "jhajha924 <47804331+jhajha924@users.noreply.github.com>",
+      "repo": "main",
+      "headCommit": "48add5229935b25f95f95c4a875f7e3aab43ff65",
+      "touchedFiles": [
+        "src/progress/db.ts",
+        "src/progress/progressRepo.test.ts",
+        "src/progress/progressRepo.ts"
+      ],
+      "recordedAt": "2026-11-03T08:17:52Z"
+    },
+    {
+      "taskId": "tsk_01M6G3YS362EKW109FF8QKTYXB",
+      "taskDesc": "2.1 Worker 改用 Hono（D1 Worker 改用 Hono，API 集中在 createApp）：新增套件 hono；worker/app.ts 匯出 `createApp()` 並提供 `GET /api/health` 回 `{ ok: true }`、未知的 `/api/*` 回 404 `{ error: \"not_found\" }`；worker/index.ts 改為把請求交給它。伺服器端測試環境（D12 伺服器端測試用 Node 內建的 SQLite 模擬 D1）：worker/testing/sqliteD1.ts 以 `node:sqlite` 實作 `prepare`／`bind`／`first`／`all`／`run`／`batch`，並提供讀取遷移檔建立資料庫的函式；vitest.config.ts 加入 `worker/**/*.test.ts`，型別檢查涵蓋 worker 測試。驗證：worker/app.test.ts 測 `/api/health` 與 404；`npm test`、`npm run lint`、`npm run build` 通過。",
+      "actor": "jhajha924 <47804331+jhajha924@users.noreply.github.com>",
+      "repo": "main",
+      "headCommit": "48add5229935b25f95f95c4a875f7e3aab43ff65",
+      "touchedFiles": [
+        "package-lock.json",
+        "package.json",
+        "tsconfig.json",
+        "tsconfig.worker.json",
+        "vitest.config.ts",
+        "worker/index.ts",
+        "migrations/0001_auth_and_task_logs.sql",
+        "tsconfig.worker-test.json",
+        "worker/app.test.ts",
+        "worker/app.ts",
+        "worker/env.ts",
+        "worker/testing/sqliteD1.ts"
+      ],
+      "recordedAt": "2026-11-03T08:20:52Z"
+    },
+    {
+      "taskId": "tsk_01M6G3YS36TRS7A3Z0VXJD0MM9",
+      "taskDesc": "3.1 實作「密碼雜湊格式與驗證」（D2 密碼雜湊用 PBKDF2-SHA256，格式用冒號分隔）：worker/auth/password.ts 的 `hashPassword`、`verifyPassword`，只用 Web Crypto（Worker 與 Node 都能執行）。驗證：worker/auth/password.test.ts 涵蓋規格 Example「密碼驗證」5 列與「同一個密碼每次雜湊都不同」。",
+      "actor": "jhajha924 <47804331+jhajha924@users.noreply.github.com>",
+      "repo": "main",
+      "headCommit": "48add5229935b25f95f95c4a875f7e3aab43ff65",
+      "touchedFiles": [
+        "scripts/hash-password.mjs",
+        "worker/auth/password.test.ts",
+        "worker/auth/password.ts"
+      ],
+      "recordedAt": "2026-11-03T08:22:58Z"
+    },
+    {
+      "taskId": "tsk_01M6G3YS363W0F1PH3Y75M30QC",
+      "taskDesc": "3.3 實作「工作階段」與「登入失敗鎖定」的資料存取（D3 工作階段存在 D1，用 HttpOnly Cookie 帶、D4 登入失敗鎖定）：worker/auth/authRepo.ts 提供建立工作階段（存權杖 SHA-256、30 天）、查詢有效工作階段、刪除工作階段、刪除過期工作階段、記錄失敗、計算 15 分鐘內失敗次數與解鎖秒數、清除失敗。時間由參數傳入。驗證：worker/auth/authRepo.test.ts 在 sqliteD1 上涵蓋「資料庫只存雜湊」、到期判斷、鎖定的三個情境（第 6 次被鎖、15 分鐘後解鎖、失敗次數未滿）的資料層判斷。",
+      "actor": "jhajha924 <47804331+jhajha924@users.noreply.github.com>",
+      "repo": "main",
+      "headCommit": "48add5229935b25f95f95c4a875f7e3aab43ff65",
+      "touchedFiles": [
+        "worker/auth/authRepo.test.ts",
+        "worker/auth/authRepo.ts"
+      ],
+      "recordedAt": "2026-11-03T08:23:40Z"
+    },
+    {
+      "taskId": "tsk_01M6G3YS366V7GNXGDEX4XZ9YE",
+      "taskDesc": "3.4 實作「登入」「登出」「需要登入的 API」：worker/auth/routes.ts 提供 `POST /api/auth/login`、`POST /api/auth/logout`、`GET /api/auth/session` 與給同步路由用的登入檢查中介層，Cookie 屬性依 D3。驗證：worker/app.test.ts 以 `app.request` 涵蓋 app-auth 規格的登入成功、密碼錯誤、請求格式錯誤、沒有設定機密、鎖定、查詢登入狀態（四種 Cookie）、登出後失效、未登入同步回 401。",
+      "actor": "jhajha924 <47804331+jhajha924@users.noreply.github.com>",
+      "repo": "main",
+      "headCommit": "48add5229935b25f95f95c4a875f7e3aab43ff65",
+      "touchedFiles": [
+        "worker/auth/routes.ts",
+        "worker/sync/routes.ts"
+      ],
+      "recordedAt": "2026-11-03T08:24:55Z"
+    },
+    {
+      "taskId": "tsk_01M6G3YS36RT7X3RK5M0TQD0V3",
+      "taskDesc": "4.1 實作「同步請求格式與檢查」：worker/sync/validate.ts 的 `parseSyncRequest(body)`，回傳解析結果或錯誤。驗證：worker/sync/validate.test.ts 涵蓋規格 Example「請求檢查」全部 8 列（全部或部分不合法時不寫入的部分在 4.2 驗證）。",
+      "actor": "jhajha924 <47804331+jhajha924@users.noreply.github.com>",
+      "repo": "main",
+      "headCommit": "48add5229935b25f95f95c4a875f7e3aab43ff65",
+      "touchedFiles": [
+        "worker/sync/syncRepo.test.ts",
+        "worker/sync/syncRepo.ts",
+        "worker/sync/validate.test.ts",
+        "worker/sync/validate.ts"
+      ],
+      "recordedAt": "2026-11-03T08:27:00Z"
+    },
+    {
+      "taskId": "tsk_01M6G3YS36BK82VD2CCNEN81DF",
+      "taskDesc": "5.2 實作「同步用戶端的結果」（D10 前端同步用戶端與觸發時機）：src/sync/syncClient.ts 的 `createSyncClient({ repo, fetch, isOnline })`，提供 `syncOnce()`（分批送出、`hasMore` 續傳最多 20 次、回傳結果與是否取回紀錄）、`login(password)`、`logout()`、`checkSession()`，請求一律帶 `credentials: 'same-origin'`。驗證：src/sync/syncClient.test.ts 以模擬 `fetch` 與 fake-indexeddb 涵蓋「各種結果」「離線時不發請求」、600 筆分兩批送出、`hasMore` 續傳，以及「取消打勾也會同步」（worker/sync/twoDevices.test.ts：兩個本機資料庫透過以 sqliteD1 與 `createApp` 實作的伺服器互相同步；放在 worker 底下才能用 Node 與 Workers 的型別編譯）；登入的四種回應（200、401、429、離線）對應到結果代碼。",
+      "actor": "jhajha924 <47804331+jhajha924@users.noreply.github.com>",
+      "repo": "main",
+      "headCommit": "48add5229935b25f95f95c4a875f7e3aab43ff65",
+      "touchedFiles": [
+        "src/sync/syncClient.test.ts",
+        "src/sync/syncClient.ts",
+        "worker/sync/twoDevices.test.ts"
+      ],
+      "recordedAt": "2026-11-03T08:30:16Z"
+    },
+    {
+      "taskId": "tsk_01M6G3YS360NJWPFSVDBS7Q85D",
+      "taskDesc": "5.3 實作「同步時機」：src/sync/useSync.ts 管理狀態（checking、logged-out、syncing、synced、offline、error）、開啟頁面、寫入後 30 秒、切到背景、`online` 事件的觸發，同一時間只跑一個同步、執行中被觸發就結束後再跑一次，取回紀錄時把 `remoteVersion` 加 1。觸發排程（30 秒延遲、單一執行、結束後補跑）寫成不依賴 React 的 src/sync/scheduler.ts 的 `createSyncScheduler(run, delayMs)`。驗證：src/sync/scheduler.test.ts 以假計時器涵蓋「連續打勾只同步一次」與「同步期間再觸發」；`npm run lint`（含 react-hooks 規則）通過。",
+      "actor": "jhajha924 <47804331+jhajha924@users.noreply.github.com>",
+      "repo": "main",
+      "headCommit": "48add5229935b25f95f95c4a875f7e3aab43ff65",
+      "touchedFiles": [
+        "src/sync/messages.test.ts",
+        "src/sync/messages.ts",
+        "src/sync/scheduler.test.ts",
+        "src/sync/scheduler.ts",
+        "src/sync/useSync.ts"
+      ],
+      "recordedAt": "2026-11-03T08:32:55Z"
+    },
+    {
+      "taskId": "tsk_01M6G3YS36FRZMRBHT96F57Q6N",
+      "taskDesc": "6.1 實作「打勾互動」的同步更新：src/app/useTodayProgress.ts 改為接收 `{ now, remoteVersion, onWrite }`，寫入成功後呼叫 `onWrite`，`remoteVersion` 改變時重新讀取紀錄。驗證：`npm run lint`、`npm run build` 通過；手動驗收 7.1 確認「其他裝置的打勾出現在畫面」。",
+      "actor": "jhajha924 <47804331+jhajha924@users.noreply.github.com>",
+      "repo": "main",
+      "headCommit": "48add5229935b25f95f95c4a875f7e3aab43ff65",
+      "touchedFiles": [
+        "src/app/TodayPage.tsx",
+        "src/app/useTodayProgress.ts",
+        "src/app/SyncBar.css",
+        "src/app/SyncBar.tsx"
+      ],
+      "recordedAt": "2026-11-03T08:36:14Z"
+    },
+    {
+      "taskId": "tsk_01M6G3YS376R8Y8C9VPP33ASSX",
+      "taskDesc": "7.1 撰寫學習筆記 docs/learning-notes/03-登入與跨裝置同步.md（密碼雜湊、Cookie 屬性、工作階段、墓碑、游標、較新者為準、測試替身），並在 docs/專案規範.md 補上：機密只放 Worker 機密與 `.dev.vars`、D1 結構變更只新增遷移檔、部署需要新遷移時先套用遠端遷移再 push。驗證：內容審查，學習筆記五個段落齊全且不含個人資訊。",
+      "actor": "jhajha924 <47804331+jhajha924@users.noreply.github.com>",
+      "repo": "main",
+      "headCommit": "48add5229935b25f95f95c4a875f7e3aab43ff65",
+      "touchedFiles": [
+        "docs/專案規範.md",
+        "docs/learning-notes/03-登入與跨裝置同步.md"
+      ],
+      "recordedAt": "2026-11-03T08:37:01Z"
+    },
+    {
+      "taskId": "tsk_01M6G3YS371CJE9WMQW7GXAYRG",
+      "taskDesc": "7.2 使用者本機驗收：執行 `node scripts/hash-password.mjs` 產生雜湊並寫進 `.dev.vars`；`npx wrangler d1 migrations apply work-eng-game --local`；`npm test`、`npm run lint`、`npm run build` 通過；`npm run dev` 後在 Chrome 登入（錯誤密碼看到「密碼錯誤」）、打勾、看到「已同步」；在 Edge（另一個瀏覽器）登入後看到相同的打勾，取消打勾後回到 Chrome 切換分頁或重新整理看到同步結果；登出後打勾仍在。驗證：截圖回報。",
+      "actor": "jhajha924 <47804331+jhajha924@users.noreply.github.com>",
+      "repo": "main",
+      "headCommit": "48add5229935b25f95f95c4a875f7e3aab43ff65",
+      "touchedFiles": [
+        "嚴禁上傳/APP密碼.png"
+      ],
+      "recordedAt": "2026-11-06T07:48:03Z"
+    }
+  ]
+}

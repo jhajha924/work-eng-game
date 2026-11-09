@@ -101,7 +101,7 @@
 
 ### Requirement: 同步用戶端的結果
 
-`syncOnce()` SHALL 送出本機所有 `dirty` 為 1 的紀錄（每次最多 500 筆，超過時分多次送出）與目前游標，處理回應，並在 `hasMore` 為 true 時以新游標繼續請求，單次 `syncOnce()` 最多請求 20 次。結果 SHALL 為下列四種之一：`synced`（全部成功）、`unauthorized`（回應 401）、`offline`（`navigator.onLine` 為 false，或 `fetch` 丟出錯誤）、`error`（其他非 200 回應或回應格式不正確）。`synced` 以外的結果 MUST NOT 修改本機紀錄或游標。結果 SHALL 同時回報這次是否取回了任何伺服器紀錄。
+`syncOnce()` SHALL 送出本機所有 `dirty` 為 1 的紀錄（每次最多 500 筆，超過時分多次送出）與目前游標，處理回應，並在 `hasMore` 為 true 時以新游標繼續請求，單次 `syncOnce()` 最多請求 20 次。結果 SHALL 為下列四種之一：`synced`（全部成功）、`unauthorized`（回應 401）、`offline`（`navigator.onLine` 為 false，或 `fetch` 丟出錯誤）、`error`（其他非 200 回應或回應格式不正確）。失敗的那一次請求 MUST NOT 修改本機紀錄或游標（同一次 `syncOnce()` 中先前已成功的請求，其結果保留）。結果 SHALL 同時回報這次是否有本機紀錄被伺服器紀錄改變。
 
 #### Scenario: 各種結果
 

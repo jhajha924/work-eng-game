@@ -1,0 +1,83 @@
+/* 同步狀態列：顏色沿用 index.css 的 token，深色模式自動跟著換 */
+.sync-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+.sync-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.sync-status {
+  margin: 0;
+  font-size: 0.9rem;
+  min-width: 0;
+}
+
+.sync-synced {
+  color: var(--accent);
+}
+
+.sync-error,
+.sync-status.sync-error {
+  color: var(--danger);
+}
+
+/* 按鈕可點區域至少 44×44px */
+.sync-button {
+  flex-shrink: 0;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid var(--accent);
+  border-radius: 10px;
+  background: var(--accent-bg);
+  color: var(--text-h);
+  font: inherit;
+  cursor: pointer;
+}
+
+.sync-button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.sync-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.sync-label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1 1 180px;
+  min-width: 0;
+  font-size: 0.9rem;
+}
+
+.sync-label input {
+  min-height: 44px;
+  padding: 0 10px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg);
+  color: var(--text-h);
+  font: inherit;
+}
+
+.sync-form .sync-error {
+  flex-basis: 100%;
+  margin: 0;
+  font-size: 0.9rem;
+}

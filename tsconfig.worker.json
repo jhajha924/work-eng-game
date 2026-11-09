@@ -3,6 +3,11 @@
   "compilerOptions": {
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.worker.tsbuildinfo",
     "types": ["./worker-configuration.d.ts", "vite/client"],
+    // Worker 由 Vite／wrangler 打包，匯入路徑不需寫副檔名
+    "module": "esnext",
+    "moduleResolution": "bundler",
   },
-  "include": ["worker"]
+  "include": ["worker"],
+  // 測試與測試替身在 Node 上跑，另由 tsconfig.worker-test.json 檢查
+  "exclude": ["worker/**/*.test.ts", "worker/testing"]
 }

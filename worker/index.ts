@@ -1,12 +1,8 @@
-export default {
-  fetch(request) {
-    const url = new URL(request.url);
+// Worker 進入點：/api/* 交給 Hono（wrangler.jsonc 的 run_worker_first），其他路徑由靜態資源處理
+import { createApp } from './app'
 
-    if (url.pathname.startsWith("/api/")) {
-      return Response.json({
-        name: "Cloudflare",
-      });
-    }
-		return new Response(null, { status: 404 });
-  },
-} satisfies ExportedHandler<Env>;
+const app = createApp()
+
+export default {
+  fetch: (request, env, ctx) => app.fetch(request, env, ctx),
+} satisfies ExportedHandler<Env>

@@ -19,7 +19,7 @@ const schedule = buildSchedule([pack], {
 function logsFor(dates: string[]): TaskLog[] {
   return dates.map((date) => {
     const task = schedule.days.find((d) => d.date === date)!.tasks[0]
-    return { id: task.id, date, key: task.key, xp: taskXp(pack, task.key), isMinimum: false, completedAt: `${date}T12:00:00Z` }
+    return { id: task.id, date, key: task.key, xp: taskXp(pack, task.key), isMinimum: false, completedAt: `${date}T12:00:00Z`, updatedAt: `${date}T12:00:00Z`, deleted: false }
   })
 }
 
@@ -48,6 +48,7 @@ describe('打卡日與連勝天數', () => {
   it('最低限度日也算打卡', () => {
     const minimum: TaskLog = {
       id: '2026-10-25:minimum', date: '2026-10-25', key: 'minimum', xp: 5, isMinimum: true, completedAt: '2026-10-25T12:00:00Z',
+      updatedAt: '2026-10-25T12:00:00Z', deleted: false,
     }
     const stats = computeStats(schedule, [...logsFor([year('10-24')]), minimum], year('10-25'))
     expect(stats).toMatchObject({ streak: 2, checkedInToday: true })

@@ -2,7 +2,9 @@
 import { weekdayIndex } from '../plan/dates'
 import type { TodayView } from '../progress/today'
 import { MINIMUM_XP } from '../progress/xp'
-import { useTodayProgress } from './useTodayProgress'
+import { useSync } from '../sync/useSync'
+import { SyncBar } from './SyncBar'
+import { getRepo, useTodayProgress } from './useTodayProgress'
 import './TodayPage.css'
 
 const WEEKDAYS = ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日']
@@ -19,8 +21,9 @@ function progressLabel(view: Extract<TodayView, { status: 'active' }>): string {
 }
 
 export function TodayPage() {
+  const sync = useSync(getRepo)
   const { today, loading, busy, error, view, tasks, noviceDescription, stats, minimumOn, toggleTask, toggleMinimum } =
-    useTodayProgress()
+    useTodayProgress({ remoteVersion: sync.remoteVersion, onWrite: sync.notifyLocalChange })
   // 載入中或寫入中都停用，避免用舊狀態連點
   const disabled = loading || busy
 
@@ -30,6 +33,8 @@ export function TodayPage() {
         <p className="today-app">Work Eng Game</p>
         <h1 className="today-date">{formatDate(today)}</h1>
       </header>
+
+      <SyncBar status={sync.status} login={sync.login} logout={sync.logout} />
 
       <section className="today-stats" aria-label="進度">
         <div className="stat">

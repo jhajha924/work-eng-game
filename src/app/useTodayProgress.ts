@@ -15,14 +15,22 @@ export const DB_ERROR_MESSAGE = '無法存取本機資料庫，打勾紀錄無�
 /** 畫面要顯示的任務：排程任務＋經驗值＋是否已完成 */
 export type TodayTask = ScheduledTask & { xp: number; done: boolean }
 
-// 整個 App 共用一個資料庫連線
+// 整個 App 共用一個資料庫連線（同步也用同一個）
 let repo: ProgressRepo | null = null
-function getRepo(): ProgressRepo {
+export function getRepo(): ProgressRepo {
   repo ??= createProgressRepo(createDb())
   return repo
 }
 
-export function useTodayProgress(now?: Date) {
+export type TodayProgressOptions = {
+  now?: Date
+  /** 同步改變了本機紀錄時加 1，這裡就重新讀取紀錄 */
+  remoteVersion?: number
+  /** 本機寫入成功後呼叫（排程同步） */
+  onWrite?: () => void
+}
+
+export function useTodayProgress({ now, remoteVersion = 0, onWrite }: TodayProgressOptions = {}) {
   // 今天只在打開頁面時決定一次；跨午夜要重新整理才會換日
   const [today] = useState(() => localToday(now ?? new Date()))
   const [logs, setLogs] = useState<TaskLog[]>([])
@@ -33,13 +41,24 @@ export function useTodayProgress(now?: Date) {
   const writing = useRef(false)
   // 畫面上的紀錄是否等於資料庫的完整內容（初次載入成功後才是 true）
   const synced = useRef(false)
+  // 每次寫入加 1；讀取期間發生過寫入，讀到的就是舊資料，不套用
+  const writes = useRef(0)
   const [error, setError] = useState<string | null>(null)
 
-  // 第一次載入：getRepo() 也放進 promise 鏈，建立資料庫時同步出錯也會進 catch；元件卸載後不再設定狀態
+  // 第一次載入，以及同步取回其他裝置的紀錄後重新讀取。
+  // getRepo() 也放進 promise 鏈，建立資料庫時同步出錯也會進 catch；元件卸載後不再設定狀態
   useEffect(() => {
     let cancelled = false
+    /** 讀取期間發生寫入就再讀一次，確保畫面拿到包含那次寫入的完整紀錄 */
+    async function readLatest(): Promise<TaskLog[]> {
+      for (;;) {
+        const writesAtStart = writes.current
+        const loaded = await getRepo().listLogs()
+        if (writes.current === writesAtStart) return loaded
+      }
+    }
     Promise.resolve()
-      .then(() => getRepo().listLogs())
+      .then(readLatest)
       .then((loaded) => {
         if (cancelled) return
         synced.current = true
@@ -54,7 +73,7 @@ export function useTodayProgress(now?: Date) {
     return () => {
       cancelled = true
     }
-  }, [])
+  }, [remoteVersion])
 
   const view = useMemo(() => findToday(defaultSchedule, defaultPack, today), [today])
   const stats = useMemo(() => computeStats(defaultSchedule, logs, today), [logs, today])
@@ -83,6 +102,8 @@ export function useTodayProgress(now?: Date) {
       setBusy(true)
       try {
         await save()
+        writes.current += 1
+        onWrite?.()
         if (synced.current) {
           setLogs(update)
         } else {
@@ -97,7 +118,7 @@ export function useTodayProgress(now?: Date) {
         setBusy(false)
       }
     },
-    [],
+    [onWrite],
   )
 
   const toggleTask = useCallback(
