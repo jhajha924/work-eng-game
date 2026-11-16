@@ -123,8 +123,14 @@
     {
       "task_id": "17",
       "task_desc": "7.2 使用者本機驗收：執行 `node scripts/hash-password.mjs` 產生雜湊並寫進 `.dev.vars`；`npx wrangler d1 migrations apply work-eng-game --local`；`npm test`、`npm run lint`、`npm run build` 通過；`npm run dev` 後在 Chrome 登入（錯誤密碼看到「密碼錯誤」）、打勾、看到「已同步」；在 Edge（另一個瀏覽器）登入後看到相同的打勾，取消打勾後回到 Chrome 切換分頁或重新整理看到同步結果；登出後打勾仍在。驗證：截圖回報。",
+      "files": []
+    },
+    {
+      "task_id": "18",
+      "task_desc": "7.3 使用者部署驗收：`npx wrangler secret put APP_PASSWORD_HASH`、`npx wrangler d1 migrations apply work-eng-game --remote`，再 commit、push；GitHub Actions 成功後，在電腦與手機打開正式網站，登入後互相看到打勾與取消。驗證：截圖回報。",
       "files": [
-        "嚴禁上傳/APP密碼.png"
+        "src/sync/syncController.test.ts",
+        "src/sync/syncController.ts"
       ]
     }
   ],
@@ -301,10 +307,20 @@
       "actor": "jhajha924 <47804331+jhajha924@users.noreply.github.com>",
       "repo": "main",
       "headCommit": "48add5229935b25f95f95c4a875f7e3aab43ff65",
-      "touchedFiles": [
-        "嚴禁上傳/APP密碼.png"
-      ],
+      "touchedFiles": [],
       "recordedAt": "2026-11-06T07:48:03Z"
+    },
+    {
+      "taskId": "tsk_01M6G3YS37B842J2B1JFEK2FJX",
+      "taskDesc": "7.3 使用者部署驗收：`npx wrangler secret put APP_PASSWORD_HASH`、`npx wrangler d1 migrations apply work-eng-game --remote`，再 commit、push；GitHub Actions 成功後，在電腦與手機打開正式網站，登入後互相看到打勾與取消。驗證：截圖回報。",
+      "actor": "jhajha924 <47804331+jhajha924@users.noreply.github.com>",
+      "repo": "main",
+      "headCommit": "3f9b0b53a5d1c2c8806ade1a11355951fdda94e3",
+      "touchedFiles": [
+        "src/sync/syncController.test.ts",
+        "src/sync/syncController.ts"
+      ],
+      "recordedAt": "2026-11-12T08:12:06Z"
     }
   ]
 }

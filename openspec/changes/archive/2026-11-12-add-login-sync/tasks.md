@@ -35,4 +35,4 @@
 
 - [x] 7.1 撰寫學習筆記 docs/learning-notes/03-登入與跨裝置同步.md（密碼雜湊、Cookie 屬性、工作階段、墓碑、游標、較新者為準、測試替身），並在 docs/專案規範.md 補上：機密只放 Worker 機密與 `.dev.vars`、D1 結構變更只新增遷移檔、部署需要新遷移時先套用遠端遷移再 push。驗證：內容審查，學習筆記五個段落齊全且不含個人資訊。 <!-- speclink-task:tsk_01M6G3YS376R8Y8C9VPP33ASSX -->
 - [x] [M] 7.2 使用者本機驗收：執行 `node scripts/hash-password.mjs` 產生雜湊並寫進 `.dev.vars`；`npx wrangler d1 migrations apply work-eng-game --local`；`npm test`、`npm run lint`、`npm run build` 通過；`npm run dev` 後在 Chrome 登入（錯誤密碼看到「密碼錯誤」）、打勾、看到「已同步」；在 Edge（另一個瀏覽器）登入後看到相同的打勾，取消打勾後回到 Chrome 切換分頁或重新整理看到同步結果；登出後打勾仍在。驗證：截圖回報。 <!-- speclink-task:tsk_01M6G3YS371CJE9WMQW7GXAYRG -->
-- [ ] [M] 7.3 使用者部署驗收：`npx wrangler secret put APP_PASSWORD_HASH`、`npx wrangler d1 migrations apply work-eng-game --remote`，再 commit、push；GitHub Actions 成功後，在電腦與手機打開正式網站，登入後互相看到打勾與取消。驗證：截圖回報。 <!-- speclink-task:tsk_01M6G3YS37B842J2B1JFEK2FJX -->
+- [x] [M] 7.3 使用者部署驗收：`npx wrangler secret put APP_PASSWORD_HASH`、`npx wrangler d1 migrations apply work-eng-game --remote`，再 commit、push；GitHub Actions 成功後，在電腦與手機打開正式網站，登入後互相看到打勾與取消。驗證：截圖回報。 <!-- speclink-task:tsk_01M6G3YS37B842J2B1JFEK2FJX -->

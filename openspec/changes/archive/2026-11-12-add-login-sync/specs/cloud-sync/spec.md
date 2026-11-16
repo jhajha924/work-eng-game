@@ -101,12 +101,17 @@
 
 ### Requirement: 同步用戶端的結果
 
-`syncOnce()` SHALL 送出本機所有 `dirty` 為 1 的紀錄（每次最多 500 筆，超過時分多次送出）與目前游標，處理回應，並在 `hasMore` 為 true 時以新游標繼續請求，單次 `syncOnce()` 最多請求 20 次。結果 SHALL 為下列四種之一：`synced`（全部成功）、`unauthorized`（回應 401）、`offline`（`navigator.onLine` 為 false，或 `fetch` 丟出錯誤）、`error`（其他非 200 回應或回應格式不正確）。失敗的那一次請求 MUST NOT 修改本機紀錄或游標（同一次 `syncOnce()` 中先前已成功的請求，其結果保留）。結果 SHALL 同時回報這次是否有本機紀錄被伺服器紀錄改變。
+`syncOnce()` SHALL 送出本機所有 `dirty` 為 1、且符合「同步請求格式與檢查」單筆規則的紀錄（每次最多 500 筆，超過時分多次送出）；不符合規則的紀錄 MUST NOT 送出（伺服器會整批拒收），留在本機並保持 `dirty` 為 1。每次請求同時送出目前游標並處理回應，並在 `hasMore` 為 true 時以新游標繼續請求，單次 `syncOnce()` 最多請求 20 次。結果 SHALL 為下列四種之一：`synced`（全部成功）、`unauthorized`（回應 401）、`offline`（`navigator.onLine` 為 false，或 `fetch` 丟出錯誤）、`error`（其他非 200 回應或回應格式不正確）。失敗的那一次請求 MUST NOT 修改本機紀錄或游標（同一次 `syncOnce()` 中先前已成功的請求，其結果保留）。結果 SHALL 同時回報這次是否有本機紀錄被伺服器紀錄改變。
 
 #### Scenario: 各種結果
 
 - **WHEN** 以模擬的 `fetch` 分別回傳 200 合法回應、401、500、丟出 TypeError，以及在 `navigator.onLine` 為 false 時呼叫 `syncOnce()`
 - **THEN** 結果依序為 `synced`、`unauthorized`、`error`、`offline`、`offline`，後四種本機資料不變
+
+#### Scenario: 不合格的紀錄不擋住同步
+
+- **WHEN** 本機有三筆未同步紀錄，其中 key 為 `Bad Key` 與 xp 為 5000 的兩筆不符合單筆規則
+- **THEN** 只送出合格的一筆，結果為 `synced`；兩筆不合格的仍留在本機且 `dirty` 為 1
 
 #### Scenario: 離線時不發請求
 

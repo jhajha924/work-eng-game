@@ -1,0 +1,211 @@
+schema: spec-driven
+created: 2026-11-03
+created_by: jhajha924 <47804331+jhajha924@users.noreply.github.com>
+created_with: claude
+from_discussion: english-quest-app
+started_at: 2026-11-03
+started_by: jhajha924 <47804331+jhajha924@users.noreply.github.com>
+reviewed_at: 2026-11-10
+reviewed_by: jhajha924 <47804331+jhajha924@users.noreply.github.com>
+reviewed_with: claude
+reviewed_tasks_total: 18
+reviewed_scope:
+  - path: docs/learning-notes/03-登入與跨裝置同步.md
+    hash: 82c679ec048704b23646df9e7debe369e4e62949e95d4a0a7e377c0a977f498e
+  - path: docs/專案規範.md
+    hash: 03740423f8a475727aea997f318c8d766725c4d63b602fbec309a580c8214016
+  - path: migrations/0001_auth_and_task_logs.sql
+    hash: 22a1758fd5336ff0211e1232443724f00fdc56ad9b9702e1db70413c56cc2d30
+  - path: package-lock.json
+    hash: f2c66b3b1fe7b5d402be1dc60b2e0c0df6646e8b2e13989642b972bef23186b4
+  - path: package.json
+    hash: c67406f056b7fb35d2258e5644638f154c361b7d27f21bcdd1ab90e60aabd574
+  - path: scripts/hash-password.mjs
+    hash: 0c5ab3ca6643130cc97d8da69c1e6b176317d9168fc0824b2aab4294ef10b1ab
+  - path: src/app/SyncBar.css
+    hash: d6f722b2c1d5cad0247e87dba3d5aac0f37ba42a6e89aa3bed93335bee575993
+  - path: src/app/SyncBar.tsx
+    hash: 38768ddc94cf28098d0cb1f98a185db808a3f1d144bf081f51d881cf824d67d3
+  - path: src/app/TodayPage.tsx
+    hash: b695d9d705e47939d30cd50a4ff54683501f6696fe3ee2ae024bec63113fcc32
+  - path: src/app/useTodayProgress.ts
+    hash: 958f89249531cdbab8f7097436927a07cca29186c48ca8a12cf8dbc0914343d5
+  - path: src/progress/db.ts
+    hash: 1c0e2beec5d715022f814f545508178bbc11298b3906a944c8ea7c14e8807337
+  - path: src/progress/logs.test.ts
+    hash: dfac4d3e3b4465d75881dad89fd6e0ae36ed48899da7c524b460f75b915b1cd5
+  - path: src/progress/logs.ts
+    hash: 24e1c2020a2d3d5d63d49734b9230b5203206b9f27c3f54af926c86bd02f3e88
+  - path: src/progress/progressRepo.test.ts
+    hash: 658eae18c664e355af5cfaeb26aca7527b0010353b2e0e0c3ae6e8e33fa5c774
+  - path: src/progress/progressRepo.ts
+    hash: 9921c3215420ff0eb55d9590f3788deba693389007e566a88ded3e86538ce872
+  - path: src/progress/stats.test.ts
+    hash: a4c533c84da7764e7341efff7d5407fc578b97a99abe59044840c5c74a2281ca
+  - path: src/progress/types.ts
+    hash: 4504c0846333dbf9a04875b297cdffbffe54ffeac6ed32b2192cfc88b5d10c15
+  - path: src/sync/merge.test.ts
+    hash: c8608dfd1b77f78f01593d12debd384d03a5cf4f0637428b35089b3277c802a3
+  - path: src/sync/merge.ts
+    hash: 3b96c681a0a5fe02d3c2262e22d447c9f34ba5e353da625ed9c4aa7856ef6e0f
+  - path: src/sync/messages.test.ts
+    hash: 4164d0dad4554ac0fa06e8c2461d63c354556e342af9d58cb0ebc23b66e09ed8
+  - path: src/sync/messages.ts
+    hash: dc87af8a06fc85e34899975d8c2f82750cc98706373a9b718425b42c887fb19e
+  - path: src/sync/scheduler.test.ts
+    hash: ee9b7279d8f9c1dae65caee52a0cd701b8945c125bf3e4fa383ca35c9200f691
+  - path: src/sync/scheduler.ts
+    hash: 4b100e52558115579033999d6992c85946874fdb34bf5d2ba3412cfeba74acc4
+  - path: src/sync/syncClient.test.ts
+    hash: a579c79f822bbd681dd6f82d6407a329e0d4b1596b470f133619b51f878178d8
+  - path: src/sync/syncClient.ts
+    hash: 1a70b26bcfe08bde33f50781d64d3ed75445e90762194faa4f4d6a5c2fcc0e31
+  - path: src/sync/syncController.test.ts
+    hash: 86b60f5939b20a6f8c1652c76bfc69c9dd552c15a1e1099caa06032bda8108c9
+  - path: src/sync/syncController.ts
+    hash: c2d268f3d9260a41365b2bff3097cfacce830e2f1eff72510a7cd0e0713f9e03
+  - path: src/sync/useSync.ts
+    hash: 6e79a10265f631615dff79afb52b3a70d636f1963aea5954f685da790bf779a6
+  - path: tsconfig.json
+    hash: df642ca32a26d572c802cb6df91659229d2ff0a9892bdf663483e3c6857ca0cb
+  - path: tsconfig.worker-test.json
+    hash: e539a918f943b31424ce3c0f5c71889cccafac06c75389656ad57ee9d54860c8
+  - path: tsconfig.worker.json
+    hash: 29c5c7df837518eebd7f8d14e73e7a212afea285e4712047543142f05e3ead1f
+  - path: vitest.config.ts
+    hash: 4e9c983cdaf604546b4b6326acbe177cf4bede82b656cb4086b5b44265e01be7
+  - path: worker/app.test.ts
+    hash: bf8d2fa05d4bf03a7ed9340d7492934d1a03ac91274c1c0d767ecea3d30d5da6
+  - path: worker/app.ts
+    hash: 45baeafee9f1a0747b04b8e2328b7f4c5b62fdd51770158a3ecd83ce4609a032
+  - path: worker/auth/authRepo.test.ts
+    hash: 16ccb1f1167c053bcb00199bace9c0efa3b17fc08f6f6382a28fdbc95202c6b0
+  - path: worker/auth/authRepo.ts
+    hash: 9faf7d1b37ef38a62c65e857cf2462aaf10d5e41f8e6b6520b028eaa3a8f0df2
+  - path: worker/auth/password.test.ts
+    hash: b9fce50b050c998043f655b4375aa59312d39529056433a1e1792a0320a79c93
+  - path: worker/auth/password.ts
+    hash: 89a32700bfb201fd235ada59441392c8debb278d5f549a06399f8281b4f4ddc9
+  - path: worker/auth/routes.ts
+    hash: ee12742b7e5489c36546de70ad36734da35aaf18c97e41ad10c14136d86e132e
+  - path: worker/env.ts
+    hash: 5d1a24a249f774be04ac5774e345978d509299a6997b5148d78b0fefae4ee0c7
+  - path: worker/index.ts
+    hash: 9cbe00fc217a97af3b19b363f7975b801844508382b7ef525a5b4aee451aaafe
+  - path: worker/sync/routes.ts
+    hash: f44afb9d73cca070f6914e26f62af1fb4926f803953972d2004d5f45ae95e5d0
+  - path: worker/sync/syncRepo.test.ts
+    hash: 21d8f72eb0e6807e94219dce9e1be23303a6a1c86c9b3f53196b845cf1496e00
+  - path: worker/sync/syncRepo.ts
+    hash: 45799e0f99761e03ad43a15f3243f156df10b7f1a1264e0db7254b0a14eda182
+  - path: worker/sync/twoDevices.test.ts
+    hash: 273400e883126fb3e9aafedaa0ed47f67527d151bfb26f435a80bf326514dab7
+  - path: worker/sync/validate.test.ts
+    hash: cf97b1bae2e8d74f86077fd9f6772d942093e1a6e2a3030516e916d0694c6b7b
+  - path: worker/sync/validate.ts
+    hash: b9877dd9b5c87cf2e88c0d73cbe2939f77a88cbc4dbec7a860047857ddb03e8b
+  - path: worker/testing/sqliteD1.ts
+    hash: d829a9ebee4ee00a6f01bd38307dbb26f400de9770b4c90f8250defaff3df128
+verified_at: 2026-11-10
+verified_by: jhajha924 <47804331+jhajha924@users.noreply.github.com>
+verified_with: claude
+verified_tasks_total: 18
+verified_scope:
+  - path: docs/learning-notes/03-登入與跨裝置同步.md
+    hash: 82c679ec048704b23646df9e7debe369e4e62949e95d4a0a7e377c0a977f498e
+  - path: docs/專案規範.md
+    hash: 03740423f8a475727aea997f318c8d766725c4d63b602fbec309a580c8214016
+  - path: migrations/0001_auth_and_task_logs.sql
+    hash: 22a1758fd5336ff0211e1232443724f00fdc56ad9b9702e1db70413c56cc2d30
+  - path: package-lock.json
+    hash: f2c66b3b1fe7b5d402be1dc60b2e0c0df6646e8b2e13989642b972bef23186b4
+  - path: package.json
+    hash: c67406f056b7fb35d2258e5644638f154c361b7d27f21bcdd1ab90e60aabd574
+  - path: scripts/hash-password.mjs
+    hash: 0c5ab3ca6643130cc97d8da69c1e6b176317d9168fc0824b2aab4294ef10b1ab
+  - path: src/app/SyncBar.css
+    hash: d6f722b2c1d5cad0247e87dba3d5aac0f37ba42a6e89aa3bed93335bee575993
+  - path: src/app/SyncBar.tsx
+    hash: 38768ddc94cf28098d0cb1f98a185db808a3f1d144bf081f51d881cf824d67d3
+  - path: src/app/TodayPage.tsx
+    hash: b695d9d705e47939d30cd50a4ff54683501f6696fe3ee2ae024bec63113fcc32
+  - path: src/app/useTodayProgress.ts
+    hash: 958f89249531cdbab8f7097436927a07cca29186c48ca8a12cf8dbc0914343d5
+  - path: src/progress/db.ts
+    hash: 1c0e2beec5d715022f814f545508178bbc11298b3906a944c8ea7c14e8807337
+  - path: src/progress/logs.test.ts
+    hash: dfac4d3e3b4465d75881dad89fd6e0ae36ed48899da7c524b460f75b915b1cd5
+  - path: src/progress/logs.ts
+    hash: 24e1c2020a2d3d5d63d49734b9230b5203206b9f27c3f54af926c86bd02f3e88
+  - path: src/progress/progressRepo.test.ts
+    hash: 658eae18c664e355af5cfaeb26aca7527b0010353b2e0e0c3ae6e8e33fa5c774
+  - path: src/progress/progressRepo.ts
+    hash: 9921c3215420ff0eb55d9590f3788deba693389007e566a88ded3e86538ce872
+  - path: src/progress/stats.test.ts
+    hash: a4c533c84da7764e7341efff7d5407fc578b97a99abe59044840c5c74a2281ca
+  - path: src/progress/types.ts
+    hash: 4504c0846333dbf9a04875b297cdffbffe54ffeac6ed32b2192cfc88b5d10c15
+  - path: src/sync/merge.test.ts
+    hash: c8608dfd1b77f78f01593d12debd384d03a5cf4f0637428b35089b3277c802a3
+  - path: src/sync/merge.ts
+    hash: 3b96c681a0a5fe02d3c2262e22d447c9f34ba5e353da625ed9c4aa7856ef6e0f
+  - path: src/sync/messages.test.ts
+    hash: 4164d0dad4554ac0fa06e8c2461d63c354556e342af9d58cb0ebc23b66e09ed8
+  - path: src/sync/messages.ts
+    hash: dc87af8a06fc85e34899975d8c2f82750cc98706373a9b718425b42c887fb19e
+  - path: src/sync/scheduler.test.ts
+    hash: ee9b7279d8f9c1dae65caee52a0cd701b8945c125bf3e4fa383ca35c9200f691
+  - path: src/sync/scheduler.ts
+    hash: 4b100e52558115579033999d6992c85946874fdb34bf5d2ba3412cfeba74acc4
+  - path: src/sync/syncClient.test.ts
+    hash: a579c79f822bbd681dd6f82d6407a329e0d4b1596b470f133619b51f878178d8
+  - path: src/sync/syncClient.ts
+    hash: 1a70b26bcfe08bde33f50781d64d3ed75445e90762194faa4f4d6a5c2fcc0e31
+  - path: src/sync/syncController.test.ts
+    hash: 86b60f5939b20a6f8c1652c76bfc69c9dd552c15a1e1099caa06032bda8108c9
+  - path: src/sync/syncController.ts
+    hash: c2d268f3d9260a41365b2bff3097cfacce830e2f1eff72510a7cd0e0713f9e03
+  - path: src/sync/useSync.ts
+    hash: 6e79a10265f631615dff79afb52b3a70d636f1963aea5954f685da790bf779a6
+  - path: tsconfig.json
+    hash: df642ca32a26d572c802cb6df91659229d2ff0a9892bdf663483e3c6857ca0cb
+  - path: tsconfig.worker-test.json
+    hash: e539a918f943b31424ce3c0f5c71889cccafac06c75389656ad57ee9d54860c8
+  - path: tsconfig.worker.json
+    hash: 29c5c7df837518eebd7f8d14e73e7a212afea285e4712047543142f05e3ead1f
+  - path: vitest.config.ts
+    hash: 4e9c983cdaf604546b4b6326acbe177cf4bede82b656cb4086b5b44265e01be7
+  - path: worker/app.test.ts
+    hash: bf8d2fa05d4bf03a7ed9340d7492934d1a03ac91274c1c0d767ecea3d30d5da6
+  - path: worker/app.ts
+    hash: 45baeafee9f1a0747b04b8e2328b7f4c5b62fdd51770158a3ecd83ce4609a032
+  - path: worker/auth/authRepo.test.ts
+    hash: 16ccb1f1167c053bcb00199bace9c0efa3b17fc08f6f6382a28fdbc95202c6b0
+  - path: worker/auth/authRepo.ts
+    hash: 9faf7d1b37ef38a62c65e857cf2462aaf10d5e41f8e6b6520b028eaa3a8f0df2
+  - path: worker/auth/password.test.ts
+    hash: b9fce50b050c998043f655b4375aa59312d39529056433a1e1792a0320a79c93
+  - path: worker/auth/password.ts
+    hash: 89a32700bfb201fd235ada59441392c8debb278d5f549a06399f8281b4f4ddc9
+  - path: worker/auth/routes.ts
+    hash: ee12742b7e5489c36546de70ad36734da35aaf18c97e41ad10c14136d86e132e
+  - path: worker/env.ts
+    hash: 5d1a24a249f774be04ac5774e345978d509299a6997b5148d78b0fefae4ee0c7
+  - path: worker/index.ts
+    hash: 9cbe00fc217a97af3b19b363f7975b801844508382b7ef525a5b4aee451aaafe
+  - path: worker/sync/routes.ts
+    hash: f44afb9d73cca070f6914e26f62af1fb4926f803953972d2004d5f45ae95e5d0
+  - path: worker/sync/syncRepo.test.ts
+    hash: 21d8f72eb0e6807e94219dce9e1be23303a6a1c86c9b3f53196b845cf1496e00
+  - path: worker/sync/syncRepo.ts
+    hash: 45799e0f99761e03ad43a15f3243f156df10b7f1a1264e0db7254b0a14eda182
+  - path: worker/sync/twoDevices.test.ts
+    hash: 273400e883126fb3e9aafedaa0ed47f67527d151bfb26f435a80bf326514dab7
+  - path: worker/sync/validate.test.ts
+    hash: cf97b1bae2e8d74f86077fd9f6772d942093e1a6e2a3030516e916d0694c6b7b
+  - path: worker/sync/validate.ts
+    hash: b9877dd9b5c87cf2e88c0d73cbe2939f77a88cbc4dbec7a860047857ddb03e8b
+  - path: worker/testing/sqliteD1.ts
+    hash: d829a9ebee4ee00a6f01bd38307dbb26f400de9770b4c90f8250defaff3df128
+archived_by: jhajha924 <47804331+jhajha924@users.noreply.github.com>
+archived_at: 2026-11-12
