@@ -107,6 +107,19 @@ describe('同步用戶端的結果', () => {
     expect(await repo.listLogs()).toEqual([remote])
   })
 
+  it('格式不合伺服器規則的紀錄不送出，也不擋住其他紀錄', async () => {
+    await repo.setTaskDone({ id: '2026-11-02:Bad Key', date: '2026-11-02', key: 'Bad Key' }, 10, true, now)
+    await repo.setTaskDone({ id: '2026-11-02:too-much', date: '2026-11-02', key: 'too-much' }, 5000, true, now)
+    await repo.setTaskDone({ id: '2026-11-02:new-words', date: '2026-11-02', key: 'new-words' }, 10, true, now)
+    const fetch = echoServer()
+    const client = createSyncClient({ repo: () => repo, fetch: fetch as typeof globalThis.fetch, isOnline: () => true })
+    expect((await client.syncOnce()).result).toBe('synced')
+    const sent = (JSON.parse(String(fetch.mock.calls[0][1]?.body)) as { changes: { id: string }[] }).changes
+    expect(sent.map((r) => r.id)).toEqual(['2026-11-02:new-words'])
+    // 不合格的留在本機（仍標記未同步），不會遺失
+    expect((await repo.pendingChanges()).map((r) => r.id).sort()).toEqual(['2026-11-02:Bad Key', '2026-11-02:too-much'])
+  })
+
   it('請求帶 same-origin 憑證與 JSON 標頭', async () => {
     const fetch = echoServer()
     await createSyncClient({ repo: () => repo, fetch: fetch as typeof globalThis.fetch, isOnline: () => true }).syncOnce()
@@ -131,6 +144,13 @@ describe('登入與登入狀態', () => {
     expect(await clientWith(vi.fn(), false).login('x')).toEqual({ result: 'offline' })
     expect(await clientWith(vi.fn(async () => { throw new TypeError('x') })).login('x')).toEqual({ result: 'offline' })
     expect(await clientWith(vi.fn(async () => json(500, {}))).login('x')).toEqual({ result: 'error' })
+  })
+
+  it('登出的三種結果', async () => {
+    expect(await clientWith(vi.fn(async () => json(200, { ok: true }))).logout()).toBe('ok')
+    expect(await clientWith(vi.fn(async () => { throw new TypeError('x') })).logout()).toBe('offline')
+    expect(await clientWith(vi.fn(), false).logout()).toBe('offline')
+    expect(await clientWith(vi.fn(async () => json(500, {}))).logout()).toBe('error')
   })
 
   it('查詢登入狀態', async () => {

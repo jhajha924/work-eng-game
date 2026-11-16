@@ -135,6 +135,13 @@ describe('登入失敗鎖定', () => {
     for (let i = 0; i < 4; i++) await login('wrong')
     expect((await login(PASSWORD)).status).toBe(200)
   })
+
+  it('同時送出 8 個錯誤密碼，只有 5 個會檢查密碼，其餘被鎖', async () => {
+    const statuses = (await Promise.all(Array.from({ length: 8 }, () => login('wrong')))).map((r) => r.status)
+    expect(statuses.filter((s) => s === 401)).toHaveLength(5)
+    expect(statuses.filter((s) => s === 429)).toHaveLength(3)
+    expect(count('login_failures')).toBe(5)
+  })
 })
 
 describe('工作階段與登出', () => {

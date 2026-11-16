@@ -1,13 +1,13 @@
 // D11：同步狀態列與登入表單；只負責顯示，狀態與動作來自 useSync
 import { useState, type FormEvent } from 'react'
-import { loginErrorText, statusText, type SyncStatus } from '../sync/messages'
-import type { LoginResult } from '../sync/syncClient'
+import { loginErrorText, logoutErrorText, statusText, type SyncStatus } from '../sync/messages'
+import type { LoginResult, LogoutResult } from '../sync/syncClient'
 import './SyncBar.css'
 
 type Props = {
   status: SyncStatus
   login: (password: string) => Promise<LoginResult>
-  logout: () => Promise<void>
+  logout: () => Promise<LogoutResult>
 }
 
 export function SyncBar({ status, login, logout }: Props) {
@@ -15,6 +15,7 @@ export function SyncBar({ status, login, logout }: Props) {
   const [password, setPassword] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [loginError, setLoginError] = useState<string | null>(null)
+  const [logoutError, setLogoutError] = useState<string | null>(null)
 
   async function onSubmit(event: FormEvent) {
     event.preventDefault()
@@ -31,6 +32,12 @@ export function SyncBar({ status, login, logout }: Props) {
     setFormOpen(false)
   }
 
+  async function onLogout() {
+    setLogoutError(null)
+    // 伺服器沒確認登出（例如離線）就維持登入，並說明原因
+    setLogoutError(logoutErrorText(await logout()))
+  }
+
   const loggedOut = status === 'logged-out'
 
   return (
@@ -45,11 +52,17 @@ export function SyncBar({ status, login, logout }: Props) {
           </button>
         )}
         {!loggedOut && status !== 'checking' && (
-          <button type="button" className="sync-button" onClick={() => void logout()}>
+          <button type="button" className="sync-button" onClick={() => void onLogout()}>
             登出
           </button>
         )}
       </div>
+
+      {!loggedOut && logoutError && (
+        <p className="sync-error" role="alert">
+          {logoutError}
+        </p>
+      )}
 
       {loggedOut && formOpen && (
         <form className="sync-form" onSubmit={(e) => void onSubmit(e)}>

@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 import { createTestD1, type TestD1 } from '../testing/sqliteD1'
 import {
-  clearFailures, createSession, deleteExpiredSessions, deleteSession, hashToken, hasValidSession,
+  claimAttempt, clearFailures, createSession, deleteExpiredSessions, deleteSession, hashToken, hasValidSession,
   lockStatus, recordFailure, SESSION_MS,
 } from './authRepo'
 
@@ -66,5 +66,17 @@ describe('登入失敗鎖定', () => {
     await failFiveTimes(['10:00', '10:00', '10:00', '10:00', '10:00'])
     await clearFailures(db)
     expect(await lockStatus(db, at('10:01'))).toEqual({ locked: false })
+  })
+
+  it('占名額：前 5 次占到並各記一筆失敗，第 6 次被鎖且不再記錄', async () => {
+    for (let i = 0; i < 5; i++) expect(await claimAttempt(db, at('10:00'))).toEqual({ locked: false })
+    expect(await claimAttempt(db, at('10:05'))).toEqual({ locked: true, retryAfterSeconds: 600 })
+    expect(await lockStatus(db, at('10:05'))).toEqual({ locked: true, retryAfterSeconds: 600 })
+    expect((db.sqlite.prepare('SELECT COUNT(*) AS n FROM login_failures').get() as { n: number }).n).toBe(5)
+  })
+
+  it('占名額：視窗外的舊失敗不算', async () => {
+    await failFiveTimes(['10:00', '10:00', '10:00', '10:00', '10:00'])
+    expect(await claimAttempt(db, at('10:16'))).toEqual({ locked: false })
   })
 })

@@ -4,8 +4,7 @@ import { Hono } from 'hono'
 import { deleteCookie, getCookie, setCookie } from 'hono/cookie'
 import type { AppEnv } from '../env'
 import {
-  clearFailures, createSession, deleteExpiredSessions, deleteSession, hasValidSession, lockStatus,
-  recordFailure, SESSION_MS,
+  claimAttempt, clearFailures, createSession, deleteExpiredSessions, deleteSession, hasValidSession, SESSION_MS,
 } from './authRepo'
 import { verifyPassword } from './password'
 
@@ -40,14 +39,11 @@ export function authRoutes(now: Clock) {
 
     const db = c.env.DB
     const time = now()
-    // 鎖定中不檢查密碼，也不再記錄失敗
-    const lock = await lockStatus(db, time)
+    // 先占名額（等於先記一筆失敗）再檢查密碼；鎖定中不檢查密碼，也不再記錄失敗
+    const lock = await claimAttempt(db, time)
     if (lock.locked) return c.json({ error: 'locked', retryAfterSeconds: lock.retryAfterSeconds }, 429)
 
-    if (!(await verifyPassword(password, stored))) {
-      await recordFailure(db, time)
-      return c.json({ error: 'wrong_password' }, 401)
-    }
+    if (!(await verifyPassword(password, stored))) return c.json({ error: 'wrong_password' }, 401)
 
     await Promise.all([clearFailures(db), deleteExpiredSessions(db, time)])
     const token = await createSession(db, time)

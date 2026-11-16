@@ -64,3 +64,19 @@ export async function lockStatus(db: D1Database, now: number): Promise<LockStatu
   if (!row || row.count < MAX_FAILURES || row.earliest === null) return { locked: false }
   return { locked: true, retryAfterSeconds: Math.ceil((row.earliest + LOCK_WINDOW_MS - now) / 1000) }
 }
+
+/**
+ * 檢查密碼前先占一個嘗試名額：視窗內失敗未滿 5 次才寫入一筆失敗紀錄（同一個 SQL 敘述，不會被同時的請求插隊）。
+ * 先「讀次數、驗密碼、再記失敗」的話，同時送出的請求都會讀到未滿 5 次而全部驗證密碼，鎖定就被繞過。
+ * 占到名額回 unlocked；密碼正確時由呼叫端清除失敗紀錄（連同這一筆）。
+ */
+export async function claimAttempt(db: D1Database, now: number): Promise<LockStatus> {
+  const result = await db
+    .prepare('INSERT INTO login_failures (at) SELECT ? WHERE (SELECT COUNT(*) FROM login_failures WHERE at > ?) < ?')
+    .bind(now, now - LOCK_WINDOW_MS, MAX_FAILURES)
+    .run()
+  if (result.meta.changes > 0) return { locked: false }
+  const lock = await lockStatus(db, now)
+  // 沒占到名額卻查到未鎖定：中間剛好有人登入成功清掉紀錄，回報 1 秒後再試即可
+  return lock.locked ? lock : { locked: true, retryAfterSeconds: 1 }
+}

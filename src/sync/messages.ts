@@ -1,5 +1,5 @@
 // D11：同步狀態列與登入錯誤的顯示文字（純函式）
-import type { LoginResult } from './syncClient'
+import type { LoginResult, LogoutResult } from './syncClient'
 
 export type SyncStatus = 'checking' | 'logged-out' | 'syncing' | 'synced' | 'offline' | 'error'
 
@@ -29,5 +29,17 @@ export function loginErrorText(result: LoginResult): string | null {
       return '目前離線，無法登入'
     case 'error':
       return '登入失敗，請稍後再試'
+  }
+}
+
+/** 登出失敗的訊息；登出成功回 null */
+export function logoutErrorText(result: LogoutResult): string | null {
+  switch (result) {
+    case 'ok':
+      return null
+    case 'offline':
+      return '目前離線，無法登出'
+    case 'error':
+      return '登出失敗，請稍後再試'
   }
 }

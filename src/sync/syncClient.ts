@@ -1,5 +1,6 @@
 // D10：前端同步用戶端。fetch、連線狀態、資料庫都由參數注入，方便測試
 import type { ProgressRepo } from '../progress/progressRepo'
+import { isValidSyncRecord } from '../../worker/sync/validate'
 import type { SyncRecord } from './merge'
 
 /** 一次最多送出的紀錄數（和伺服器的上限相同） */
@@ -19,6 +20,7 @@ export type LoginResult =
   | { result: 'error' }
 
 export type SessionResult = 'logged-in' | 'logged-out' | 'offline' | 'error'
+export type LogoutResult = 'ok' | 'offline' | 'error'
 
 export type SyncClientDeps = {
   /** 每次使用時才取得資料庫；資料庫打不開時例外發生在 syncOnce 裡，由呼叫端處理 */
@@ -54,7 +56,8 @@ export function createSyncClient({ repo: getRepo, fetch, isOnline }: SyncClientD
   async function syncOnce(): Promise<SyncOutcome> {
     if (!isOnline()) return { result: 'offline', received: false }
     const repo = getRepo()
-    let pending = await repo.pendingChanges()
+    // 伺服器只要有一筆不合格就整批拒收；不合格的留在本機（仍是未同步），不送出，以免同步永遠失敗
+    let pending = (await repo.pendingChanges()).filter(isValidSyncRecord)
     let cursor = await repo.getCursor()
     let received = false
 
@@ -92,8 +95,12 @@ export function createSyncClient({ repo: getRepo, fetch, isOnline }: SyncClientD
     return { result: 'error' }
   }
 
-  async function logout(): Promise<void> {
-    await request('/api/auth/logout', { method: 'POST' })
+  /** 伺服器確認登出才算登出；沒連上時 Cookie 和工作階段都還在，下次開頁會自動登入 */
+  async function logout(): Promise<LogoutResult> {
+    if (!isOnline()) return 'offline'
+    const res = await request('/api/auth/logout', { method: 'POST' })
+    if (!res) return 'offline'
+    return res.ok ? 'ok' : 'error'
   }
 
   async function checkSession(): Promise<SessionResult> {

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { loginErrorText, statusText, type SyncStatus } from './messages'
+import { loginErrorText, logoutErrorText, statusText, type SyncStatus } from './messages'
 
 describe('同步狀態列文字', () => {
   it.each<[SyncStatus, string]>([
@@ -25,5 +25,13 @@ describe('登入錯誤文字', () => {
     expect(loginErrorText({ result: 'wrong_password' })).toBe('密碼錯誤')
     expect(loginErrorText({ result: 'offline' })).toBe('目前離線，無法登入')
     expect(loginErrorText({ result: 'error' })).toBe('登入失敗，請稍後再試')
+  })
+})
+
+describe('登出錯誤文字', () => {
+  it('伺服器沒確認登出時說明原因', () => {
+    expect(logoutErrorText('ok')).toBeNull()
+    expect(logoutErrorText('offline')).toBe('目前離線，無法登出')
+    expect(logoutErrorText('error')).toBe('登出失敗，請稍後再試')
   })
 })

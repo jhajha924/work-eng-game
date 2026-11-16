@@ -42,6 +42,11 @@ function parseRecord(v: unknown): SyncRecord | string {
   }
 }
 
+/** 單筆紀錄是否符合伺服器規則；前端送出前用同一套規則過濾，一筆不合格才不會擋住整批同步 */
+export function isValidSyncRecord(v: unknown): boolean {
+  return typeof parseRecord(v) !== 'string'
+}
+
 export function parseSyncRequest(body: unknown): ParseResult {
   if (!isObject(body)) return { ok: false, reason: '請求不是物件' }
   const { since, changes } = body
