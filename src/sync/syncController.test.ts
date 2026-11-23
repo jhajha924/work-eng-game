@@ -1,6 +1,7 @@
 // 同步控制器：狀態列的狀態變化、登入登出、各種觸發時機（不需 React）
 import 'fake-indexeddb/auto'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { createCardRepo } from '../cards/cardRepo'
 import { createDb, type ProgressDb } from '../progress/db'
 import { createProgressRepo, type ProgressRepo } from '../progress/progressRepo'
 import type { SyncStatus } from './messages'
@@ -170,7 +171,8 @@ describe('登出保留本機紀錄（真的本機資料庫＋同步用戶端）'
       const { changes } = JSON.parse(String(init?.body)) as { changes: unknown[] }
       return json({ cursor: changes.length, changes, hasMore: false })
     })
-    const client = createSyncClient({ repo: () => repo, fetch: fetch as typeof globalThis.fetch, isOnline: () => true })
+    const cards = createCardRepo(db)
+    const client = createSyncClient({ repo: () => repo, cards: () => cards, fetch: fetch as typeof globalThis.fetch, isOnline: () => true })
     const statuses: SyncStatus[] = []
     const controller = createSyncController({
       client,

@@ -2,9 +2,11 @@
 import { weekdayIndex } from '../plan/dates'
 import type { TodayView } from '../progress/today'
 import { MINIMUM_XP } from '../progress/xp'
-import { useSync } from '../sync/useSync'
+import { todayEntryLabel } from '../cards/queue'
+import { useFlashcards } from '../cards/useFlashcards'
+import type { SyncApi } from '../sync/useSync'
 import { SyncBar } from './SyncBar'
-import { getRepo, useTodayProgress } from './useTodayProgress'
+import { useTodayProgress } from './useTodayProgress'
 import './TodayPage.css'
 
 const WEEKDAYS = ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日']
@@ -20,12 +22,14 @@ function progressLabel(view: Extract<TodayView, { status: 'active' }>): string {
   return `第 ${view.dayNumber} 天｜第 ${view.week?.index} 週・${view.levelName}`
 }
 
-export function TodayPage() {
-  const sync = useSync(getRepo)
+export function TodayPage({ sync }: { sync: SyncApi }) {
   const { today, loading, busy, error, view, tasks, noviceDescription, stats, minimumOn, toggleTask, toggleMinimum } =
     useTodayProgress({ remoteVersion: sync.remoteVersion, onWrite: sync.notifyLocalChange })
   // 載入中或寫入中都停用，避免用舊狀態連點
   const disabled = loading || busy
+  // 單字卡入口：今天的佇列張數（從單字卡頁回來時重新載入，張數會更新）
+  const cards = useFlashcards({ remoteVersion: sync.remoteVersion })
+  const cardsLabel = cards.loading || cards.error ? null : todayEntryLabel(cards.queue.length, cards.deckSize)
 
   return (
     <main className="today">
@@ -102,6 +106,11 @@ export function TodayPage() {
                 </li>
               ))}
             </ul>
+            {cardsLabel && (
+              <a className="cards-entry" href="#/cards">
+                {cardsLabel}
+              </a>
+            )}
             <button
               type="button"
               className="minimum"

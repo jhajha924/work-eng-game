@@ -5,9 +5,24 @@ import { validatePack } from './validatePack'
 
 const valid = (): ContentPack => makePack('ok', [makeLevel('L1', 3, 3), makeLevel('L2', 2, 2)], 2)
 
+/** 帶單字與句型的內容包 */
+const withCards = (): ContentPack => ({
+  ...valid(),
+  vocab: [{ category: 'A 會議流程', words: [{ en: 'agenda', zh: '議程', example: 'Let me share the agenda.' }, { en: 'follow up', zh: '後續追蹤' }] }],
+  patterns: [{ scenario: '開場', items: [{ en: 'Shall we get started?', zh: '我們開始吧？' }] }],
+})
+
 describe('內容包結構', () => {
   it('完整的內容包通過檢查', () => {
     expect(validatePack(valid())).toEqual({ ok: true })
+    expect(validatePack(withCards())).toEqual({ ok: true })
+  })
+
+  it('沒有單字與句型的內容包仍然有效', () => {
+    const p = valid()
+    expect('vocab' in p).toBe(false)
+    expect('patterns' in p).toBe(false)
+    expect(validatePack(p)).toEqual({ ok: true })
   })
 })
 
@@ -27,6 +42,20 @@ describe('結構檢查回報錯誤', () => {
     ['某個任務模板 xp 為 -1', (p) => ({ ...p, lightDayTemplate: { ...p.lightDayTemplate, xp: -1 } })],
     ['某個任務模板 xp 為 1.5', (p) => ({ ...p, dailyTemplates: p.dailyTemplates.map((t, i) => (i === 0 ? { ...t, xp: 1.5 } : t)) })],
     ['某個任務模板缺少 xp', (p) => ({ ...p, bossDayOverrides: { '4': { key: 'boss', title: '頭目戰', minutes: 60 } } })],
+    ['vocab 不是陣列', () => ({ ...withCards(), vocab: { category: 'A' } })],
+    ['某個單字的 zh 為空字串', () => {
+      const p = withCards()
+      return { ...p, vocab: [{ category: 'A 會議流程', words: [{ en: 'agenda', zh: '' }] }] }
+    }],
+    ['兩個單字 follow up 與 Follow-up 代號相同', () => ({
+      ...withCards(),
+      vocab: [
+        { category: 'A', words: [{ en: 'follow up', zh: '後續追蹤' }] },
+        { category: 'B', words: [{ en: 'Follow-up', zh: '後續' }] },
+      ],
+    })],
+    ['某個句型的 en 為 "..."（代號為空）', () => ({ ...withCards(), patterns: [{ scenario: '開場', items: [{ en: '...', zh: '……' }] }] })],
+    ['某個單字的 example 為數字', () => ({ ...withCards(), vocab: [{ category: 'A', words: [{ en: 'agenda', zh: '議程', example: 3 }] }] })],
   ])('%s → ok: false', (_name, mutate) => {
     const result = validatePack(mutate(valid()))
     expect(result.ok).toBe(false)

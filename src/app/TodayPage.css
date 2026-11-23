@@ -143,6 +143,20 @@
   cursor: pointer;
 }
 
+.cards-entry {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  margin-top: 12px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: var(--accent);
+  color: var(--surface);
+  font-weight: 600;
+  text-decoration: none;
+}
+
 .minimum[aria-pressed='true'] {
   border-style: solid;
   background: var(--accent-bg);

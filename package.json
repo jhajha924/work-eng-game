@@ -16,7 +16,8 @@
     "dexie": "^4.4.7",
     "hono": "^4.13.16",
     "react": "^19.2.8",
-    "react-dom": "^19.2.8"
+    "react-dom": "^19.2.8",
+    "ts-fsrs": "5.4.2"
   },
   "devDependencies": {
     "@cloudflare/vite-plugin": "^1.64.0",

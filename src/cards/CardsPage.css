@@ -1,0 +1,106 @@
+/* 單字卡頁：手機優先，最小寬度 360px 不出現橫向捲動；按鈕可點區域至少 44×44px */
+.cards {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cards-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.cards-back {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  min-width: 44px;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.cards-count {
+  margin: 0;
+  color: var(--text-h);
+  font-weight: 600;
+}
+
+.cards-error {
+  margin: 0;
+  padding: 12px;
+  border-radius: 12px;
+  background: var(--danger-bg);
+  color: var(--danger);
+}
+
+.cards-message {
+  margin: 0;
+  color: var(--text-h);
+}
+
+.flashcard {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px 16px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+.flashcard p {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.flashcard-group {
+  font-size: 0.85rem;
+}
+
+.flashcard-front {
+  font-size: 1.4rem;
+  color: var(--text-h);
+}
+
+.flashcard-back {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.flashcard-example {
+  font-style: italic;
+}
+
+.flip,
+.rating {
+  min-height: 44px;
+  min-width: 44px;
+  padding: 8px 12px;
+  border: 1px solid var(--accent);
+  border-radius: 12px;
+  background: transparent;
+  color: var(--accent);
+  font: inherit;
+  cursor: pointer;
+}
+
+.flip {
+  background: var(--accent-bg);
+}
+
+.ratings {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.rating:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}

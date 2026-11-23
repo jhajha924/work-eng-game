@@ -25,7 +25,7 @@
 
 ### Requirement: FSRS 評分
 
-`reviewCard(state, rating, now)` SHALL 用 ts-fsrs 5.4.2 的預設參數、關閉隨機擾動（`enable_fuzz` 為 false）計算新的卡片狀態，並回傳 `{ state, log }`。`state` 為 null 時視為新卡，新狀態的 `introducedOn` SHALL 為 `now` 的本地日期；不是新卡時 `introducedOn` 保持原值。`rating` 為 1（重來）、2（困難）、3（良好）、4（簡單）。新狀態的 `updatedAt` SHALL 為 `now` 與原本 `updatedAt` 加 1 毫秒兩者較晚者。相同的輸入 MUST 得到相同的結果。
+`reviewCard(cardId, state, rating, now)` SHALL 用 ts-fsrs 5.4.2 的預設參數、關閉隨機擾動（`enable_fuzz` 為 false）計算新的卡片狀態，並回傳 `{ state, log }`。`state` 為 null 時視為新卡，新狀態的 `introducedOn` SHALL 為 `now` 的本地日期；不是新卡時 `introducedOn` 保持原值。`rating` 為 1（重來）、2（困難）、3（良好）、4（簡單）。新狀態的 `updatedAt` SHALL 為 `now` 與原本 `updatedAt` 加 1 毫秒兩者較晚者。相同的輸入 MUST 得到相同的結果。
 
 #### Scenario: 新卡評「良好」
 

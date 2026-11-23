@@ -1,6 +1,7 @@
 // 「取消打勾也會同步」：兩個本機資料庫透過真正的 Worker 程式（D1 用 node:sqlite 替身）互相同步
 import 'fake-indexeddb/auto'
 import { beforeAll, describe, expect, it } from 'vitest'
+import { createCardRepo } from '../../src/cards/cardRepo'
 import { createDb } from '../../src/progress/db'
 import { createProgressRepo } from '../../src/progress/progressRepo'
 import { computeStats } from '../../src/progress/stats'
@@ -33,7 +34,8 @@ async function device(name: string) {
     if (match) cookie = `weg_session=${match[1]}`
     return res
   }) as typeof globalThis.fetch
-  const client = createSyncClient({ repo: () => repo, fetch, isOnline: () => true })
+  const cards = createCardRepo(db)
+  const client = createSyncClient({ repo: () => repo, cards: () => cards, fetch, isOnline: () => true })
   return { db, repo, client }
 }
 

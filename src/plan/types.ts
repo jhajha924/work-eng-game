@@ -20,6 +20,13 @@ export type Level = {
 
 export type NoviceDay = { title: string; description: string; xp: number; icon: string }
 
+/** 單字：英文、中文、例句（選填） */
+export type VocabWord = { en: string; zh: string; example?: string }
+export type VocabGroup = { category: string; words: VocabWord[] }
+/** 句型：英文、中文 */
+export type PatternItem = { en: string; zh: string }
+export type PatternGroup = { scenario: string; items: PatternItem[] }
+
 export type ContentPack = {
   id: string
   name: string
@@ -31,6 +38,10 @@ export type ContentPack = {
   /** 頭目戰週的覆寫任務，鍵為 "0"～"6" */
   bossDayOverrides: Record<string, DayTemplate>
   lightDayTemplate: DayTemplate
+  /** 單字卡用的單字（選填，依類別分組；類別名稱對應週主題的 vocabCategory） */
+  vocab?: VocabGroup[]
+  /** 單字卡用的句型（選填，依情境分組） */
+  patterns?: PatternGroup[]
 }
 
 export type PlanLength = { months: 6 | 9 | 12 | 18 } | { endDate: string }

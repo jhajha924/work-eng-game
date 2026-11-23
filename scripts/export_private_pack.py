@@ -40,7 +40,39 @@ def xp_of(text: str) -> int:
     return int(m.group()) if m else 0
 
 
-def build_pack(plan) -> dict:
+def card_slug(en: str) -> str:
+    """和 App 的 cardSlug 相同：轉小寫、連續的非英數字元換成 -、去掉頭尾的 -"""
+    return re.sub(r"[^a-z0-9]+", "-", en.lower()).strip("-")
+
+
+def build_vocab(plan, skipped: list) -> list:
+    """VOCAB：類別 → (英文, 中文, 例句)；空字串的例句不輸出。
+    同一個字在多個類別出現（例如新手村的字在主題類別再出現一次）時只保留第一次，略過的字記在 skipped"""
+    groups = []
+    seen = set()
+    for category, words in plan.VOCAB.items():
+        items = []
+        for en, zh, example in words:
+            slug = card_slug(en)
+            if slug in seen:
+                skipped.append(f"{category}：{en}")
+                continue
+            seen.add(slug)
+            word = {"en": en, "zh": zh}
+            if example:
+                word["example"] = example
+            items.append(word)
+        groups.append({"category": category, "words": items})
+    return groups
+
+
+def build_patterns(plan) -> list:
+    """PATTERNS：[(情境, [(英文, 中文)])]"""
+    return [{"scenario": scenario, "items": [{"en": en, "zh": zh} for en, zh in items]}
+            for scenario, items in plan.PATTERNS]
+
+
+def build_pack(plan, skipped: list) -> dict:
     levels = []
     for i, (lv_id, name, icon, goal, week_nos) in enumerate(plan.LEVELS):
         weeks = [{"title": plan.WEEKS[w][0], "focus": plan.WEEKS[w][1], "vocabCategory": plan.WEEKS[w][2]}
@@ -59,6 +91,8 @@ def build_pack(plan) -> dict:
         "bossDayOverrides": {str(k): {"key": BOSS_KEYS[k], "title": t, "minutes": m, "xp": XP[BOSS_KEYS[k]]}
                              for k, (t, m) in plan.BOSS_DAILY.items()},
         "lightDayTemplate": LIGHT,
+        "vocab": build_vocab(plan, skipped),
+        "patterns": build_patterns(plan),
     }
 
 
@@ -68,11 +102,17 @@ def main() -> None:
     src = pathlib.Path(sys.argv[1])
     if not src.is_file():
         sys.exit(f"找不到原計畫檔案：{src}")
-    pack = build_pack(load_plan(src))
+    skipped: list = []
+    pack = build_pack(load_plan(src), skipped)
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(pack, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     weeks = sum(len(lv["weeks"]) for lv in pack["levels"])
-    print(f"ok {OUT.relative_to(ROOT)}：新手村 {len(pack['novice'])} 天、{len(pack['levels'])} 關、{weeks} 週")
+    words = sum(len(g["words"]) for g in pack["vocab"])
+    patterns = sum(len(g["items"]) for g in pack["patterns"])
+    print(f"ok {OUT.relative_to(ROOT)}：新手村 {len(pack['novice'])} 天、{len(pack['levels'])} 關、{weeks} 週、"
+          f"單字 {words} 個、句型 {patterns} 句")
+    if skipped:
+        print(f"略過重複的單字 {len(skipped)} 個（保留第一次出現的）：" + "、".join(skipped))
 
 
 if __name__ == "__main__":

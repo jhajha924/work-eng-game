@@ -1,26 +1,19 @@
 // D8：今日任務頁的狀態都在這裡；畫面元件只負責顯示
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { ScheduledTask } from '../plan/types'
-import { createDb } from '../progress/db'
 import { minimumLogFor, minimumLogId, taskLogFor, withLog, withoutLog } from '../progress/logs'
-import { createProgressRepo, type ProgressRepo } from '../progress/progressRepo'
 import { computeStats } from '../progress/stats'
 import { findToday, localToday } from '../progress/today'
 import type { TaskLog } from '../progress/types'
 import { taskXp } from '../progress/xp'
 import { defaultPack, defaultSchedule } from './defaultPlan'
+import { getRepo } from './storage'
 
 export const DB_ERROR_MESSAGE = '無法存取本機資料庫，打勾紀錄無法儲存'
 
 /** 畫面要顯示的任務：排程任務＋經驗值＋是否已完成 */
 export type TodayTask = ScheduledTask & { xp: number; done: boolean }
 
-// 整個 App 共用一個資料庫連線（同步也用同一個）
-let repo: ProgressRepo | null = null
-export function getRepo(): ProgressRepo {
-  repo ??= createProgressRepo(createDb())
-  return repo
-}
 
 export type TodayProgressOptions = {
   now?: Date

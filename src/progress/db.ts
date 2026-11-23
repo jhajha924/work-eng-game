@@ -1,5 +1,6 @@
-// 本機資料庫（D6：Dexie；版本 2 加上同步用欄位與 meta 資料表）
+// 本機資料庫（D6：Dexie；版本 2 加上同步用欄位與 meta 資料表；版本 3 加上單字卡的兩張資料表）
 import Dexie, { type EntityTable } from 'dexie'
+import type { ReviewLog, StoredCardState } from '../cards/types'
 import type { StoredLog, TaskLog } from './types'
 
 export type { StoredLog, TaskLog }
@@ -14,12 +15,15 @@ export type MetaEntry = { key: string; value: number }
 export type ProgressDb = Dexie & {
   taskLogs: EntityTable<StoredLog, 'id'>
   meta: EntityTable<MetaEntry, 'key'>
+  cardStates: EntityTable<StoredCardState, 'id'>
+  reviewLogs: EntityTable<ReviewLog, 'id'>
 }
 
 /**
  * 開啟資料庫。
  * 版本 1：taskLogs 以任務 id 為主鍵、建立 date 索引（保留定義，Dexie 才能從舊版升級）。
  * 版本 2：taskLogs 加 dirty 索引、新增 meta；舊紀錄補上同步欄位並標成待上傳。
+ * 版本 3：新增 cardStates（卡片狀態）與 reviewLogs（複習紀錄）；原有資料不用搬。
  */
 export function createDb(name: string = DB_NAME): ProgressDb {
   const db = new Dexie(name) as ProgressDb
@@ -36,5 +40,6 @@ export function createDb(name: string = DB_NAME): ProgressDb {
           log.dirty = 1
         }),
     )
+  db.version(3).stores({ cardStates: 'id, due, dirty', reviewLogs: 'id, cardId, reviewedAt' })
   return db
 }

@@ -89,5 +89,171 @@
     "4": { "key": "boss-battle", "title": "⚔️ 頭目戰：依本週任務錄音或對 AI 實戰", "minutes": 60, "xp": 100 },
     "5": { "key": "boss-retry", "title": "⚔️ 頭目戰補考＋用評分表自評", "minutes": 90, "xp": 15 }
   },
-  "lightDayTemplate": { "key": "light", "title": "輕量日：單字卡＋跟讀 5 分鐘", "minutes": 10, "xp": 10 }
+  "lightDayTemplate": { "key": "light", "title": "輕量日：單字卡＋跟讀 5 分鐘", "minutes": 10, "xp": 10 },
+  "vocab": [
+    {
+      "category": "新手村單字",
+      "words": [
+        {"en": "meeting", "zh": "會議", "example": "The meeting starts at ten."},
+        {"en": "agenda", "zh": "議程", "example": "Let me share the agenda first."},
+        {"en": "update", "zh": "進度報告", "example": "Here is a quick update."},
+        {"en": "deadline", "zh": "截止日", "example": "The deadline is next Friday."},
+        {"en": "schedule", "zh": "時程", "example": "Can we check the schedule?"},
+        {"en": "issue", "zh": "問題", "example": "We found an issue in the report."},
+        {"en": "task", "zh": "工作項目", "example": "This task is almost done."},
+        {"en": "progress", "zh": "進度", "example": "We made good progress this week."},
+        {"en": "customer", "zh": "客戶", "example": "The customer asked for a new feature."},
+        {"en": "confirm", "zh": "確認", "example": "Could you confirm the date?"}
+      ]
+    },
+    {
+      "category": "A 會議流程",
+      "words": [
+        {"en": "attendee", "zh": "與會者", "example": "Every attendee got the slides."},
+        {"en": "minutes", "zh": "會議紀錄", "example": "I will send the minutes later."},
+        {"en": "action item", "zh": "待辦事項", "example": "Let's review the action items."},
+        {"en": "wrap up", "zh": "收尾", "example": "Let's wrap up the meeting."},
+        {"en": "on mute", "zh": "靜音中", "example": "Sorry, I was on mute."},
+        {"en": "share my screen", "zh": "分享畫面", "example": "Let me share my screen."},
+        {"en": "next steps", "zh": "下一步", "example": "What are the next steps?"},
+        {"en": "discussion", "zh": "討論", "example": "We need more discussion on this."},
+        {"en": "question", "zh": "問題；提問", "example": "Does anyone have a question?"},
+        {"en": "summary", "zh": "總結", "example": "Here is a short summary."}
+      ]
+    },
+    {
+      "category": "B 進度與排程",
+      "words": [
+        {"en": "on track", "zh": "照進度進行", "example": "The project is on track."},
+        {"en": "behind schedule", "zh": "進度落後", "example": "We are two days behind schedule."},
+        {"en": "milestone", "zh": "里程碑", "example": "We reached the first milestone."},
+        {"en": "estimate", "zh": "估計", "example": "My estimate is three days."},
+        {"en": "postpone", "zh": "延後", "example": "We need to postpone the release."},
+        {"en": "priority", "zh": "優先順序", "example": "This bug is our top priority."},
+        {"en": "blocker", "zh": "阻礙", "example": "Is there any blocker?"},
+        {"en": "timeline", "zh": "時間表", "example": "Let's agree on the timeline."},
+        {"en": "in progress", "zh": "進行中", "example": "The fix is in progress."},
+        {"en": "complete", "zh": "完成", "example": "The testing is complete."}
+      ]
+    },
+    {
+      "category": "C 業務系統與製造",
+      "words": [
+        {"en": "order", "zh": "訂單", "example": "The order was shipped today."},
+        {"en": "invoice", "zh": "發票", "example": "Please check the invoice number."},
+        {"en": "inventory", "zh": "庫存", "example": "Our inventory is low."},
+        {"en": "shipment", "zh": "出貨", "example": "The shipment will arrive on Monday."},
+        {"en": "supplier", "zh": "供應商", "example": "We contacted the supplier."},
+        {"en": "purchase", "zh": "採購", "example": "The purchase was approved."},
+        {"en": "warehouse", "zh": "倉庫", "example": "The items are in the warehouse."},
+        {"en": "production line", "zh": "產線", "example": "The production line stopped for an hour."},
+        {"en": "material", "zh": "物料", "example": "We are waiting for the material."},
+        {"en": "quality check", "zh": "品質檢查", "example": "Every batch needs a quality check."}
+      ]
+    },
+    {
+      "category": "D 軟體開發",
+      "words": [
+        {"en": "bug", "zh": "程式錯誤", "example": "I fixed the bug yesterday."},
+        {"en": "deploy", "zh": "部署", "example": "We deploy every Friday."},
+        {"en": "code review", "zh": "程式審查", "example": "Can you do a code review?"},
+        {"en": "database", "zh": "資料庫", "example": "The data is saved in the database."},
+        {"en": "test case", "zh": "測試案例", "example": "I added two test cases."},
+        {"en": "requirement", "zh": "需求", "example": "The requirement changed last week."},
+        {"en": "feature", "zh": "功能", "example": "This feature is ready to test."},
+        {"en": "release", "zh": "上線版本", "example": "The release includes three fixes."},
+        {"en": "rollback", "zh": "回復版本", "example": "We had to do a rollback."},
+        {"en": "log", "zh": "紀錄檔", "example": "Let me check the log."}
+      ]
+    },
+    {
+      "category": "E 形容與語氣",
+      "words": [
+        {"en": "urgent", "zh": "緊急的", "example": "This request is urgent."},
+        {"en": "stable", "zh": "穩定的", "example": "The system is stable now."},
+        {"en": "flexible", "zh": "有彈性的", "example": "Our schedule is flexible."},
+        {"en": "reasonable", "zh": "合理的", "example": "That sounds reasonable."},
+        {"en": "slightly", "zh": "稍微", "example": "The cost is slightly higher."},
+        {"en": "probably", "zh": "可能", "example": "It will probably take a week."},
+        {"en": "clear", "zh": "清楚的", "example": "Is that clear to everyone?"},
+        {"en": "concerned", "zh": "擔心的", "example": "I'm a bit concerned about the time."},
+        {"en": "efficient", "zh": "有效率的", "example": "The new process is more efficient."},
+        {"en": "simple", "zh": "簡單的", "example": "Let's keep it simple."}
+      ]
+    },
+    {
+      "category": "F 數字日期",
+      "words": [
+        {"en": "percent", "zh": "百分比", "example": "Sales grew by ten percent."},
+        {"en": "quarter", "zh": "季度", "example": "Our goal for this quarter is clear."},
+        {"en": "half", "zh": "一半", "example": "Half of the tests passed."},
+        {"en": "double", "zh": "兩倍", "example": "The traffic will double."},
+        {"en": "time zone", "zh": "時區", "example": "We are in different time zones."},
+        {"en": "weekday", "zh": "平日", "example": "The office is open on weekdays."},
+        {"en": "by Friday", "zh": "星期五前", "example": "Please reply by Friday."},
+        {"en": "total", "zh": "總計", "example": "The total is five hundred."},
+        {"en": "average", "zh": "平均", "example": "The average time is two seconds."},
+        {"en": "decimal point", "zh": "小數點", "example": "Put the decimal point here."}
+      ]
+    },
+    {
+      "category": "G 職涯對話",
+      "words": [
+        {"en": "experience", "zh": "經驗", "example": "I have experience in testing."},
+        {"en": "responsible for", "zh": "負責", "example": "I'm responsible for the report system."},
+        {"en": "strength", "zh": "優點", "example": "My strength is solving problems."},
+        {"en": "teamwork", "zh": "團隊合作", "example": "Teamwork is important to me."},
+        {"en": "achievement", "zh": "成就", "example": "My biggest achievement was a faster process."},
+        {"en": "challenge", "zh": "挑戰", "example": "It was a big challenge for us."},
+        {"en": "goal", "zh": "目標", "example": "My goal is to improve my English."},
+        {"en": "background", "zh": "背景", "example": "Let me tell you about my background."},
+        {"en": "skill", "zh": "技能", "example": "I want to learn new skills."},
+        {"en": "learn", "zh": "學習", "example": "I learn something new every day."}
+      ]
+    },
+    {
+      "category": "H 動作動詞",
+      "words": [
+        {"en": "check", "zh": "檢查", "example": "I will check it right away."},
+        {"en": "send", "zh": "寄送", "example": "I'll send you the file."},
+        {"en": "explain", "zh": "解釋", "example": "Let me explain the problem."},
+        {"en": "suggest", "zh": "建議", "example": "I suggest we test it again."},
+        {"en": "agree", "zh": "同意", "example": "I agree with you."},
+        {"en": "handle", "zh": "處理", "example": "I can handle this case."},
+        {"en": "support", "zh": "支援", "example": "We will support the new team."},
+        {"en": "improve", "zh": "改善", "example": "We want to improve the speed."},
+        {"en": "arrange", "zh": "安排", "example": "I'll arrange a meeting."},
+        {"en": "remind", "zh": "提醒", "example": "Please remind me tomorrow."}
+      ]
+    }
+  ],
+  "patterns": [
+    {
+      "scenario": "開場",
+      "items": [
+        {"en": "Hi everyone, shall we get started?", "zh": "大家好，我們開始吧？"},
+        {"en": "Can everyone hear me?", "zh": "大家都聽得到我嗎？"},
+        {"en": "Today we have three topics.", "zh": "今天有三個議題。"},
+        {"en": "I'll keep it short.", "zh": "我會講簡短一點。"}
+      ]
+    },
+    {
+      "scenario": "報告進度",
+      "items": [
+        {"en": "Here is my update for this week.", "zh": "這是我這週的進度。"},
+        {"en": "We finished the first part.", "zh": "我們完成了第一部分。"},
+        {"en": "We are a little behind, but we can catch up.", "zh": "我們有點落後，但趕得上。"},
+        {"en": "The next step is testing.", "zh": "下一步是測試。"}
+      ]
+    },
+    {
+      "scenario": "確認理解",
+      "items": [
+        {"en": "Could you say that again?", "zh": "可以再說一次嗎？"},
+        {"en": "Do you mean the second option?", "zh": "你是指第二個選項嗎？"},
+        {"en": "Let me make sure I understand.", "zh": "讓我確認一下我的理解。"},
+        {"en": "Could you speak a little slower?", "zh": "可以說慢一點嗎？"}
+      ]
+    }
+  ]
 }

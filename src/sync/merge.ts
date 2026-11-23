@@ -12,8 +12,12 @@ export const toSyncRecord: (log: StoredLog) => SyncRecord = toTaskLog
 /**
  * 回傳要寫入本機的紀錄；回傳 null 表示保留本機版本。
  * 本機沒有或已同步（dirty 0）→ 用伺服器版本；本機有未同步的修改 → 伺服器嚴格較新才覆蓋。
+ * 打勾紀錄與卡片狀態共用這個規則（任何有 updatedAt 與 dirty 的紀錄）。
  */
-export function mergeRemote(local: StoredLog | undefined, remote: SyncRecord): StoredLog | null {
+export function mergeRemote<T extends { updatedAt: string }>(
+  local: (T & { dirty: 0 | 1 }) | undefined,
+  remote: T,
+): (T & { dirty: 0 | 1 }) | null {
   if (local && local.dirty === 1 && Date.parse(remote.updatedAt) <= Date.parse(local.updatedAt)) return null
   return { ...remote, dirty: 0 }
 }

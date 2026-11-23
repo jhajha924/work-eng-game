@@ -1,4 +1,5 @@
 // 內容包結構檢查：一次回報所有違規，不在第一個錯誤就停
+import { cardSlug } from '../cards/deck'
 import type { ContentPack } from './types'
 
 export type PackValidation = { ok: true } | { ok: false; errors: string[] }
@@ -20,6 +21,51 @@ function checkTemplate(t: unknown, where: string, errors: string[]): void {
   if (typeof t.xp !== 'number' || !Number.isInteger(t.xp) || t.xp < 0) {
     errors.push(`${where}：xp 必須是大於等於 0 的整數`)
   }
+}
+
+/**
+ * 檢查 vocab 或 patterns（選填）：每組要有名稱（category／scenario），組內清單（words／items）
+ * 的每張卡要有英文、中文，同一種卡片的代號不可為空也不可重複。
+ */
+function checkCardGroups(value: unknown, field: 'vocab' | 'patterns', errors: string[]): void {
+  if (value === undefined) return
+  if (!Array.isArray(value)) {
+    errors.push(`${field} 必須是陣列`)
+    return
+  }
+  const nameKey = field === 'vocab' ? 'category' : 'scenario'
+  const listKey = field === 'vocab' ? 'words' : 'items'
+  const seen = new Set<string>()
+  value.forEach((group: unknown, i) => {
+    const where = `${field}[${i}]`
+    if (!isObj(group)) {
+      errors.push(`${where}：必須是物件`)
+      return
+    }
+    if (!isNonEmptyString(group[nameKey])) errors.push(`${where}：${nameKey} 不可為空`)
+    const list = group[listKey]
+    if (!Array.isArray(list)) {
+      errors.push(`${where}：${listKey} 必須是陣列`)
+      return
+    }
+    list.forEach((card: unknown, j) => {
+      const at = `${where}.${listKey}[${j}]`
+      if (!isObj(card)) {
+        errors.push(`${at}：必須是物件`)
+        return
+      }
+      if (!isNonEmptyString(card.zh)) errors.push(`${at}：zh 不可為空`)
+      if (card.example !== undefined && typeof card.example !== 'string') errors.push(`${at}：example 必須是字串`)
+      if (!isNonEmptyString(card.en)) {
+        errors.push(`${at}：en 不可為空`)
+        return
+      }
+      const slug = cardSlug(card.en)
+      if (slug === '') errors.push(`${at}：英文「${card.en}」轉不出卡片代號（至少要有一個英文字母或數字）`)
+      else if (seen.has(slug)) errors.push(`${at}：卡片代號「${slug}」和前面的卡片重複`)
+      seen.add(slug)
+    })
+  })
 }
 
 export function validatePack(pack: unknown): PackValidation {
@@ -99,6 +145,9 @@ export function validatePack(pack: unknown): PackValidation {
 
   if (pack.lightDayTemplate === undefined) errors.push('lightDayTemplate 必須存在')
   else checkTemplate(pack.lightDayTemplate, 'lightDayTemplate', errors)
+
+  checkCardGroups(pack.vocab, 'vocab', errors)
+  checkCardGroups(pack.patterns, 'patterns', errors)
 
   return errors.length === 0 ? { ok: true } : { ok: false, errors }
 }

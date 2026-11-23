@@ -59,6 +59,13 @@ describe('Worker 基礎', () => {
   })
 })
 
+describe('D1 卡片狀態資料表', () => {
+  it('套用 0002 後 card_states 存在，task_logs 不受影響', () => {
+    const rows = db.sqlite.prepare("SELECT name FROM sqlite_master WHERE type IN ('table', 'index')").all() as { name: string }[]
+    expect(rows.map((r) => r.name)).toEqual(expect.arrayContaining(['card_states', 'idx_card_states_rev', 'task_logs']))
+  })
+})
+
 describe('D1 打勾紀錄資料表', () => {
   it('在空資料庫套用遷移', () => {
     const names = db.sqlite.prepare("SELECT name FROM sqlite_master WHERE type IN ('table', 'index') ORDER BY name").all() as {
@@ -217,5 +224,46 @@ describe('需要登入的 API', () => {
     )
     expect(res.status).toBe(200)
     expect(await res.json()).toEqual({ cursor: 0, changes: [], hasMore: false })
+  })
+})
+
+describe('卡片狀態同步 API', () => {
+  const card = (id: string, overrides: Record<string, unknown> = {}) => ({
+    id, due: '2026-11-17T09:00:00.000Z', stability: 3, difficulty: 5, elapsedDays: 0, scheduledDays: 1,
+    learningSteps: 0, reps: 1, lapses: 0, state: 2, lastReview: '2026-11-16T09:00:00.000Z',
+    introducedOn: '2026-11-16', updatedAt: '2026-11-16T09:00:00.000Z', ...overrides,
+  })
+  const post = (body: string, cookie?: string) =>
+    app.request(
+      '/api/sync/cards',
+      { method: 'POST', headers: { 'Content-Type': 'application/json', ...(cookie ? { Cookie: cookie } : {}) }, body },
+      env,
+    )
+
+  it('未登入回 401', async () => {
+    const res = await post(JSON.stringify({ since: 0, changes: [card('demo:v:meeting')] }))
+    expect(res.status).toBe(401)
+    expect(await res.json()).toEqual({ error: 'unauthorized' })
+    expect(count('card_states')).toBe(0)
+  })
+
+  it('不合法的請求：一筆 state 為 7 時回 400，資料表沒有變化', async () => {
+    const cookie = cookieFrom(await login(PASSWORD))
+    const res = await post(JSON.stringify({ since: 0, changes: [card('demo:v:a'), card('demo:v:b', { state: 7 })] }), cookie)
+    expect(res.status).toBe(400)
+    expect(await res.json()).toEqual({ error: 'invalid_request' })
+    expect(count('card_states')).toBe(0)
+  })
+
+  it('不是 JSON 回 400', async () => {
+    const cookie = cookieFrom(await login(PASSWORD))
+    expect((await post('nope', cookie)).status).toBe(400)
+  })
+
+  it('登入後送出並取回', async () => {
+    const cookie = cookieFrom(await login(PASSWORD))
+    const res = await post(JSON.stringify({ since: 0, changes: [card('demo:v:meeting')] }), cookie)
+    expect(res.status).toBe(200)
+    expect(await res.json()).toEqual({ cursor: 1, changes: [card('demo:v:meeting')], hasMore: false })
   })
 })

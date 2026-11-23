@@ -1,15 +1,18 @@
 // D10：前端同步用戶端。fetch、連線狀態、資料庫都由參數注入，方便測試
-import type { ProgressRepo } from '../progress/progressRepo'
+import { isValidCardState } from '../../worker/cards/validate'
 import { isValidSyncRecord } from '../../worker/sync/validate'
-import type { SyncRecord } from './merge'
+import type { CardRepo } from '../cards/cardRepo'
+import type { CardState } from '../cards/types'
+import type { ProgressRepo } from '../progress/progressRepo'
+import type { TaskLog } from '../progress/types'
 
 /** 一次最多送出的紀錄數（和伺服器的上限相同） */
 export const BATCH_SIZE = 500
-/** 單次 syncOnce 最多發出的請求數 */
+/** 單次 syncOnce 中，每種資料最多發出的請求數 */
 export const MAX_REQUESTS = 20
 
 export type SyncResult = 'synced' | 'unauthorized' | 'offline' | 'error'
-/** received：這次是否有本機紀錄被伺服器紀錄改變（畫面要重新讀取） */
+/** received：這次是否有本機紀錄或卡片狀態被伺服器資料改變（畫面要重新讀取） */
 export type SyncOutcome = { result: SyncResult; received: boolean }
 
 export type LoginResult =
@@ -25,19 +28,30 @@ export type LogoutResult = 'ok' | 'offline' | 'error'
 export type SyncClientDeps = {
   /** 每次使用時才取得資料庫；資料庫打不開時例外發生在 syncOnce 裡，由呼叫端處理 */
   repo: () => ProgressRepo
+  /** 卡片狀態的資料庫（同一個本機資料庫） */
+  cards: () => CardRepo
   fetch: typeof fetch
   isOnline: () => boolean
 }
 
-type SyncResponse = { cursor: number; changes: SyncRecord[]; hasMore: boolean }
+type SyncResponse<T> = { cursor: number; changes: T[]; hasMore: boolean }
 
-function isSyncResponse(v: unknown): v is SyncResponse {
+/** 一種要同步的資料：API 路徑、本機的讀寫、伺服器的單筆規則（打勾紀錄與卡片狀態共用同一套流程） */
+type Collection<T> = {
+  path: string
+  pendingChanges(): Promise<T[]>
+  getCursor(): Promise<number>
+  applySyncResult(sent: T[], remote: T[], cursor: number): Promise<number>
+  isValid(record: T): boolean
+}
+
+function isSyncResponse<T>(v: unknown): v is SyncResponse<T> {
   if (typeof v !== 'object' || v === null) return false
   const r = v as Record<string, unknown>
   return Number.isInteger(r.cursor) && Array.isArray(r.changes) && typeof r.hasMore === 'boolean'
 }
 
-export function createSyncClient({ repo: getRepo, fetch, isOnline }: SyncClientDeps) {
+export function createSyncClient({ repo: getRepo, cards: getCards, fetch, isOnline }: SyncClientDeps) {
   /** 送出 JSON；網路錯誤（fetch 丟出例外）回傳 null */
   async function request(path: string, init: RequestInit = {}): Promise<Response | null> {
     try {
@@ -53,25 +67,24 @@ export function createSyncClient({ repo: getRepo, fetch, isOnline }: SyncClientD
     }
   }
 
-  async function syncOnce(): Promise<SyncOutcome> {
-    if (!isOnline()) return { result: 'offline', received: false }
-    const repo = getRepo()
+  /** 同步一種資料：分批送出、hasMore 時續傳；失敗的那次請求不改本機 */
+  async function syncCollection<T>(c: Collection<T>): Promise<SyncOutcome> {
     // 伺服器只要有一筆不合格就整批拒收；不合格的留在本機（仍是未同步），不送出，以免同步永遠失敗
-    let pending = (await repo.pendingChanges()).filter(isValidSyncRecord)
-    let cursor = await repo.getCursor()
+    let pending = (await c.pendingChanges()).filter((r) => c.isValid(r))
+    let cursor = await c.getCursor()
     let received = false
 
     for (let i = 0; i < MAX_REQUESTS; i++) {
       const batch = pending.slice(0, BATCH_SIZE)
-      const res = await request('/api/sync', { method: 'POST', body: JSON.stringify({ since: cursor, changes: batch }) })
+      const res = await request(c.path, { method: 'POST', body: JSON.stringify({ since: cursor, changes: batch }) })
       if (!res) return { result: 'offline', received }
       if (res.status === 401) return { result: 'unauthorized', received }
       if (!res.ok) return { result: 'error', received }
       const body: unknown = await res.json().catch(() => null)
-      if (!isSyncResponse(body)) return { result: 'error', received }
+      if (!isSyncResponse<T>(body)) return { result: 'error', received }
 
       // 成功的請求才寫入本機：清 dirty、合併、存游標
-      const changed = await repo.applySyncResult(batch, body.changes, body.cursor)
+      const changed = await c.applySyncResult(batch, body.changes, body.cursor)
       received ||= changed > 0
       cursor = body.cursor
       pending = pending.slice(BATCH_SIZE)
@@ -79,6 +92,29 @@ export function createSyncClient({ repo: getRepo, fetch, isOnline }: SyncClientD
     }
     // 超過請求上限時，剩下的留到下一次同步
     return { result: 'synced', received }
+  }
+
+  /** 先同步打勾紀錄，成功後再同步卡片狀態；任一階段失敗就以那個結果結束 */
+  async function syncOnce(): Promise<SyncOutcome> {
+    if (!isOnline()) return { result: 'offline', received: false }
+    const repo = getRepo()
+    const logs = await syncCollection<TaskLog>({
+      path: '/api/sync',
+      pendingChanges: () => repo.pendingChanges(),
+      getCursor: () => repo.getCursor(),
+      applySyncResult: (sent, remote, cursor) => repo.applySyncResult(sent, remote, cursor),
+      isValid: isValidSyncRecord,
+    })
+    if (logs.result !== 'synced') return logs
+    const cards = getCards()
+    const states = await syncCollection<CardState>({
+      path: '/api/sync/cards',
+      pendingChanges: () => cards.pendingChanges(),
+      getCursor: () => cards.getCursor(),
+      applySyncResult: (sent, remote, cursor) => cards.applySyncResult(sent, remote, cursor),
+      isValid: isValidCardState,
+    })
+    return { result: states.result, received: logs.received || states.received }
   }
 
   async function login(password: string): Promise<LoginResult> {
