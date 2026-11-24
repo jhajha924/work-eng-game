@@ -23,18 +23,26 @@ function checkTemplate(t: unknown, where: string, errors: string[]): void {
   }
 }
 
+/** 內容包 id：小寫英數與 -（和同步 API 的卡片 id 規則一致） */
+const PACK_ID = /^[a-z0-9-]+$/
+
+/** 每種卡片分組的欄位名稱：組名與組內清單 */
+const CARD_GROUP_KEYS = {
+  vocab: { nameKey: 'category', listKey: 'words' },
+  patterns: { nameKey: 'scenario', listKey: 'items' },
+} as const
+
 /**
  * 檢查 vocab 或 patterns（選填）：每組要有名稱（category／scenario），組內清單（words／items）
  * 的每張卡要有英文、中文，同一種卡片的代號不可為空也不可重複。
  */
-function checkCardGroups(value: unknown, field: 'vocab' | 'patterns', errors: string[]): void {
+function checkCardGroups(value: unknown, field: keyof typeof CARD_GROUP_KEYS, errors: string[]): void {
   if (value === undefined) return
   if (!Array.isArray(value)) {
     errors.push(`${field} 必須是陣列`)
     return
   }
-  const nameKey = field === 'vocab' ? 'category' : 'scenario'
-  const listKey = field === 'vocab' ? 'words' : 'items'
+  const { nameKey, listKey } = CARD_GROUP_KEYS[field]
   const seen = new Set<string>()
   value.forEach((group: unknown, i) => {
     const where = `${field}[${i}]`
@@ -73,6 +81,8 @@ export function validatePack(pack: unknown): PackValidation {
   if (!isObj(pack)) return { ok: false, errors: ['內容包必須是物件'] }
 
   if (!isNonEmptyString(pack.id)) errors.push('id 不可為空')
+  // 內容包 id 是卡片 id 的開頭，同步 API 只接受小寫英數與 -（cloud-sync 規格的卡片 id 規則）
+  else if (!PACK_ID.test(pack.id)) errors.push(`id「${pack.id}」只能包含小寫英文、數字與 -`)
   if (!isNonEmptyString(pack.name)) errors.push('name 不可為空')
   if (typeof pack.version !== 'number') errors.push('version 必須是數字')
   if (!Array.isArray(pack.novice)) {

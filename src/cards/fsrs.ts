@@ -32,8 +32,10 @@ export function reviewCard(
   rating: Rating,
   now: Date,
 ): { state: CardState; log: ReviewLog } {
-  // 裝置時鐘倒退（比上次複習還早）時，以上次複習時間計算；ts-fsrs 不接受倒退的時間
-  const at = state?.lastReview && Date.parse(state.lastReview) > now.getTime() ? new Date(state.lastReview) : now
+  // 裝置時鐘倒退或同一毫秒再評（不晚於上次複習）時，以上次複習的下一毫秒計算：
+  // ts-fsrs 不接受倒退的時間，複習紀錄的 id（卡片 id＠複習時間）也才不會和上一筆重複
+  const last = state?.lastReview ? Date.parse(state.lastReview) : null
+  const at = last !== null && last >= now.getTime() ? new Date(last + 1) : now
   const current = state ? toFsrs(state) : createEmptyCard(at)
   const { card } = scheduler.next(current, at, rating as Grade)
   const reviewedAt = at.toISOString()

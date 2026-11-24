@@ -1,7 +1,7 @@
 // D5：每日複習佇列（純函式）。到期的複習卡在前、提前學習的卡其次、新卡最後（每天有上限）
 import type { ContentPack } from '../plan/types'
 import type { TodayView } from '../progress/today'
-import type { Card, CardState } from './types'
+import { CARD_PHASE, type Card, type CardState } from './types'
 
 /** 每天最多學的新卡數（和每日任務「新字 15 個」一致） */
 export const NEW_CARDS_PER_DAY = 15
@@ -17,9 +17,6 @@ export type QueueOptions = {
   newLimit: number
 }
 
-const LEARNING = 1
-const RELEARNING = 3
-
 const byDue = (a: CardState, b: CardState) => Date.parse(a.due) - Date.parse(b.due)
 
 export function buildQueue(deck: Card[], states: CardState[], { now, today, weekCategory, newLimit }: QueueOptions): Card[] {
@@ -33,7 +30,7 @@ export function buildQueue(deck: Card[], states: CardState[], { now, today, week
   const ahead = known
     .filter((s) => {
       const at = Date.parse(s.due)
-      return (s.state === LEARNING || s.state === RELEARNING) && at > time && at <= time + LEARN_AHEAD_MS
+      return (s.state === CARD_PHASE.Learning || s.state === CARD_PHASE.Relearning) && at > time && at <= time + LEARN_AHEAD_MS
     })
     .sort(byDue)
 

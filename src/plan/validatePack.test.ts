@@ -30,6 +30,7 @@ describe('結構檢查回報錯誤', () => {
   // 規格 Example「各種違規」：每一列各自失敗
   it.each<[string, (p: ContentPack) => unknown]>([
     ['id 為空字串', (p) => ({ ...p, id: '' })],
+    ['id 含大寫或底線（Meeting_A2）', (p) => ({ ...p, id: 'Meeting_A2' })],
     ['levels 為空陣列', (p) => ({ ...p, levels: [] })],
     ['某關 weeks 只有 1 個', (p) => ({ ...p, levels: [{ ...p.levels[0], weeks: p.levels[0].weeks.slice(0, 1), minWeeks: 2 }] })],
     ['某關 minWeeks 為 1', (p) => ({ ...p, levels: [{ ...p.levels[0], minWeeks: 1 }] })],

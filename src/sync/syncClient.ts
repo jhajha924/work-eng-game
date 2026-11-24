@@ -51,6 +51,12 @@ function isSyncResponse<T>(v: unknown): v is SyncResponse<T> {
   return Number.isInteger(r.cursor) && Array.isArray(r.changes) && typeof r.hasMore === 'boolean'
 }
 
+/** 本機是否有未同步的打勾紀錄或卡片狀態（切到背景時決定要不要立刻同步） */
+export async function hasPendingChanges(repo: ProgressRepo, cards: CardRepo): Promise<boolean> {
+  const [logs, states] = await Promise.all([repo.pendingChanges(), cards.pendingChanges()])
+  return logs.length + states.length > 0
+}
+
 export function createSyncClient({ repo: getRepo, cards: getCards, fetch, isOnline }: SyncClientDeps) {
   /** 送出 JSON；網路錯誤（fetch 丟出例外）回傳 null */
   async function request(path: string, init: RequestInit = {}): Promise<Response | null> {
@@ -94,27 +100,20 @@ export function createSyncClient({ repo: getRepo, cards: getCards, fetch, isOnli
     return { result: 'synced', received }
   }
 
-  /** 先同步打勾紀錄，成功後再同步卡片狀態；任一階段失敗就以那個結果結束 */
+  /**
+   * 先同步打勾紀錄，成功後再同步卡片狀態；任一階段失敗就以那個結果結束。
+   * 卡片階段丟出例外（例如資料庫錯誤）時回報 error，但保留打勾紀錄階段的 received，畫面才會重新讀取。
+   */
   async function syncOnce(): Promise<SyncOutcome> {
     if (!isOnline()) return { result: 'offline', received: false }
-    const repo = getRepo()
-    const logs = await syncCollection<TaskLog>({
-      path: '/api/sync',
-      pendingChanges: () => repo.pendingChanges(),
-      getCursor: () => repo.getCursor(),
-      applySyncResult: (sent, remote, cursor) => repo.applySyncResult(sent, remote, cursor),
-      isValid: isValidSyncRecord,
-    })
+    const logs = await syncCollection<TaskLog>({ ...getRepo(), path: '/api/sync', isValid: isValidSyncRecord })
     if (logs.result !== 'synced') return logs
-    const cards = getCards()
-    const states = await syncCollection<CardState>({
-      path: '/api/sync/cards',
-      pendingChanges: () => cards.pendingChanges(),
-      getCursor: () => cards.getCursor(),
-      applySyncResult: (sent, remote, cursor) => cards.applySyncResult(sent, remote, cursor),
-      isValid: isValidCardState,
-    })
-    return { result: states.result, received: logs.received || states.received }
+    try {
+      const states = await syncCollection<CardState>({ ...getCards(), path: '/api/sync/cards', isValid: isValidCardState })
+      return { result: states.result, received: logs.received || states.received }
+    } catch {
+      return { result: 'error', received: logs.received }
+    }
   }
 
   async function login(password: string): Promise<LoginResult> {

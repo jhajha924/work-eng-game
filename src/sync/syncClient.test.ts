@@ -5,7 +5,7 @@ import { createDb, type ProgressDb } from '../progress/db'
 import { createCardRepo, type CardRepo } from '../cards/cardRepo'
 import { reviewCard } from '../cards/fsrs'
 import { createProgressRepo, type ProgressRepo } from '../progress/progressRepo'
-import { createSyncClient } from './syncClient'
+import { createSyncClient, hasPendingChanges } from './syncClient'
 
 const now = new Date('2026-11-02T12:00:00Z')
 let db: ProgressDb
@@ -154,6 +154,37 @@ describe('同步用戶端的結果', () => {
     expect(fetch.mock.calls.map((call) => (call as unknown[])[0])).toEqual(['/api/sync'])
   })
 
+  it('打勾紀錄成功、卡片狀態失敗（500、401）：打勾紀錄的結果保留，卡片的 dirty 與游標不變', async () => {
+    const review = reviewCard('demo:v:meeting', null, 3, now)
+    await cards.saveReview(review.state, review.log)
+    const remoteLog = {
+      id: '2026-11-02:shadowing', date: '2026-11-02', key: 'shadowing', xp: 10, isMinimum: false,
+      completedAt: '2026-11-02T09:00:00.000Z', updatedAt: '2026-11-02T09:00:00.000Z', deleted: false,
+    }
+    for (const status of [500, 401]) {
+      const fetch = vi.fn(async (path: RequestInfo | URL) =>
+        path === '/api/sync' ? json(200, { cursor: 4, changes: [remoteLog], hasMore: false }) : json(status, { error: 'x' }),
+      )
+      const client = createSyncClient({ repo: () => repo, cards: () => cards, fetch: fetch as typeof globalThis.fetch, isOnline: () => true })
+      const outcome = await client.syncOnce()
+      expect(outcome.result).toBe(status === 500 ? 'error' : 'unauthorized')
+      expect(await repo.getCursor()).toBe(4)
+      expect((await db.cardStates.get('demo:v:meeting'))?.dirty).toBe(1)
+      expect(await cards.getCursor()).toBe(0)
+    }
+  })
+
+  it('卡片階段丟出例外時，打勾紀錄取回的變更仍回報 received（畫面才會重新讀取）', async () => {
+    const remoteLog = {
+      id: '2026-11-02:shadowing', date: '2026-11-02', key: 'shadowing', xp: 10, isMinimum: false,
+      completedAt: '2026-11-02T09:00:00.000Z', updatedAt: '2026-11-02T09:00:00.000Z', deleted: false,
+    }
+    const fetch = vi.fn(async () => json(200, { cursor: 4, changes: [remoteLog], hasMore: false }))
+    const broken = { ...cards, pendingChanges: () => Promise.reject(new Error('資料庫壞了')) }
+    const client = createSyncClient({ repo: () => repo, cards: () => broken, fetch: fetch as typeof globalThis.fetch, isOnline: () => true })
+    expect(await client.syncOnce()).toEqual({ result: 'error', received: true })
+  })
+
   it('只有卡片狀態被伺服器改變時 received 也是 true', async () => {
     const remote = reviewCard('demo:v:meeting', null, 4, now).state
     const fetch = vi.fn(async (path: RequestInfo | URL) =>
@@ -184,6 +215,20 @@ describe('同步用戶端的結果', () => {
     const [path, init] = fetch.mock.calls[0]
     expect(path).toBe('/api/sync')
     expect(init).toMatchObject({ method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' } })
+  })
+})
+
+describe('是否有未同步的資料', () => {
+  it('沒有 → false；只有卡片狀態未同步也是 true', async () => {
+    expect(await hasPendingChanges(repo, cards)).toBe(false)
+    const review = reviewCard('demo:v:meeting', null, 3, now)
+    await cards.saveReview(review.state, review.log)
+    expect(await hasPendingChanges(repo, cards)).toBe(true)
+  })
+
+  it('只有打勾紀錄未同步 → true', async () => {
+    await repo.setTaskDone({ id: '2026-11-02:new-words', date: '2026-11-02', key: 'new-words' }, 10, true, now)
+    expect(await hasPendingChanges(repo, cards)).toBe(true)
   })
 })
 

@@ -3,6 +3,7 @@
 
 用法：
     python scripts/export_private_pack.py <原計畫 build_plan.py 的路徑>
+    python scripts/export_private_pack.py --slugs   （測試用：從標準輸入讀英文 JSON 陣列，輸出代號 JSON 陣列）
 
 輸出：content/packs/private/meeting-a2-b1/pack.json（content/packs/private/ 已列在 .gitignore）
 """
@@ -41,23 +42,31 @@ def xp_of(text: str) -> int:
 
 
 def card_slug(en: str) -> str:
-    """和 App 的 cardSlug 相同：轉小寫、連續的非英數字元換成 -、去掉頭尾的 -"""
+    """和 App 的 cardSlug 相同：轉小寫、連續的非英數字元換成 -、去掉頭尾的 -
+    （src/cards/slugParity.test.ts 用 --slugs 確認兩邊結果一致）"""
     return re.sub(r"[^a-z0-9]+", "-", en.lower()).strip("-")
+
+
+def first_seen(seen: set, skipped: list, group: str, en: str) -> bool:
+    """同一種卡片的代號第一次出現才保留；重複的記在 skipped（App 的結構檢查不接受重複代號）"""
+    slug = card_slug(en)
+    if slug in seen:
+        skipped.append(f"{group}：{en}")
+        return False
+    seen.add(slug)
+    return True
 
 
 def build_vocab(plan, skipped: list) -> list:
     """VOCAB：類別 → (英文, 中文, 例句)；空字串的例句不輸出。
-    同一個字在多個類別出現（例如新手村的字在主題類別再出現一次）時只保留第一次，略過的字記在 skipped"""
+    同一個字在多個類別出現（例如新手村的字在主題類別再出現一次）時只保留第一次"""
     groups = []
-    seen = set()
+    seen: set = set()
     for category, words in plan.VOCAB.items():
         items = []
         for en, zh, example in words:
-            slug = card_slug(en)
-            if slug in seen:
-                skipped.append(f"{category}：{en}")
+            if not first_seen(seen, skipped, category, en):
                 continue
-            seen.add(slug)
             word = {"en": en, "zh": zh}
             if example:
                 word["example"] = example
@@ -66,13 +75,15 @@ def build_vocab(plan, skipped: list) -> list:
     return groups
 
 
-def build_patterns(plan) -> list:
-    """PATTERNS：[(情境, [(英文, 中文)])]"""
-    return [{"scenario": scenario, "items": [{"en": en, "zh": zh} for en, zh in items]}
+def build_patterns(plan, skipped: list) -> list:
+    """PATTERNS：[(情境, [(英文, 中文)])]；重複的句型只保留第一次"""
+    seen: set = set()
+    return [{"scenario": scenario,
+             "items": [{"en": en, "zh": zh} for en, zh in items if first_seen(seen, skipped, scenario, en)]}
             for scenario, items in plan.PATTERNS]
 
 
-def build_pack(plan, skipped: list) -> dict:
+def build_pack(plan, skipped: dict) -> dict:
     levels = []
     for i, (lv_id, name, icon, goal, week_nos) in enumerate(plan.LEVELS):
         weeks = [{"title": plan.WEEKS[w][0], "focus": plan.WEEKS[w][1], "vocabCategory": plan.WEEKS[w][2]}
@@ -91,18 +102,21 @@ def build_pack(plan, skipped: list) -> dict:
         "bossDayOverrides": {str(k): {"key": BOSS_KEYS[k], "title": t, "minutes": m, "xp": XP[BOSS_KEYS[k]]}
                              for k, (t, m) in plan.BOSS_DAILY.items()},
         "lightDayTemplate": LIGHT,
-        "vocab": build_vocab(plan, skipped),
-        "patterns": build_patterns(plan),
+        "vocab": build_vocab(plan, skipped["vocab"]),
+        "patterns": build_patterns(plan, skipped["patterns"]),
     }
 
 
 def main() -> None:
+    if sys.argv[1:] == ["--slugs"]:
+        print(json.dumps([card_slug(en) for en in json.load(sys.stdin)], ensure_ascii=False))
+        return
     if len(sys.argv) != 2:
         sys.exit(__doc__)
     src = pathlib.Path(sys.argv[1])
     if not src.is_file():
         sys.exit(f"找不到原計畫檔案：{src}")
-    skipped: list = []
+    skipped: dict = {"vocab": [], "patterns": []}
     pack = build_pack(load_plan(src), skipped)
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(pack, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
@@ -111,8 +125,9 @@ def main() -> None:
     patterns = sum(len(g["items"]) for g in pack["patterns"])
     print(f"ok {OUT.relative_to(ROOT)}：新手村 {len(pack['novice'])} 天、{len(pack['levels'])} 關、{weeks} 週、"
           f"單字 {words} 個、句型 {patterns} 句")
-    if skipped:
-        print(f"略過重複的單字 {len(skipped)} 個（保留第一次出現的）：" + "、".join(skipped))
+    for kind, label in (("vocab", "單字"), ("patterns", "句型")):
+        if skipped[kind]:
+            print(f"略過重複的{label} {len(skipped[kind])} 個（保留第一次出現的）：" + "、".join(skipped[kind]))
 
 
 if __name__ == "__main__":

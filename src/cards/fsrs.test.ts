@@ -44,6 +44,16 @@ describe('FSRS 評分', () => {
     expect(Date.parse(second.due)).toBeGreaterThan(now.getTime())
   })
 
+  it('時鐘倒退或同一毫秒再評一次：複習紀錄的 id 不和上一筆重複', () => {
+    const first = reviewCard(ID, null, 1, now)
+    const sameMs = reviewCard(ID, first.state, 3, now)
+    const backwards = reviewCard(ID, first.state, 3, new Date(now.getTime() - 60_000))
+    expect(sameMs.log.id).not.toBe(first.log.id)
+    expect(backwards.log.id).not.toBe(first.log.id)
+    // 複習時間取上次複習的下一毫秒
+    expect(backwards.log.reviewedAt).toBe(new Date(now.getTime() + 1).toISOString())
+  })
+
   it('結果可重現：相同輸入兩次結果相同', () => {
     const base = reviewCard(ID, null, 3, now).state
     const at = new Date(now.getTime() + 600_000)

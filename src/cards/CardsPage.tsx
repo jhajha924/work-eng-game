@@ -17,11 +17,13 @@ export function CardsPage({ sync }: { sync: SyncApi }) {
     remoteVersion: sync.remoteVersion,
     onWrite: sync.notifyLocalChange,
   })
-  const [flipped, setFlipped] = useState(false)
+  // 記住翻面的是哪一張：同步重新讀取後換成別張卡時，新的卡一定從正面開始
+  const [flippedId, setFlippedId] = useState<string | null>(null)
+  const flipped = current !== null && flippedId === current.id
 
   function onRate(rating: Rating) {
     // 下一張（包含「重來」後再出現的同一張）都從正面開始
-    setFlipped(false)
+    setFlippedId(null)
     void rate(rating)
   }
 
@@ -70,7 +72,7 @@ export function CardsPage({ sync }: { sync: SyncApi }) {
               </div>
             </>
           ) : (
-            <button type="button" className="flip" onClick={() => setFlipped(true)}>
+            <button type="button" className="flip" onClick={() => setFlippedId(current.id)}>
               翻面
             </button>
           )}

@@ -18,6 +18,9 @@ export type Rating = 1 | 2 | 3 | 4
 /** FSRS 的卡片階段：0 新、1 學習中、2 複習、3 重新學習 */
 export type CardPhase = 0 | 1 | 2 | 3
 
+/** 卡片階段的具名常數（數值和 ts-fsrs 的 State 相同） */
+export const CARD_PHASE = { New: 0, Learning: 1, Review: 2, Relearning: 3 } as const satisfies Record<string, CardPhase>
+
 /** 卡片狀態（本機與同步相同格式）；時間都是 ISO 字串 */
 export type CardState = {
   id: string

@@ -3,12 +3,15 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { defaultPack, defaultSchedule } from '../app/defaultPlan'
 import { getCardRepo } from '../app/storage'
 import { findToday, localToday } from '../progress/today'
+import { keepNewerStates } from './cardState'
 import { buildDeck } from './deck'
 import { reviewCard } from './fsrs'
 import { buildQueue, NEW_CARDS_PER_DAY, weekCategoryFor } from './queue'
 import type { CardState, Rating } from './types'
 
 export const CARD_DB_ERROR = '無法存取本機資料庫，單字卡進度無法儲存'
+/** 頁面開著時多久更新一次「現在」：學習中的卡到期後回到佇列，跨過午夜也會換成新的一天 */
+export const NOW_REFRESH_MS = 30_000
 
 export type FlashcardsOptions = {
   /** 同步取回其他裝置的變更時加 1，這裡就重新讀取卡片狀態 */
@@ -18,13 +21,12 @@ export type FlashcardsOptions = {
 }
 
 export function useFlashcards({ remoteVersion = 0, onWrite }: FlashcardsOptions = {}) {
-  // 今天只在打開頁面時決定一次（和今日任務頁相同）
-  const [today] = useState(() => localToday(new Date()))
   const deck = useMemo(() => buildDeck(defaultPack), [])
-  const weekCategory = useMemo(() => weekCategoryFor(defaultPack, findToday(defaultSchedule, defaultPack, today)), [today])
   const [states, setStates] = useState<CardState[]>([])
-  // 佇列用的「現在」：載入與每次評分時更新，學習中的卡才會依時間回到佇列
+  // 佇列用的「現在」：載入、每次評分與每 30 秒更新；「今天」由它算出，跨過午夜就換成新的一天
   const [now, setNow] = useState(() => new Date())
+  const today = localToday(now)
+  const weekCategory = useMemo(() => weekCategoryFor(defaultPack, findToday(defaultSchedule, defaultPack, today)), [today])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   // 評分中：停用評分按鈕；ref 立即生效，連點第二下一定被擋下
@@ -37,7 +39,8 @@ export function useFlashcards({ remoteVersion = 0, onWrite }: FlashcardsOptions 
       .then(() => getCardRepo().listStates())
       .then((loaded) => {
         if (cancelled) return
-        setStates(loaded)
+        // 讀取開始後才寫入的評分結果比讀到的新，不能被蓋掉
+        setStates((current) => keepNewerStates(current, loaded))
         setNow(new Date())
         setError(null)
       })
@@ -51,6 +54,11 @@ export function useFlashcards({ remoteVersion = 0, onWrite }: FlashcardsOptions 
       cancelled = true
     }
   }, [remoteVersion])
+
+  useEffect(() => {
+    const timer = setInterval(() => setNow(new Date()), NOW_REFRESH_MS)
+    return () => clearInterval(timer)
+  }, [])
 
   const queue = useMemo(
     () => buildQueue(deck, states, { now, today, weekCategory, newLimit: NEW_CARDS_PER_DAY }),
@@ -69,7 +77,7 @@ export function useFlashcards({ remoteVersion = 0, onWrite }: FlashcardsOptions 
         const previous = states.find((s) => s.id === current.id) ?? null
         const { state, log } = reviewCard(current.id, previous, rating, at)
         await getCardRepo().saveReview(state, log)
-        setStates((prev) => [...prev.filter((s) => s.id !== state.id), state])
+        setStates((prev) => keepNewerStates(prev, [state]))
         setNow(at)
         setError(null)
         onWrite?.()

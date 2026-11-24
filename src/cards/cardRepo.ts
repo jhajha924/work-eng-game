@@ -1,6 +1,7 @@
 // D6：卡片狀態與複習紀錄的本機讀寫；D7：卡片狀態的同步（游標和打勾紀錄分開存）
 import type { ProgressDb } from '../progress/db'
 import { mergeRemote } from '../sync/merge'
+import { toCardState } from './cardState'
 import type { CardState, ReviewLog, StoredCardState } from './types'
 
 /** 卡片狀態的同步游標存在 meta 的這個 key（打勾紀錄是 syncCursor） */
@@ -18,15 +19,6 @@ export type CardRepo = {
    * 回傳本機實際被伺服器改變的張數。
    */
   applySyncResult(sent: CardState[], remote: CardState[], cursor: number): Promise<number>
-}
-
-/** 去掉 dirty，欄位順序固定（才能直接比較內容） */
-export function toCardState(s: StoredCardState | CardState): CardState {
-  return {
-    id: s.id, due: s.due, stability: s.stability, difficulty: s.difficulty, elapsedDays: s.elapsedDays,
-    scheduledDays: s.scheduledDays, learningSteps: s.learningSteps, reps: s.reps, lapses: s.lapses, state: s.state,
-    lastReview: s.lastReview, introducedOn: s.introducedOn, updatedAt: s.updatedAt,
-  }
 }
 
 const sameState = (a: StoredCardState, b: StoredCardState) =>

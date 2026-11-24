@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import type { CardRepo } from '../cards/cardRepo'
 import type { ProgressRepo } from '../progress/progressRepo'
 import type { SyncStatus } from './messages'
-import { createSyncClient, type LoginResult, type LogoutResult } from './syncClient'
+import { createSyncClient, hasPendingChanges, type LoginResult, type LogoutResult } from './syncClient'
 import { createSyncController, type SyncController } from './syncController'
 
 /**
@@ -23,10 +23,7 @@ export function useSync(getRepo: () => ProgressRepo, getCardRepo: () => CardRepo
         fetch: (...args) => fetch(...args),
         isOnline: () => navigator.onLine,
       }),
-      hasPending: async () => {
-        const [logs, cards] = await Promise.all([getRepo().pendingChanges(), getCardRepo().pendingChanges()])
-        return logs.length + cards.length > 0
-      },
+      hasPending: () => hasPendingChanges(getRepo(), getCardRepo()),
       onStatus: setStatus,
       onRemoteChange: () => setRemoteVersion((v) => v + 1),
     })
