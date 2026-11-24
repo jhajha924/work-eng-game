@@ -27,4 +27,4 @@
 
 - [x] 6.1 撰寫學習筆記 docs/learning-notes/04-單字卡與FSRS.md（間隔重複、FSRS 的穩定度與難度、卡片 id 設計、每日佇列、兩種資料的同步），並在 docs/專案規範.md 補上：固定版本的第三方演算法套件升級要另開提案並以測試確認結果。驗證：內容審查，學習筆記五個段落齊全且不含個人資訊。 <!-- speclink-task:tsk_01M7HF91MRR9CA92AFRAR5XYQZ -->
 - [x] [M] 6.2 使用者本機驗收：`npx wrangler d1 migrations apply work-eng-game --local`；重新執行 `python scripts/export_private_pack.py <原計畫路徑>` 後 `npm test`、`npm run lint`、`npm run build` 通過；`npm run dev` 後從今日任務頁進入單字卡頁，翻面、評分、評「重來」後卡片留在佇列、清空後看到完成訊息、重新整理後進度保留、回今日任務張數更新；Chrome 與 Edge 登入後互相看到相同的卡片進度。驗證：截圖回報。 <!-- speclink-task:tsk_01M7HF91MRRRY22YA02HG2PSMN -->
-- [ ] [M] 6.3 使用者部署驗收：`npx wrangler d1 migrations apply work-eng-game --remote`，再 commit、push；GitHub Actions 成功後，在電腦與手機打開正式網站，一邊評分、另一邊同步後看到相同的待複習張數。驗證：截圖回報。 <!-- speclink-task:tsk_01M7HF91MRV90993KN8HNKFAG4 -->
+- [x] [M] 6.3 使用者部署驗收：`npx wrangler d1 migrations apply work-eng-game --remote`，再 commit、push；GitHub Actions 成功後，在電腦與手機打開正式網站，一邊評分、另一邊同步後看到相同的待複習張數。驗證：截圖回報。 <!-- speclink-task:tsk_01M7HF91MRV90993KN8HNKFAG4 -->

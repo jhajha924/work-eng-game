@@ -21,7 +21,7 @@
 
 ### Requirement: 結構檢查回報錯誤
 
-`validatePack` SHALL 一次回報所有違規項目，MUST NOT 在第一個錯誤就停止。檢查規則：`id` 非空字串；`novice` 每個元素都有非空的 `title`、`description`、`icon` 與數字 `xp`；至少一關；每關的 `id`、`name` 非空且同一包內 `id` 不重複；每關 `weeks` 至少 2 個，每個週主題都有非空的 `title` 與字串 `focus`、`vocabCategory`；`minWeeks` 介於 2 與 `weeks.length` 之間；`stretchWeight` 大於 0；`dailyTemplates` 恰好 7 個且 `key` 不重複；`bossDayOverrides` 的鍵只能是 "0" 到 "6"；`lightDayTemplate` 必須存在；所有任務模板的 `minutes` 大於 0，且 `xp` 是大於等於 0 的整數。`vocab` 與 `patterns` 存在時 SHALL 是陣列；每組的 `category` 或 `scenario` 是非空字串；每個單字與句型的 `en`、`zh` 是非空字串，單字的 `example` 存在時是字串；同一包內單字的卡片代號不可重複、句型的卡片代號不可重複，代號也不可是空字串（代號規則見 flashcards 規格的「卡片牌組」）。
+`validatePack` SHALL 一次回報所有違規項目，MUST NOT 在第一個錯誤就停止。檢查規則：`id` 非空字串，且只含小寫英文、數字與 `-`（它是卡片 id 的開頭，見 cloud-sync 規格「卡片狀態同步 API」）；`novice` 每個元素都有非空的 `title`、`description`、`icon` 與數字 `xp`；至少一關；每關的 `id`、`name` 非空且同一包內 `id` 不重複；每關 `weeks` 至少 2 個，每個週主題都有非空的 `title` 與字串 `focus`、`vocabCategory`；`minWeeks` 介於 2 與 `weeks.length` 之間；`stretchWeight` 大於 0；`dailyTemplates` 恰好 7 個且 `key` 不重複；`bossDayOverrides` 的鍵只能是 "0" 到 "6"；`lightDayTemplate` 必須存在；所有任務模板的 `minutes` 大於 0，且 `xp` 是大於等於 0 的整數。`vocab` 與 `patterns` 存在時 SHALL 是陣列；每組的 `category` 或 `scenario` 是非空字串；每個單字與句型的 `en`、`zh` 是非空字串，單字的 `example` 存在時是字串；同一包內單字的卡片代號不可重複、句型的卡片代號不可重複，代號也不可是空字串（代號規則見 flashcards 規格的「卡片牌組」）。
 
 #### Scenario: 多個錯誤同時回報
 
@@ -33,6 +33,7 @@
 | 違規內容 | 結果 |
 | --- | --- |
 | `id` 為空字串 | ok: false |
+| `id` 為 `Meeting_A2`（含大寫與底線） | ok: false |
 | `levels` 為空陣列 | ok: false |
 | 某關 `weeks` 只有 1 個 | ok: false |
 | 某關 `minWeeks` 為 1 | ok: false |

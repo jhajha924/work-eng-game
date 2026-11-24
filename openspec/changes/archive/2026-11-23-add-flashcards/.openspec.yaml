@@ -1,0 +1,215 @@
+schema: spec-driven
+created: 2026-11-16
+created_by: jhajha924 <47804331+jhajha924@users.noreply.github.com>
+created_with: claude
+from_discussion: english-quest-app
+started_at: 2026-11-16
+started_by: jhajha924 <47804331+jhajha924@users.noreply.github.com>
+reviewed_at: 2026-11-23
+reviewed_by: jhajha924 <47804331+jhajha924@users.noreply.github.com>
+reviewed_with: claude
+reviewed_tasks_total: 13
+reviewed_scope:
+  - path: content/packs/meeting-a2-b1-sample/pack.json
+    hash: 01afc181d6ae0aaab58e3cd84673e7e461257eabd887d5a111920ee550a7e336
+  - path: docs/learning-notes/04-單字卡與FSRS.md
+    hash: 3f2d5ffe7853e1d342046f17c113e803a12d11b3c0359561647a000dfd1ef7fc
+  - path: docs/專案規範.md
+    hash: 4c90c6f4c090535daf2ca5c9927af75d6041413fba02fd47195ca150b7da7da5
+  - path: migrations/0002_card_states.sql
+    hash: a6762309b69065100e341394ebc33c7e0aad66931ec49bfd1efe36def40e9bcf
+  - path: package-lock.json
+    hash: 0c558567c6a0d5c387d5327a1c0b322fa312acd7a8581c1854a8445bce53b1d9
+  - path: package.json
+    hash: 9d761d19d224eb5e392305d9f4def21d85bbaf71ecc6b9c8d2d48510f76b2d49
+  - path: scripts/export_private_pack.py
+    hash: c1bb54221c447ea6f3ffdae23f16f3d790dcc3c34bab3046eaa43777db507b8a
+  - path: src/App.tsx
+    hash: e781d76eab8a54ccd135709cc6008164225589a91fb7aac0703968f8133d56ac
+  - path: src/app/TodayPage.css
+    hash: ab3acf6246b9f0a82268fff38daa502570c3df35810e2934bd9838d25bec90a1
+  - path: src/app/TodayPage.tsx
+    hash: f1326b9b36271b80ee2752d4d7e634be7dcb7edd268d2145a6a9b1065b3c8553
+  - path: src/app/storage.ts
+    hash: 29c7eefe1464a904cc9c99c9b10b0424dd515b2e044b4b268b863d38055dad10
+  - path: src/app/useHashRoute.test.ts
+    hash: 53ed990a10fd50ff8e323209c733d03a72db2a0affbd19843aadf2ecdda887cf
+  - path: src/app/useHashRoute.ts
+    hash: 1d301f4c576228f4ef6ab7fb04c64397efcd62db3e6a9adc1117f97baac62b01
+  - path: src/app/useTodayProgress.ts
+    hash: cf8cbdae7b16a8981759759b4229b8e74c2beadd9b2ff50f46214f0cf3578856
+  - path: src/cards/CardsPage.css
+    hash: 1c11710de2596c1d29f24398bbc003e0fd154440ba2014d710e15065d6c18938
+  - path: src/cards/CardsPage.tsx
+    hash: e1e7056022d1f32ea7dabce6b5a9e2194214879db4ffddcf5b39bcb1bec71892
+  - path: src/cards/cardRepo.test.ts
+    hash: 41a374e0cd12940ea90a06a85b49e9c6482b9551870b6b6ce431db7a0d6fa516
+  - path: src/cards/cardRepo.ts
+    hash: e0fb4c6749ae78b9d6b4b63c0c369de46c9a431a20d94c71b23fe3ff15bfbe6d
+  - path: src/cards/cardState.test.ts
+    hash: 6682b687c8ccd52ada0ee2aa727e393d003552bb7b470c4ab2029f1685beed06
+  - path: src/cards/cardState.ts
+    hash: 94bc40a23a1e0bb640d5f03211e1fc8851e1bb309e0ae15fb27821fdd0a52a79
+  - path: src/cards/deck.test.ts
+    hash: 8d03ad23c30093bd253b6ed5b0c49dcef7727fae451b3740747d08789a8044cb
+  - path: src/cards/deck.ts
+    hash: b38bebd8534aaa470a0c42d6a5e061d9da4fb09eb01a8d2b77680f5a1cd2cad5
+  - path: src/cards/fsrs.test.ts
+    hash: d8138c4ee46acf404d3c176eee293c0bd80d47ad1393aa528dc942c9a56e3a0a
+  - path: src/cards/fsrs.ts
+    hash: ada6b08f2780d0a36523daae1f32edd3990f137d791972e1f63ea118f9552ede
+  - path: src/cards/queue.test.ts
+    hash: fd965fa37b07a13d85705f520e75e8ef2d2cc7489ed92460d49e58380e6633e7
+  - path: src/cards/queue.ts
+    hash: d36cf231e3c9f743a35eab88697d4432224a7dd38612ed5decd12f5101980b44
+  - path: src/cards/slugParity.test.ts
+    hash: 8056f2c639b038823f469a56d006ea11c34f6442c572410437ecec0917990e06
+  - path: src/cards/types.ts
+    hash: f20ee0751994f91dcd9115ba8876ecb4d5dfb1d7521b013bcae319d027081235
+  - path: src/cards/useFlashcards.ts
+    hash: e6c8b09986056baa670e507eba15f27bd74fe09dab1566cfdccedae594ebaa7f
+  - path: src/plan/samplePack.test.ts
+    hash: 509b9d7b5cccf8be354f86106d13dc15c15249dbc2b237f8493d2ae24c34275c
+  - path: src/plan/types.ts
+    hash: cdc8df42481b5a2e2e87561a8642bb3cdf86f9bf54544eb9c459d0a71d9fc719
+  - path: src/plan/validatePack.test.ts
+    hash: 207820cce32f2dbf1ddc31fda1fb0e6c021e8b74737c3edc3b4bb84d2618975b
+  - path: src/plan/validatePack.ts
+    hash: f012b85fc31d21afcdaaec907f3dceb6f2e3e5085f753ae49ac97e78f869d3c6
+  - path: src/progress/db.ts
+    hash: cc1960088bc8f9065854e3fd2843118ba36b1342de75eb6c47a32abf5a4d4cfc
+  - path: src/sync/merge.test.ts
+    hash: 34b9ff01dc6339b10a460229ee1adcb888b4a9e6ad1c602735c9370354a16321
+  - path: src/sync/merge.ts
+    hash: cf76006140553351cac97777948b62d50431fc095e3427a57d6005f59553a293
+  - path: src/sync/syncClient.test.ts
+    hash: fe2894f215a7a3261b5a017aa4b3164310f91b06e05aefbba6ea4e5f8cd34a5a
+  - path: src/sync/syncClient.ts
+    hash: 91279153645cc2da3b03ae3ce7b70ca2e0b62d0efc2bdb1e6ca909119069c61f
+  - path: src/sync/syncController.test.ts
+    hash: 3254d9c94a28c760da312fb835761c8b4ed3906cffff95c29eff248e4d97ab23
+  - path: src/sync/useSync.ts
+    hash: 9ab1aa9b4489ef973f1064cabc55d5510bdf86b1da053426726d9fd0cc0fa54c
+  - path: worker/app.test.ts
+    hash: 6b7656be717c8002d29981753e02516a8e3f5f79a8619d9ccb01c0e264a26217
+  - path: worker/app.ts
+    hash: 13c5823bff86245d1cae08139245916432d5c7f8b57567a625c993423bba731f
+  - path: worker/cards/cardSyncRepo.test.ts
+    hash: 5110f6e9916a11d88d77cad036b2fbb0178b1aaebd99d951ff3fbd9e8cdf08cc
+  - path: worker/cards/cardSyncRepo.ts
+    hash: 5ad5359f3c2848b56d51216a1b4eee3639ac0752e4984170ced80cb0c8a88e6a
+  - path: worker/cards/routes.ts
+    hash: c216fe7568a876461acfc9f8fe128d2ea98fab6e0b15cf926e17c613634f4acb
+  - path: worker/cards/twoDevices.test.ts
+    hash: 5ca1eeb832c5a6fe93f1d192430bb9f5a2863df9d9259eddb04583511274d2eb
+  - path: worker/cards/validate.test.ts
+    hash: 23b3edbc7542cf6146af9ddf5fcf8ebf8e5a91f3eaa816a7fd2c5f7c9af6b9d7
+  - path: worker/cards/validate.ts
+    hash: 0ea121b1a085de921bf3b61737ea8cf8d8f403923000db4da444072820746d2e
+  - path: worker/sync/twoDevices.test.ts
+    hash: 6c598c46b14d26b1cc05f48f99472aacc0f4cd02935c07878999ddd8894e2fff
+verified_at: 2026-11-23
+verified_by: jhajha924 <47804331+jhajha924@users.noreply.github.com>
+verified_with: claude
+verified_tasks_total: 13
+verified_scope:
+  - path: content/packs/meeting-a2-b1-sample/pack.json
+    hash: 01afc181d6ae0aaab58e3cd84673e7e461257eabd887d5a111920ee550a7e336
+  - path: docs/learning-notes/04-單字卡與FSRS.md
+    hash: 3f2d5ffe7853e1d342046f17c113e803a12d11b3c0359561647a000dfd1ef7fc
+  - path: docs/專案規範.md
+    hash: 4c90c6f4c090535daf2ca5c9927af75d6041413fba02fd47195ca150b7da7da5
+  - path: migrations/0002_card_states.sql
+    hash: a6762309b69065100e341394ebc33c7e0aad66931ec49bfd1efe36def40e9bcf
+  - path: package-lock.json
+    hash: 0c558567c6a0d5c387d5327a1c0b322fa312acd7a8581c1854a8445bce53b1d9
+  - path: package.json
+    hash: 9d761d19d224eb5e392305d9f4def21d85bbaf71ecc6b9c8d2d48510f76b2d49
+  - path: scripts/export_private_pack.py
+    hash: c1bb54221c447ea6f3ffdae23f16f3d790dcc3c34bab3046eaa43777db507b8a
+  - path: src/App.tsx
+    hash: e781d76eab8a54ccd135709cc6008164225589a91fb7aac0703968f8133d56ac
+  - path: src/app/TodayPage.css
+    hash: ab3acf6246b9f0a82268fff38daa502570c3df35810e2934bd9838d25bec90a1
+  - path: src/app/TodayPage.tsx
+    hash: f1326b9b36271b80ee2752d4d7e634be7dcb7edd268d2145a6a9b1065b3c8553
+  - path: src/app/storage.ts
+    hash: 29c7eefe1464a904cc9c99c9b10b0424dd515b2e044b4b268b863d38055dad10
+  - path: src/app/useHashRoute.test.ts
+    hash: 53ed990a10fd50ff8e323209c733d03a72db2a0affbd19843aadf2ecdda887cf
+  - path: src/app/useHashRoute.ts
+    hash: 1d301f4c576228f4ef6ab7fb04c64397efcd62db3e6a9adc1117f97baac62b01
+  - path: src/app/useTodayProgress.ts
+    hash: cf8cbdae7b16a8981759759b4229b8e74c2beadd9b2ff50f46214f0cf3578856
+  - path: src/cards/CardsPage.css
+    hash: 1c11710de2596c1d29f24398bbc003e0fd154440ba2014d710e15065d6c18938
+  - path: src/cards/CardsPage.tsx
+    hash: e1e7056022d1f32ea7dabce6b5a9e2194214879db4ffddcf5b39bcb1bec71892
+  - path: src/cards/cardRepo.test.ts
+    hash: 41a374e0cd12940ea90a06a85b49e9c6482b9551870b6b6ce431db7a0d6fa516
+  - path: src/cards/cardRepo.ts
+    hash: e0fb4c6749ae78b9d6b4b63c0c369de46c9a431a20d94c71b23fe3ff15bfbe6d
+  - path: src/cards/cardState.test.ts
+    hash: 6682b687c8ccd52ada0ee2aa727e393d003552bb7b470c4ab2029f1685beed06
+  - path: src/cards/cardState.ts
+    hash: 94bc40a23a1e0bb640d5f03211e1fc8851e1bb309e0ae15fb27821fdd0a52a79
+  - path: src/cards/deck.test.ts
+    hash: 8d03ad23c30093bd253b6ed5b0c49dcef7727fae451b3740747d08789a8044cb
+  - path: src/cards/deck.ts
+    hash: b38bebd8534aaa470a0c42d6a5e061d9da4fb09eb01a8d2b77680f5a1cd2cad5
+  - path: src/cards/fsrs.test.ts
+    hash: d8138c4ee46acf404d3c176eee293c0bd80d47ad1393aa528dc942c9a56e3a0a
+  - path: src/cards/fsrs.ts
+    hash: ada6b08f2780d0a36523daae1f32edd3990f137d791972e1f63ea118f9552ede
+  - path: src/cards/queue.test.ts
+    hash: fd965fa37b07a13d85705f520e75e8ef2d2cc7489ed92460d49e58380e6633e7
+  - path: src/cards/queue.ts
+    hash: d36cf231e3c9f743a35eab88697d4432224a7dd38612ed5decd12f5101980b44
+  - path: src/cards/slugParity.test.ts
+    hash: 8056f2c639b038823f469a56d006ea11c34f6442c572410437ecec0917990e06
+  - path: src/cards/types.ts
+    hash: f20ee0751994f91dcd9115ba8876ecb4d5dfb1d7521b013bcae319d027081235
+  - path: src/cards/useFlashcards.ts
+    hash: e6c8b09986056baa670e507eba15f27bd74fe09dab1566cfdccedae594ebaa7f
+  - path: src/plan/samplePack.test.ts
+    hash: 509b9d7b5cccf8be354f86106d13dc15c15249dbc2b237f8493d2ae24c34275c
+  - path: src/plan/types.ts
+    hash: cdc8df42481b5a2e2e87561a8642bb3cdf86f9bf54544eb9c459d0a71d9fc719
+  - path: src/plan/validatePack.test.ts
+    hash: 207820cce32f2dbf1ddc31fda1fb0e6c021e8b74737c3edc3b4bb84d2618975b
+  - path: src/plan/validatePack.ts
+    hash: f012b85fc31d21afcdaaec907f3dceb6f2e3e5085f753ae49ac97e78f869d3c6
+  - path: src/progress/db.ts
+    hash: cc1960088bc8f9065854e3fd2843118ba36b1342de75eb6c47a32abf5a4d4cfc
+  - path: src/sync/merge.test.ts
+    hash: 34b9ff01dc6339b10a460229ee1adcb888b4a9e6ad1c602735c9370354a16321
+  - path: src/sync/merge.ts
+    hash: cf76006140553351cac97777948b62d50431fc095e3427a57d6005f59553a293
+  - path: src/sync/syncClient.test.ts
+    hash: fe2894f215a7a3261b5a017aa4b3164310f91b06e05aefbba6ea4e5f8cd34a5a
+  - path: src/sync/syncClient.ts
+    hash: 91279153645cc2da3b03ae3ce7b70ca2e0b62d0efc2bdb1e6ca909119069c61f
+  - path: src/sync/syncController.test.ts
+    hash: 3254d9c94a28c760da312fb835761c8b4ed3906cffff95c29eff248e4d97ab23
+  - path: src/sync/useSync.ts
+    hash: 9ab1aa9b4489ef973f1064cabc55d5510bdf86b1da053426726d9fd0cc0fa54c
+  - path: worker/app.test.ts
+    hash: 6b7656be717c8002d29981753e02516a8e3f5f79a8619d9ccb01c0e264a26217
+  - path: worker/app.ts
+    hash: 13c5823bff86245d1cae08139245916432d5c7f8b57567a625c993423bba731f
+  - path: worker/cards/cardSyncRepo.test.ts
+    hash: 5110f6e9916a11d88d77cad036b2fbb0178b1aaebd99d951ff3fbd9e8cdf08cc
+  - path: worker/cards/cardSyncRepo.ts
+    hash: 5ad5359f3c2848b56d51216a1b4eee3639ac0752e4984170ced80cb0c8a88e6a
+  - path: worker/cards/routes.ts
+    hash: c216fe7568a876461acfc9f8fe128d2ea98fab6e0b15cf926e17c613634f4acb
+  - path: worker/cards/twoDevices.test.ts
+    hash: 5ca1eeb832c5a6fe93f1d192430bb9f5a2863df9d9259eddb04583511274d2eb
+  - path: worker/cards/validate.test.ts
+    hash: 23b3edbc7542cf6146af9ddf5fcf8ebf8e5a91f3eaa816a7fd2c5f7c9af6b9d7
+  - path: worker/cards/validate.ts
+    hash: 0ea121b1a085de921bf3b61737ea8cf8d8f403923000db4da444072820746d2e
+  - path: worker/sync/twoDevices.test.ts
+    hash: 6c598c46b14d26b1cc05f48f99472aacc0f4cd02935c07878999ddd8894e2fff
+archived_by: jhajha924 <47804331+jhajha924@users.noreply.github.com>
+archived_at: 2026-11-23
